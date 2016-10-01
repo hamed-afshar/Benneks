@@ -1,0 +1,57 @@
+h1 {
+	color:red;
+	font-weight: 900;
+	font-size: 40;
+}
+h4 {
+	font-family: 'Indie Flower', cursive;
+	font-weight: 700;
+	font-size: 30;
+}
+
+table {
+	width:100%;
+	border:1px solid #C0C0C0;
+	border-collapse:collapse;
+	padding:5px;
+	text-align: center;
+}
+tbody {
+	text-align: center;
+}
+thead {
+	font-size: 14;
+	font-family:'B Traffic',tahoma;
+	font-weight: 900;
+	text-align: right;
+}
+th {
+	border:1px solid #C0C0C0;
+	padding:5px;
+	background:#0080C0;
+	text-align: center;
+	text-overflow: ellipsis;
+} 
+td {
+	border:1px solid #C0C0C0;
+	padding:2px;
+}
+
+
+.jombotron {
+	background-color :#FFF;
+	padding-bottom: 10;
+}
+
+.row{
+  margin-top: 100px;
+}
+
+#signIn {
+	margin-top: 20px;
+}
+
+#calculator {
+	margin-top: 20px;
+}
+

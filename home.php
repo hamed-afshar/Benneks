@@ -58,12 +58,51 @@
                 <a class="navbar-brand" href="home.php">Benneks Control Panel</a>
             </div>
             <ul class="nav navbar-top-links navbar-right">
+                <!-- dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-calculator"></i> <i class="fa fa-cart-plus"> </i>
+                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong> New Order </strong>
+                                    <span class="pull-right text-muted">
+                                        <em> Today </em>
+                                    </span>
+                                </div>
+                                <div> New order has been submitted </div>
+                            </a>
+                        </li>
+                        <li class="divider"> </li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong> Read All Messages </strong>
+                                <i class="fa fa-angle-right"> </i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-calculator"></i>
+                    </a>
+                </li>
+                <!-- dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"> </i> <i class="fa fa-caret-down"> </i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li> <a href="#"><i class="fa fa-user fa-fw"> </i> User Profile </a> </li>
+                        <li> <a href="#"><i class="fa fa-gear fa-fw"> </i> Settings </a> </li>
+                        <li class="divider"> </li>
+                        <li> <a href="logout.php"> <i class="fa fa-sign-out fa-fw"> </i> Logout </a> </li>
+                    </ul>
+                </li>
             </ul>
         </div>
-
-            </body>
-            </html>
+</body>
+</html>

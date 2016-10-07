@@ -24,25 +24,25 @@
         <!-- JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"/></script>
 
-        <!-- MetisMenu CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.5.2/metisMenu.min.css"/>
+    <!-- MetisMenu CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.5.2/metisMenu.min.css"/>
 
-        <!--Bootstrap Again -->
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"/></script>
-        
-        <!--Javascript src -->
-        <script type="text/javascript" src="./Javascripts/script.js"></script>
-        
-        <!--Farsi Font-->
-         <link rel="stylesheet" href="http://ifont.ir/apicode/30">
-        
-        <!--CSS Style-->
-        <link rel="stylesheet" type="text/css" href="style.css" />
-        
-        <!-- Custom Fonts -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-        
-        <title>Benneks Order System</title>
+    <!--Bootstrap Again -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"/></script>
+
+<!--Javascript src -->
+<script type="text/javascript" src="./Javascripts/script.js"></script>
+
+<!--Farsi Font-->
+<link rel="stylesheet" href="http://ifont.ir/apicode/30">
+
+<!--CSS Style-->
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<!-- Custom Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<title>Benneks Order System</title>
 </head>
 <body>
     <div id ="wrapper">
@@ -104,25 +104,123 @@
                 </li>
             </ul>
 
-        <!-- navigation bar on right -->
-        <div class="navbar-default sidebar" role="navigation">
-            <div class="sidebar-nav navbar-collapse">
-                <ul class="nav" id="side-menu"
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="home.php"> <i class="fa fa-dashboard fa-fw"></i> Dashboard </a>
-                    </li>
+            <!-- navigation bar on right -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav in" id="side-menu">
+                        <li>
+                            <a href="home.php"> <i class="fa fa-dashboard fa-fw"></i> داشبورد </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-cart-plus fa-fw"> </i> سفارش جدید </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-money fa-fw" > </i> گزارش مالی</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-</body>
-</html>
+        <div id ="page-wrapper" class="farsi">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header" dir="rtl">پنل کاربری</h1>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-comments fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge"> 23 </div>
+                                        <div> آخرین خرید های انجام شده </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left"> مشاهده جزئیات </span>
+                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"> </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-tasks fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge"> 12 </div>
+                                        <div> جدیدترین سفارشات رسیده به استانبول </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left"> مشاهده جزئیات</span>
+                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"> </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-yellow">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-shopping-cart fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge"> 4 </div>
+                                        <div> آخرین ارسالی ها به تهران</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left"> مشاهده جزئیات </span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-red">
+                            <div class="panel-heading"> 
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-support fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge"> 13 </div>
+                                        <div> سفارشات کنسل شده </div>
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left"> مشاهده جزئیات </span>
+                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+  
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            </body>
+            </html>

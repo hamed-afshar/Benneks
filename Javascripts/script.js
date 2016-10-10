@@ -276,22 +276,27 @@ function submitActivation() {
 
 //Function to automatically calculate the price for sellers
 function calculator() {
-    var rateTL = 1230;
+    var rateTL = 1200;
     var weightCost = 50000;
     var shippingCost = 0;
     var benneksMargin = 0;
     var totalCost = 0;
     var productType = document.getElementById("productType").value;
     var productPrice = document.getElementById("productPrice").value;
-    if (productPrice >= 0 && productPrice <= 400) {
+    if (productPrice >= 0 && productPrice <= 100) {
         benneksMargin = 0.2;
-    } else if (productPrice > 400 && productPrice <= 900) {
-        benneksMargin = 0.2;
+    } else if (productPrice > 100 && productPrice <= 200) {
+        benneksMargin = 0.15;
     } else {
         benneksMargin = 0.1;
     }
     switch (productType) {
         case "bag":
+            shippingCost = 35000;
+            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            document.getElementById("finalPrice").setAttribute("disabled", false);
+            document.getElementById("finalPrice").value = totalCost;
+            break;
         case "shoes":
             shippingCost = 40000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
@@ -315,7 +320,7 @@ function calculator() {
         case "support":
         case "pancho":
         case "pant":
-            shippingCost = (weightCost * 250) / 1000;
+            shippingCost = (weightCost * 200) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
@@ -327,8 +332,7 @@ function calculator() {
         case "summerjacket":
         case "jean":
         case "coat&skirt":
-            benneksMargin = 0.2;
-            shippingCost = (weightCost * 750) / 1000;
+            shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
@@ -337,8 +341,7 @@ function calculator() {
         case "wintercoat":
         case "leathecoat":
         case "palto":
-            benneksMargin = 0.1;
-            shippingCost = (weightCost * 1500) / 1000;
+            shippingCost = (weightCost * 600) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
@@ -349,13 +352,10 @@ function calculator() {
         case "perfium":
         case "watch":
         case "accessory":
-            benneksMargin = 0.2;
-            shippingCost = 0;
+            shippingCost = (weightCost * 100) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
-
-
     }
 }
 

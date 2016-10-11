@@ -222,5 +222,25 @@
                 </div>
             </div>
             <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           <i class="fa fa-shopping-bag fa-fw"></i> ثبت سفارش 
+                        </div>
+                        <!-- /.new-order-panel-heading -->
+                    <div class="panel-body">
+                        <div id="newOrderArea">
+                            <div class="form-group">
+                                <label for="clothesType"> نوع لباس:</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.new-order-panel-body -->
+                    </div>
+                    <!--new-order-panel-->
+                </div>
+            </div>
             </body>
             </html>

@@ -432,7 +432,12 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+/* Added by myself */
 .farsi {
     font-family:'B tabassom',tahoma;
     font-size: 20px;
+}
+/* English format for needs */
+.eng-format {
+    font-family: 'tahoma';
 }

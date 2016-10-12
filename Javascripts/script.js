@@ -274,7 +274,7 @@ function submitActivation() {
     }
 }
 
-//Function to automatically calculate the price for sellers
+//Function to automatically calculate the price for sellers in calculator.php
 function calculator() {
     var rateTL = 1200;
     var weightCost = 50000;
@@ -358,6 +358,9 @@ function calculator() {
             document.getElementById("finalPrice").value = totalCost;
     }
 }
-
-
-
+//Function to check numeric prices only in making order section in home.php
+function checkPrice() {
+    //var price = document.getElementsByName("productPrice")[0].value;
+    // check if username contains illegall characters or les than 3 chars
+    document.getElementById("priceAlert").innerHTML="hamed";
+    }

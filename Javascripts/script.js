@@ -1,9 +1,12 @@
-//Flags to keep the submit button activation 
+//Flags to keep the submit button activation status 
 var usernameFlag = false;
 var emailFlag = false;
 var charFlag = false;
 var passFlag = false;
 var passAgainFlag = false;
+//Flags to keep making order submit button status home.php
+var priceFlag = false;
+var customerTelFlag = false;
 ////////////////////////////////////////////
 var row = 0;
 var index = 0;
@@ -358,9 +361,44 @@ function calculator() {
             document.getElementById("finalPrice").value = totalCost;
     }
 }
+
 //Function to check numeric prices only in making order section in home.php
 function checkPrice() {
-    //var price = document.getElementsByName("productPrice")[0].value;
-    // check if username contains illegall characters or les than 3 chars
-    document.getElementById("priceAlert").innerHTML="hamed";
+    var price = document.getElementById("productPrice").value;
+    // check if price is all numeric
+    var illegalChar = /[^0-9.]/g;
+    if((illegalChar.test(price))) {
+        document.getElementById("priceAlert").innerHTML="برای قیمت گذاری تنها از اعداد استفاده نمایید";  
+        $("#submitOrderButton").prop('disabled', true);
+        priceFlag = false;
+        return priceFlag;
+    } else
+    {
+        document.getElementById("priceAlert").innerHTML="";
+        priceFlag = true;
+        return priceFlag;
     }
+     
+}
+// function to check customer Tel in making order section in home.php
+function checkCustomerTel() {
+    var tel = document.getElementById("customerTel").value;
+    var illegalChar = /[^0-9]/g;
+    if((illegalChar.test(tel)) || tel.length < 11) {
+        document.getElementById("telAlert").innerHTML="شماره موبایل معتبر باید وارد گردد";
+        $("#submitOrderButton").prop('disabled', true);
+        customerTelFlag = false;
+        return customerTelFlag;
+    } else
+    {
+        document.getElementById("telAlert").innerHTML="";
+        customerTelFlag = true;
+        return customerTelFlag;
+    }
+}
+
+function activateOrderButton(){
+    if ((priceFlag === true) && (customerTelFlag === true)) {
+        $("#submitOrderButton").prop('disabled', false);
+    }
+}

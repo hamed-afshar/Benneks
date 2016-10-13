@@ -23,7 +23,6 @@
 
         <!-- JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"/></script>
-
     <!-- MetisMenu CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.5.2/metisMenu.min.css"/>
 
@@ -343,11 +342,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="productPrice"> قیمت </label>
-                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="5" id="productPrice">
+                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton()" id="productPrice">
                                         </div>
                                         <div class="form-group">
-                                            <span id="priceAlert">
-                                                <p></p>
+                                            <span style="color:red" id="priceAlert">
                                             </span>
                                         </div>
                                         <div class="form-group">
@@ -356,13 +354,17 @@
                                         </div>
                                         <div class="form-group">
                                             <label for=""customerTel"> تلفن مشتری </label>
-                                            <input type="tel" class="form-control eng-format" dir="ltr" maxlength="11" id="customerTel">
+                                            <input type="tel" class="form-control eng-format" dir="ltr" maxlength="11" onkeyup="checkCustomerTel(); activateOrderButton()" id="customerTel">
                                         </div>
-                                        <button class="form-control btn btn-group btn-primary" onclick="checkPrice()"> ثبت سفارش 
+                                        <div class="form-group">
+                                            <span style="color:red" id="telAlert">
+                                            </span> 
+                                        </div>
+                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" disabled="disabled"> ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>
                                             </span>
-                                                 
+
                                         </button>
                                     </div>
                                 </div>

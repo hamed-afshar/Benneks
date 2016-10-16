@@ -20,6 +20,9 @@ class user {
 	public function loginUser($query) {
 		return $this->conn->query($query);
 	}
+        public function addOrderUser($query) {
+            return $this->conn->query($query);
+        }
 	
 }
 

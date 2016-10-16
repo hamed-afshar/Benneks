@@ -295,13 +295,13 @@ function calculator() {
     }
     switch (productType) {
         case "bag":
-            shippingCost = 35000;
+            shippingCost = 40000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
             break;
         case "shoes":
-            shippingCost = 40000;
+            shippingCost = 45000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
@@ -340,11 +340,25 @@ function calculator() {
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
             break;
-        case "winterjacket":
         case "wintercoat":
-        case "leathecoat":
         case "palto":
+        case "jacket":
             shippingCost = (weightCost * 600) / 1000;
+            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            document.getElementById("finalPrice").setAttribute("disabled", false);
+            document.getElementById("finalPrice").value = totalCost;
+            break;
+        case "jeancoat":
+        case "leathercoat":
+        case "winterjacket":
+        case "heavysweater":
+            shippingCost = (weightCost * 800) / 1000;
+            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            document.getElementById("finalPrice").setAttribute("disabled", false);
+            document.getElementById("finalPrice").value = totalCost;
+            break;
+        case "heavy":
+            shippingCost = (weightCost * 1200) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
@@ -355,10 +369,11 @@ function calculator() {
         case "perfium":
         case "watch":
         case "accessory":
-            shippingCost = (weightCost * 100) / 1000;
+            shippingCost = (weightCost * 120) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
+            break;
     }
 }
 
@@ -367,37 +382,37 @@ function checkPrice() {
     var price = document.getElementById("productPrice").value;
     // check if price is all numeric
     var illegalChar = /[^0-9.]/g;
-    if((illegalChar.test(price))) {
-        document.getElementById("priceAlert").innerHTML="برای قیمت گذاری تنها از اعداد استفاده نمایید";  
+    if ((illegalChar.test(price))) {
+        document.getElementById("priceAlert").innerHTML = "برای قیمت گذاری تنها از اعداد استفاده نمایید";
         $("#submitOrderButton").prop('disabled', true);
         priceFlag = false;
         return priceFlag;
     } else
     {
-        document.getElementById("priceAlert").innerHTML="";
+        document.getElementById("priceAlert").innerHTML = "";
         priceFlag = true;
         return priceFlag;
     }
-     
+
 }
 // function to check customer Tel in making order section in home.php
 function checkCustomerTel() {
     var tel = document.getElementById("customerTel").value;
     var illegalChar = /[^0-9]/g;
-    if((illegalChar.test(tel)) || tel.length < 11) {
-        document.getElementById("telAlert").innerHTML="شماره موبایل معتبر باید وارد گردد";
+    if ((illegalChar.test(tel)) || tel.length < 11) {
+        document.getElementById("telAlert").innerHTML = "شماره موبایل معتبر باید وارد گردد";
         $("#submitOrderButton").prop('disabled', true);
         customerTelFlag = false;
         return customerTelFlag;
     } else
     {
-        document.getElementById("telAlert").innerHTML="";
+        document.getElementById("telAlert").innerHTML = "";
         customerTelFlag = true;
         return customerTelFlag;
     }
 }
 
-function activateOrderButton(){
+function activateOrderButton() {
     if ((priceFlag === true) && (customerTelFlag === true)) {
         $("#submitOrderButton").prop('disabled', false);
     }

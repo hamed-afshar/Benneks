@@ -1,4 +1,3 @@
-<html>
 <?php
 /* ob_start();
   session_start();
@@ -8,22 +7,52 @@
   header("Location: register.php");
   exit();
   } */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require 'src/benneks.php';
+$user = new user();
+//$_SESSION['order'] = $user;
+date_default_timezone_set("Asia/Tehran");
+
+$lastID = 0;
+
+if (isset($_POST['submitOrderButton'])) {
+    //Need to get the last customerID from Database
+    $query = "SELECT LAST(customerID) FROM benneks.customers";
+    if (!$user->lastCustomerID($query)) {
+        echo mysqli_error($user->conn);
+    } else {
+        $lastCustomerIDResult = $user->lastCustomerID($query);
+        $row = mysqli_fetch_array($lastCustomerIDResult);
+        //$lastID = $row['customerID'];
+        $lastID = 1;
+    }
+}
+/*
+  $query = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
+  $orderDate = date("Y-m-d");
+  $orderTime = date("H:i:s");
+  $query = "INSERT INTO benneks.orders(orderID, productBrand) VALUES ('1000', 'ZARA')";
+  //$query = "INSERT INTO benneks.orders (orderDate, orderTime) VALUES ('$orderDate', '$orderTime')";
+  $user->addOrderUser($query);
+
+  echo "success";
+  } */
 ?>
-
-
-
+<html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="benneks control panel">
-        <meta name="author" content="hamed">
+        <meta charset = "utf-8">
+        <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+        <meta name = "description" content = "benneks control panel">
+        <meta name = "author" content = "hamed">
 
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+        <!--Bootstrap -->
+        <link rel = "stylesheet" href = "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 
-        <!-- JQuery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"/></script>
+        <!--JQuery -->
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"/></script>
     <!-- MetisMenu CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.5.2/metisMenu.min.css"/>
 
@@ -46,7 +75,7 @@
 </head>
 <body>
     //for test
-    <?php ?>
+    <?php echo $lastID; ?>
     ///////
     <div id ="wrapper">
         <!-- Navigation Bar -->
@@ -381,5 +410,6 @@
                     <!--new-order-panel-->
                 </div>
             </div>
-            </body>
-            </html>
+        </body>
+        </html>
+

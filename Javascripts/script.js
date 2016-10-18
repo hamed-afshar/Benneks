@@ -184,7 +184,7 @@ function checkUserName() {
         charFlag = false;
         return charFlag
     }
-    $.getJSON("/phpscripts/registerCheck.php?input=username&value=" + username, function (data) {
+    $.getJSON("/Benneks/phpscripts/registerCheck.php?input=username&value=" + username, function (data) {
         // if user is already exist in database, shows proper icon and make the signup button disabled
         if (data.icon == "remove-icon") {
             $('#userNameIcon').closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -209,7 +209,7 @@ function checkUserName() {
 function checkEmail() {
     var email = document.getElementsByName("email")[1].value;
 
-    $.getJSON("/phpscripts/registerCheck.php?input=email&value=" + email, function (data) {
+    $.getJSON("/Benneks/phpscripts/registerCheck.php?input=email&value=" + email, function (data) {
         // if email is already exist in database, then shows proper icon and make the signup button disabled
         if (data.icon == "remove-icon" || email.length < 5) {
             $('#emailIcon').closest('.form-group').removeClass('has-success').addClass('has-error');

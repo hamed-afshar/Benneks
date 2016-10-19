@@ -9,7 +9,7 @@ if (isset($_SESSION['user']) != "") {
 }
 
 $user = new user();
-//$_SESSION['order'] = $user;
+$_SESSION['order'] = $user;
 $errMSG = "";
 date_default_timezone_set("Asia/Tehran");
 

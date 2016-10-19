@@ -26,7 +26,7 @@ class user {
         return $this->conn->query($query);
     }
     
-    public function lastCustomerID($query) {
+    public function executeQuery($query) {
         return $this->conn->query($query);
     }
 

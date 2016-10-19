@@ -1,44 +1,67 @@
 <?php
-/* ob_start();
-  session_start();
-  require 'src/benneks.php';
-  // if session is not set this will redirect to login page
-  if (!isset($_SESSION['user'])) {
-  header("Location: register.php");
-  exit();
-  } */
+ob_start();
+session_start();
+require 'src/benneks.php';
+// if session is not set this will redirect to login page
+if (!isset($_SESSION['user'])) {
+    header("Location: register.php");
+    exit();
+}
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-require 'src/benneks.php';
 $user = new user();
 //$_SESSION['order'] = $user;
 date_default_timezone_set("Asia/Tehran");
-
-$lastID = 0;
-
 if (isset($_POST['submitOrderButton'])) {
-    //Need to get the last customerID from Database
-    $query = "SELECT LAST(customerID) FROM benneks.customers";
-    if (!$user->lastCustomerID($query)) {
+    $customerName = $_POST['customerName'];
+    $customerTel = $_POST['customerTel'];
+//Need to get the last customerID from Database if it is a first record then LastID will be 0;
+    $query = "SELECT customerID FROM benneks.customers ORDER BY customerID DESC LIMIT 1";
+    if (!$user->executeQuery($query)) {
         echo mysqli_error($user->conn);
     } else {
-        $lastCustomerIDResult = $user->lastCustomerID($query);
+        $lastCustomerIDResult = $user->executeQuery($query);
         $row = mysqli_fetch_array($lastCustomerIDResult);
-        //$lastID = $row['customerID'];
-        $lastID = 1;
+        $lastID = $row['customerID'];
+    }
+    if (is_null($lastID)) {
+        $lastID = 0;
+    }
+// upload the product pic into database
+    $targetDir = 'orderpics/';
+    $targetFile = $targetDir . basename($_FILES["productPic"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = pathinfo($targetFile, PATHINFO_EXTENSION);
+    move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetFile);
+    $image = basename($_FILES["productPic"]["name"], ".jpg");
+// Insert customer information into database
+    $customerID = $lastID + 1;
+    $query = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
+    if (!$user->executeQuery($query)) {
+        echo mysqli_errno($user->conn);
+    }
+//Insert order information into database orderID is a combination of customerID and userID
+    $orderDate = date("Y-m-d");
+    $orderTime = date("H:i:s");
+    $userID = $_SESSION['user'];
+    $orderID = intval(strval($userID) . strval($customerID));
+    $clothesType = $_POST['clothesType'];
+    $productBrand = $_POST['productBrand'];
+    $productSize = $_POST['productSize'];
+    $productLink = $_POST['productLink'];
+    $productPrice = $_POST['productPrice'];
+    $productPic = $image;
+    $orderQuantity = $_POST['orderQuantity'];
+    $query = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
+            . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
+            . " '$productBrand', '$productSize', '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
+    if (!$user->executeQuery($query)) {
+        echo mysqli_error($user->conn);
     }
 }
-/*
-  $query = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
-  $orderDate = date("Y-m-d");
-  $orderTime = date("H:i:s");
-  $query = "INSERT INTO benneks.orders(orderID, productBrand) VALUES ('1000', 'ZARA')";
-  //$query = "INSERT INTO benneks.orders (orderDate, orderTime) VALUES ('$orderDate', '$orderTime')";
-  $user->addOrderUser($query);
-
-  echo "success";
-  } */
+//make a query to extract all field related to the submited order inorder to show them in preview panel
+$query = "SELECT * FROM benneks.orders WHERE orderID = '$orderID'";
 ?>
 <html>
     <head>
@@ -75,7 +98,7 @@ if (isset($_POST['submitOrderButton'])) {
 </head>
 <body>
     //for test
-    <?php echo $lastID; ?>
+    <?php echo $orderID; ?>
     ///////
     <div id ="wrapper">
         <!-- Navigation Bar -->
@@ -264,12 +287,22 @@ if (isset($_POST['submitOrderButton'])) {
                             <div class="panel-body">
                                 <div id="newOrderArea">
                                     <div class="col-lg-6"> 
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <img src="orderpics/AFP_5923a.jpg" class="img-rounded" alt="Cinque Terre" width="304" height="236">
+                                            </div>
+                                            <div class="col-lg-4"></div>
+                                        </div>
+                                        <hr style="color: black">
+                                        <div class="form-group">
+                                            <p> </p>
+                                        </div>
                                     </div>
                                     <div class="col-lg-6" >
-                                        <form role = "form" method="post">
+                                        <form role = "form" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="clothesType"> نوع لباس:</label>
-                                                <select dir = "rtl" class="form-control" id = "clothesType">
+                                                <select dir = "rtl" class="form-control" id = "clothesType" name="clothesType">
                                                     <option value = "bag"> انواع کیف </option>
                                                     <option value = "shoes"> انواع کفش و بوت </option>
 
@@ -314,7 +347,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             </div>
                                             <div class="form-group">
                                                 <label for="productBrand"> نام برند:</label>
-                                                <select dir = "rtl" class="form-control" id = "productBrand">
+                                                <select dir = "rtl" class="form-control" id = "productBrand" name = "productBrand">
                                                     <option value="Zara"> Zara </option>
                                                     <option value="Mango"> Mango </option>
                                                     <option value="Breshka"> Breshka </option>
@@ -340,15 +373,15 @@ if (isset($_POST['submitOrderButton'])) {
                                             </div>
                                             <div class="form-group">
                                                 <label for="productLink"> لینک محصول :</label>
-                                                <input type="text" dir="ltr" class="form-control eng-format" id="productLink">
+                                                <input type="text" dir="ltr" class="form-control eng-format" id="productLink" name="productLink">
                                             </div>
                                             <div class="form-group">
                                                 <label for="productPic"> عکس:</label>
-                                                <input type="file" class="eng-format" id="productPic" accept="image/*">
+                                                <input type="file" class="eng-format" id="productPic" name = "productPic" accept="image/*">
                                             </div>
                                             <div class="form-group">
                                                 <label for="productSize"> سایز:</label>
-                                                <select dir = "ltr"  class="eng-format form-control" id = "productSize">
+                                                <select dir = "ltr"  class="eng-format form-control" id = "productSize" name = "productSize">
                                                     <option value="xxs"> XX-Small </option>
                                                     <option value="xs"> X-Small </option>
                                                     <option value="s"> Small </option>
@@ -372,7 +405,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             </div>
                                             <div class="form-group">
                                                 <label for="productPrice"> قیمت :</label>
-                                                <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton()" id="productPrice">
+                                                <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton()" id="productPrice" name = "productPrice">
                                             </div>
                                             <div class="form-group">
                                                 <span style="color:red" id="priceAlert">
@@ -380,21 +413,21 @@ if (isset($_POST['submitOrderButton'])) {
                                             </div>
                                             <div class="form-group">
                                                 <label for="quantity"> تعداد :</label>
-                                                <input type="text" class="form-control eng-format" maxlength="2" id="orderQuantity">
+                                                <input type="text" class="form-control eng-format" maxlength="2" id="orderQuantity" name="orderQuantity">
                                             </div>
                                             <div class="form-group">
                                                 <label for="customerName"> نام مشتری :</label>
-                                                <input type="text" class="form-control eng-format" dir="rtl" maxlength="30" id="customerName">
+                                                <input type="text" class="form-control eng-format" dir="rtl" maxlength="30" id="customerName" name="customerName">
                                             </div>
                                             <div class="form-group">
                                                 <label for=""customerTel"> تلفن مشتری :</label>
-                                                <input type="tel" class="form-control eng-format" dir="ltr" maxlength="11" onkeyup="checkCustomerTel(); activateOrderButton()" id="customerTel">
+                                                <input type="tel" class="form-control eng-format" dir="ltr" maxlength="11" id="customerTel" name="customerTel" onkeyup="checkCustomerTel(); activateOrderButton()">
                                             </div>
                                             <div class="form-group">
                                                 <span style="color:red" id="telAlert">
                                                 </span> 
                                             </div>
-                                            <button class="form-control btn btn-group btn-primary" id="submitOrderButton"> ثبت سفارش 
+                                            <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton"> ثبت سفارش 
                                                 <span>
                                                     <i class="fa fa-plus"> </i>
                                                 </span>
@@ -410,6 +443,6 @@ if (isset($_POST['submitOrderButton'])) {
                     <!--new-order-panel-->
                 </div>
             </div>
-        </body>
-        </html>
+            </body>
+            </html>
 

@@ -62,6 +62,8 @@ if (isset($_POST['submitOrderButton'])) {
 }
 //make a query to extract all field related to the submited order inorder to show them in preview panel
 $query = "SELECT * FROM benneks.orders WHERE orderID = '$orderID'";
+$queryResult = $user->executeQuery($query);
+$row = mysqli_fetch_array($queryResult);
 ?>
 <html>
     <head>
@@ -278,71 +280,79 @@ $query = "SELECT * FROM benneks.orders WHERE orderID = '$orderID'";
                 </div>
                 <!-- /.row -->
                 <div class="row" dir="rtl">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default" >
+                    <div class="col-lg-6"> 
+                        <div class=" panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-shopping-bag fa-fw"></i> نمایش
+                            </div>
+                            <div class="row">
+                                <div class="panel-body">
+                                    <div class="col-lg-5">
+                                        <img src="orderpics/AFP_5923a.jpg" class="img-rounded" alt="Cinque Terre" width="304" height="236">
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <p><?php echo $row['clothesType']; ?> </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6" dir="rtl">
+                        <div class="panel panel-default" dir="rtl" >
                             <div class="panel-heading">
                                 <i class="fa fa-shopping-bag fa-fw"></i> ثبت سفارش 
                             </div>
                             <!-- /.new-order-panel-heading -->
                             <div class="panel-body">
                                 <div id="newOrderArea">
-                                    <div class="col-lg-6"> 
-                                        <div class="row">
-                                            <div class="col-lg-8">
-                                                <img src="orderpics/AFP_5923a.jpg" class="img-rounded" alt="Cinque Terre" width="304" height="236">
-                                            </div>
-                                            <div class="col-lg-4"></div>
-                                        </div>
-                                        <hr style="color: black">
-                                        <div class="form-group">
-                                            <p> </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6" >
+                                    <div class="col-lg-6 col-lg-push-6" >
                                         <form role = "form" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="clothesType"> نوع لباس:</label>
                                                 <select dir = "rtl" class="form-control" id = "clothesType" name="clothesType">
-                                                    <option value = "bag"> انواع کیف </option>
-                                                    <option value = "shoes"> انواع کفش و بوت </option>
+                                                    <option value = "کیف"> انواع کیف </option>
+                                                    <option value = "نواع کفش و بوت"> انواع کفش و بوت </option>
 
-                                                    <option value = "wallet"> کیف پول </option> 
-                                                    <option value = "belt"> کمربند </option>
-                                                    <option value = "sunglass"> عینک </option>
-                                                    <option value = "perfium"> عطر </option>
-                                                    <option value = "watch"> ساعت </option>
-                                                    <option value = "accessory"> اکسسوری </option>
+                                                    <option value = "کیف پول"> کیف پول </option> 
+                                                    <option value = "کمربند"> کمربند </option>
+                                                    <option value = "عینک"> عینک </option>
+                                                    <option value = "عطر"> عطر </option>
+                                                    <option value = "ساعت"> ساعت </option>
+                                                    <option value = "اکسسوری"> اکسسوری </option>
 
-                                                    <option value = "shomiz"> شمیز و سرهمی </option>
-                                                    <option value = "short"> شلوارک </option>
-                                                    <option value = "blouse"> بلوز </option>
+                                                    <option value = "شمیز و سرهمی"> شمیز و سرهمی </option>
+                                                    <option value = "شلوارک"> شلوارک </option>
+                                                    <option value = "بلوز"> بلوز </option>
                                                     <option value = "sweater"> پلیور </option>
-                                                    <option value = "top"> تاپ </option>
-                                                    <option value = "skirt"> دامن </option>
-                                                    <option value = "womenshirt"> پیراهن زنانه </option>
-                                                    <option value = "manshirt"> پیراهن مردانه </option>
-                                                    <option value = "dress"> پیراهن بلند زنانه </option>
-                                                    <option value = "lingerie"> لباس زیر </option>
-                                                    <option value = "tshirt"> تی شرت </option>
-                                                    <option value = "scarf"> انواع روسری و شال </option>
-                                                    <option value = "bikini"> مایو </option>
-                                                    <option value = "swimsuit"> رو مایو </option>
-                                                    <option value = "sleepwear"> لباس خواب </option>
-                                                    <option value = "support"> ساپورت </option>
-                                                    <option value = "pancho">  پانچو </option>
-                                                    <option value = "pant"> شلوار معمولی </option>
+                                                    <option value = "پلیور"> تاپ </option>
+                                                    <option value = "دامن"> دامن </option>
+                                                    <option value = "پیراهن زنانه"> پیراهن زنانه </option>
+                                                    <option value = "پیراهن مردانه"> پیراهن مردانه </option>
+                                                    <option value = "پیراهن بلند زنانه"> پیراهن بلند زنانه </option>
+                                                    <option value = "لباس زیر"> لباس زیر </option>
+                                                    <option value = "تی شرت"> تی شرت </option>
+                                                    <option value = "انواع روسری و شال"> انواع روسری و شال </option>
+                                                    <option value = "مایو"> مایو </option>
+                                                    <option value = "رو مایو"> رو مایو </option>
+                                                    <option value = "لباس خواب"> لباس خواب </option>
+                                                    <option value = "ساپورت"> ساپورت </option>
+                                                    <option value = "پانچو">  پانچو </option>
+                                                    <option value = "شلوار معمولی"> شلوار معمولی </option>
 
-                                                    <option value = "cardigan"> کاردیگان</option>
-                                                    <option value = "manto"> مانتو </option>
-                                                    <option value = "rainingcoat"> بارونی </option>
-                                                    <option value = "summerjacket"> انواع کت های جین و تابستانی </option>
-                                                    <option value = "jean"> شلوار جین </option>
-                                                    <option value = "coat&skirt"> کت و دامن به همراه هم </option>
+                                                    <option value = "کاردیگان"> کاردیگان</option>
+                                                    <option value = "مانتو"> مانتو </option>
+                                                    <option value = "بارونی"> بارونی </option>
+                                                    <option value = "انواع کت های جین و تابستانی"> انواع کت های جین و تابستانی </option>
+                                                    <option value = "شلوار جین"> شلوار جین </option>
+                                                    <option value = "کت و دامن به همراه هم"> کت و دامن به همراه هم </option>
 
-                                                    <option value = "leathercoat"> کت چرم </option>
-                                                    <option value = "winterjacket"> کاپشن </option>
-                                                    <option value = "wintercoat"> کت زمستانی</option>
-                                                    <option value = "palto"> پالتو </option>
+                                                    <option value = "کت چرم"> کت چرم </option>
+                                                    <option value = "کاپشن"> کاپشن </option>
+                                                    <option value = "کت زمستانی"> کت زمستانی</option>
+                                                    <option value = "پالتو"> پالتو </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">

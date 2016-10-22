@@ -411,9 +411,11 @@ function checkCustomerTel() {
         return customerTelFlag;
     }
 }
-
+// function to activate order buttonin home.php
 function activateOrderButton() {
     if ((priceFlag === true) && (customerTelFlag === true)) {
         $("#submitOrderButton").prop('disabled', false);
     }
 }
+
+

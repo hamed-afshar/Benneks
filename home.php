@@ -101,9 +101,6 @@ if (isset($_POST['submitOrderButton'])) {
 <title>Benneks Order System</title>
 </head>
 <body>
-    //for test
-    <?php echo $orderID; ?>
-    ///////
     <div id ="wrapper">
         <!-- Navigation Bar -->
         <div class="navbar navbar-default navbar-static-top farsi" role = "navigation" style="margin-bottom: 0">
@@ -116,54 +113,7 @@ if (isset($_POST['submitOrderButton'])) {
                 </button>
                 <a class="navbar-brand" href="home.php">Benneks Control Panel</a>
             </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong> New Order </strong>
-                                    <span class="pull-right text-muted">
-                                        <em> Today </em>
-                                    </span>
-                                </div>
-                                <div> New order has been submitted </div>
-                            </a>
-                        </li>
-                        <li class="divider"> </li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong> Read All Messages </strong>
-                                <i class="fa fa-angle-right"> </i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-calculator"></i>
-                    </a>
-                </li>
-                <!-- dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"> </i> <i class="fa fa-caret-down"> </i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li> <a href="#"><i class="fa fa-user fa-fw"> </i> پروفایل کاربر </a> </li>
-                        <li> <a href="#"><i class="fa fa-gear fa-fw"> </i> تنظیمات </a> </li>
-                        <li class="divider"> </li>
-                        <li> <a href="logout.php"> <i class="fa fa-sign-out fa-fw"> </i> خروج </a> </li>
-                    </ul>
-                </li>
-            </ul>
 
-            <!-- navigation bar on right -->
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav in" id="side-menu">
@@ -171,13 +121,22 @@ if (isset($_POST['submitOrderButton'])) {
                             <a href="home.php"> <i class="fa fa-dashboard fa-fw"></i> داشبورد </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
+                            <a href="calculator.php"> <i class="fa fa-calculator fa-fw"></i> ماشین حساب </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-cart-plus fa-fw"> </i> سفارش جدید </a>
+                            <a href="orderlist.php"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-area-chart fa-fw"> </i> گزارش مفصل </a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-money fa-fw" > </i> گزارش مالی</a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
                         </li>
                     </ul>
                 </div>
@@ -420,7 +379,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             <span style="color:red" id="telAlert">
                                             </span> 
                                         </div>
-                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton"  onclick="alert('سفارش شما با موفقیت ثبت گردید')"> ثبت سفارش 
+                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="disabled" onclick="alert('سفارش شما با موفقیت ثبت گردید')"> ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>
                                             </span>

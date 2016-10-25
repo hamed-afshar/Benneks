@@ -11,6 +11,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $user = new user();
+date_default_timezone_set("Asia/Tehran");
+$userID = $_SESSION['user'];
+
 ?>
 <html>
     <head>
@@ -58,54 +61,7 @@ $user = new user();
                 </button>
                 <a class="navbar-brand" href="home.php">Benneks Control Panel</a>
             </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong> New Order </strong>
-                                    <span class="pull-right text-muted">
-                                        <em> Today </em>
-                                    </span>
-                                </div>
-                                <div> New order has been submitted </div>
-                            </a>
-                        </li>
-                        <li class="divider"> </li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong> Read All Messages </strong>
-                                <i class="fa fa-angle-right"> </i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-calculator"></i>
-                    </a>
-                </li>
-                <!-- dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"> </i> <i class="fa fa-caret-down"> </i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li> <a href="#"><i class="fa fa-user fa-fw"> </i> پروفایل کاربر </a> </li>
-                        <li> <a href="#"><i class="fa fa-gear fa-fw"> </i> تنظیمات </a> </li>
-                        <li class="divider"> </li>
-                        <li> <a href="logout.php"> <i class="fa fa-sign-out fa-fw"> </i> خروج </a> </li>
-                    </ul>
-                </li>
-            </ul>
 
-            <!-- navigation bar on right -->
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav in" id="side-menu">
@@ -113,13 +69,22 @@ $user = new user();
                             <a href="home.php"> <i class="fa fa-dashboard fa-fw"></i> داشبورد </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
+                            <a href="calculator.php"> <i class="fa fa-calculator fa-fw"></i> ماشین حساب </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-cart-plus fa-fw"> </i> سفارش جدید </a>
+                            <a href="orderlist.php"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-area-chart fa-fw"> </i> گزارش مفصل </a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-money fa-fw" > </i> گزارش مالی</a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
                         </li>
                     </ul>
                 </div>
@@ -223,45 +188,31 @@ $user = new user();
                     </div>
                 </div>
                 <!-- /.row -->
-                <div class="row" dir="rtl">
-                    <div class="col-lg-12" dir="rtl" id="listPanel">
-                        <div class="panel panel-default" dir="rtl" >
-                            <div class="panel-heading">
-                                <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات
-                            </div>
-                            <!-- /.list-panel-heading -->
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead>
-
-
-
-                                        </thead>
-                                        <tbody>
-                                            <tr> #</tr>
-                                            <tr> کد سفارش</tr>
-                                            <tr> تاریخ سفارش </tr>
-                                            <tr> نوع لباس </tr>
-                                            <tr> نام برند </tr>
-                                            <tr> سایز </tr>
-                                            <tr> لینک </tr>
-                                            <tr> قیمت </tr>
-                                            <tr> عکس </tr>
-                                            <tr> تاریخ خرید </tr>
-                                            <tr> تاریخ ورود به دفتر </tr>
-                                            <tr> تاریخ ارسال به ایران </tr>
-                                            <tr> تاریخ رسیدن به ایران </tr>
-                                            <tr> وضعیت </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- /.list-panel-body -->
+                <div class="panel panel-default" dir="rtl" >
+                    <div class="panel-heading">
+                        <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات
                     </div>
-                    <!--list-order-panel-->
+                    <!-- /.list-panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <th> کد</th>
+                                <th> عکس</th>
+                                <th> خرید</th>
+                                <th> ارسال</th>    
+                                <th>وضعیت </th>
+                                </thead>
+
+                                <tbody>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
                 </div>
             </div>
             </body>

@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 $userID = $_SESSION['user'];
+$query = "SELECT orders.orderID, orders.productPic, orders.benneksShoppingDate, orders.benneksDeliverDate FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID =users.userID WHERE orders.users_userID = '$userID'";
 
 ?>
 <html>
@@ -84,7 +85,7 @@ $userID = $_SESSION['user'];
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
+                            <a href="logout.php"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
                         </li>
                     </ul>
                 </div>

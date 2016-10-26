@@ -11,7 +11,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $user = new user();
-//$_SESSION['order'] = $user;
 date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitOrderButton'])) {
     $customerName = $_POST['customerName'];
@@ -136,7 +135,7 @@ if (isset($_POST['submitOrderButton'])) {
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
+                            <a href="logout.php"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
                         </li>
                     </ul>
                 </div>

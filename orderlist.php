@@ -220,6 +220,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         echo "<tr>";
                                         echo "<td>" . $row[0] . "</td>";
                                         $picURL = str_replace(' ', '%20', $row[1]);
+                                        echo "<td> <a href=". $targetDir . $picURL . ".jpg> لینک" . "</a> </td>";
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
                                         echo "<td>" . $row[4] . "</td>";

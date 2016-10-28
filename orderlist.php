@@ -12,9 +12,17 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
+// fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, orders.productPic, orders.benneksShoppingDate, orders.benneksDeliverDate FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID =users.userID WHERE orders.users_userID = '$userID'";
-
+$query = "SELECT orders.orderID, orders.productPic, orders.benneksShoppingDate, orders.benneksDeliverDate, orders.status FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID =users.userID WHERE orders.users_userID = '$userID' ORDER BY orders.orderID desc";
+if (!$user->executeQuery($query)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult = $user->executeQuery($query);
+$count = mysqli_num_rows($queryResult);
+// set directory to have order picture link
+$userDir = $userID;
+$targetDir = 'orderpics/' . $userDir . "/";
 ?>
 <html>
     <head>
@@ -85,7 +93,7 @@ $query = "SELECT orders.orderID, orders.productPic, orders.benneksShoppingDate, 
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
                         </li>
                         <li>
-                            <a href="logout.php"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
+                            <a href="logout.php?logout"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
                         </li>
                     </ul>
                 </div>
@@ -198,17 +206,26 @@ $query = "SELECT orders.orderID, orders.productPic, orders.benneksShoppingDate, 
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
-                                <th> کد</th>
-                                <th> عکس</th>
-                                <th> خرید</th>
-                                <th> ارسال</th>    
-                                <th>وضعیت </th>
+                                    <tr>
+                                        <th> کد</th>
+                                        <th> عکس</th>
+                                        <th> خرید</th>
+                                        <th> ارسال</th>    
+                                        <th>وضعیت </th>
+                                    </tr>
                                 </thead>
-
                                 <tbody>
-
-
-
+                                    <?php
+                                    while ($row = mysqli_fetch_row($queryResult)) {
+                                        echo "<tr>";
+                                        echo "<td>" . $row[0] . "</td>";
+                                        $picURL = str_replace(' ', '%20', $row[1]);
+                                        echo "<td>" . $row[2] . "</td>";
+                                        echo "<td>" . $row[3] . "</td>";
+                                        echo "<td>" . $row[4] . "</td>";
+                                        echo "</tr>";
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>

@@ -135,7 +135,7 @@ if (isset($_POST['submitOrderButton'])) {
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
                         </li>
                         <li>
-                            <a href="logout.php"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
+                            <a href="logout.php?logout"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>
                         </li>
                     </ul>
                 </div>

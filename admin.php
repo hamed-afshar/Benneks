@@ -214,6 +214,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <th>لینک </th>
                                         <th>عکس </th>
                                         <th>تعداد </th>
+                                        <th> عملیات </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -224,20 +225,67 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         echo "<td>" . $row[1] . "</td>";
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
-                                        echo "<td> <a href=http://". $row[4] . ">لینک محصول" . "</a> </td>";
+                                        echo "<td> <a href=http://" . $row[4] . ">لینک محصول" . "</a> </td>";
                                         $picURL = str_replace(' ', '%20', $row[5]);
-                                        echo "<td> <img src=". $targetDir . $picURL . ".jpg" . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </td>";
+                                        echo "<td> <img src=" . $targetDir . $picURL . ".jpg" . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </td>";
                                         echo "<td>" . $row[6] . "</td>";
+                                        echo "<td> <a href='#'> <i class='fa fa-plus-square fa-fw fa-lg' data-toggle='modal' data-target='#addModal'></i> </a> <a href='#'> <i class='fa fa-minus-square fa-fw fa-lg' data-toggle='modal' data-target='#cancelModal'> </i> </a> </td>";
                                         echo "</tr>";
                                     }
                                     ?>
                                 </tbody>
                             </table>
                         </div>
-
+                    </div>
+                </div>
+                <!--cancel order modal -->
+                <div class = "modal fade" id = "cancelModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> لغو سفارش </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="addorder.php" method="post">
+                                    <div class="form-group">
+                                        <label for="cancelDetails"><span class="glyphicon glyphicon-calendar"></span>  دلیل لغو سفارش</label>
+                                        <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
+                                            <option value = "Size Problem">موجود نبودن سایز </option>
+                                            <option value = "Time Problem">به اتمام رسیدن زمان</option>
+                                            <option value = "Input Problem">ناقص بودن اطلاعات ورودی </option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger btn-block"> لغو سفارش  </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--accept order modal -->
+                <div class = "modal fade" id = "addModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> خرید محصول </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="cancelorder.php" method="post">
+                                    <div class="form-group">
+                                        <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
+                                        <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" > 
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block"> ثبت </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
             </body>
             </html>
 

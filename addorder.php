@@ -18,6 +18,6 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 $shoppingDate = $_POST['shoppingDate'];
-$orderID = //something
+$orderID = $_GET[orderID];
 $query = "INSERT INTO benneks.orders(benneksShoppingDate) VALUES('$shoppingDate') WHERE orderID = '$orderID'";
 ?>

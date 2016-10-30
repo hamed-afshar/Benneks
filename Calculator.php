@@ -70,7 +70,7 @@
                                         <option value = "coat&skirt"> کت و دامن به همراه هم </option>
                                         \\Products around 600 gr
                                         <option value = "wintercoat"> کت زمستانی</option>
-                                        <option value = "palto"> پالتو </option>
+                                        <option value = "palto"> پالتو سبک </option>
                                         <option value = "jacket"> کاپشن سبک </option>
                                         \\ Products around 800 gr
                                         <option value = "jeancoat"> کت جین </option>
@@ -78,7 +78,7 @@
                                         <option value = "winterjacket"> کاپشن سنگین </option>
                                         <option value = "heavysweater"> پلیورهای سنگین</option>
                                         \\ Products more than 1 kg
-                                        <option value = "heavy"> کاپشن و کت های بسیار ضخیم و پشمی </option>
+                                        <option value = "heavy"> کاپشن و کت و پالتو های سنگین و ضخیم </option>
                                     </select>
                                 </div>
                             </div>

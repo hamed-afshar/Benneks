@@ -1,8 +1,7 @@
 <?php
 
 /*
- * This script will be used to add order shopping date into database
- * whn admin press add button in admin page
+ * This script will be used to cancel a order in admin page 
  * 
  */
 ob_start();
@@ -19,15 +18,14 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitButton'])) {
-    $status = "انجام شده";
-    $statusDescription = "خرید با موفقیت";
-    $shoppingDate = $_POST['shoppingDate'];
+    $status = "لغو";
+    $statusDescription = $_POST['cancelDetails'];
     $orderID = $_POST['rowID'];
     echo $orderID;
 } else  {
     echo "error";
 }
-$query = "UPDATE benneks.orders SET orders.benneksShoppingDate = '$shoppingDate', orders.status = '$status', orders.statusDescription = '$statusDescription' WHERE orders.orderID = '$orderID'";
+$query = "UPDATE benneks.orders SET orders.status = '$status', orders.statusDescription='$statusDescription' WHERE orders.orderID = '$orderID'";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }

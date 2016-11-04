@@ -14,7 +14,7 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, orders.productPic, orders.benneksShoppingDate, orders.benneksDeliverDate, orders.status FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID =users.userID WHERE orders.users_userID = '$userID' ORDER BY orders.orderID desc";
+$query = "SELECT orders.orderID, orders.productPic, orders.benneksShoppingDate, orders.benneksDeliverDate, orders.status, orders.statusDescription FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID =users.userID WHERE orders.users_userID = '$userID' ORDER BY orders.orderID desc";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -204,7 +204,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                     <!-- /.list-panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
+                            <table class="table table-bordered table-hover table-striped" style="text-align:center">
                                 <thead>
                                     <tr>
                                         <th> کد</th>
@@ -212,6 +212,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <th> خرید</th>
                                         <th> ارسال</th>    
                                         <th>وضعیت </th>
+                                        <th> جزئیات </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -224,6 +225,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
                                         echo "<td>" . $row[4] . "</td>";
+                                        echo "<td>" . $row[5] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>

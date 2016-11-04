@@ -54,7 +54,24 @@ $targetDir = 'orderpics/' . $userDir . "/";
 
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
+<!-- script for add modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-addModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
+<!-- script for cancel modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-cancelModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
 <title>Benneks Order System</title>
 </head>
 <body>
@@ -215,19 +232,19 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <th>لینک </th>
                                         <th>عکس </th>
                                         <th>تعداد </th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     while ($row = mysqli_fetch_row($queryResult)) {
+
                                         echo "<tr>";
-                                        echo "<td> " . $row[0] . 
-                                                "<hr> "
-                                                . "<a href='addorder.php?orderid=$row[0]'> <i class='fa fa-plus-square fa-fw fa-lg' data-toggle='modal' data-target='#addModal'></i> </a>"
-                                                . "<a href='#'> <i class='fa fa-minus-square fa-fw fa-lg' data-toggle='modal' data-target='#cancelModal'></i> </a>"
-                                                . " </td>";
-                                        
+                                        echo "<td> " . $row[0] .
+                                        "<hr> "
+                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-plus-square fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-minus-square fa-fw fa-lg'></i> </a>"
+                                        . " </td>";
                                         echo "<td>" . $row[1] . "</td>";
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
@@ -254,16 +271,20 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                 <h4><span class = "glyphicon glyphicon-briefcase"> </span> لغو سفارش </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="addorder.php" method="post">
+                                <form role="form" action="cancelOrder.php" method="post">
+                                    <div class="form-group">
+                                        <label for="rowID"> کد سفارش </label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                    </div>
                                     <div class="form-group">
                                         <label for="cancelDetails"><span class="glyphicon glyphicon-calendar"></span>  دلیل لغو سفارش</label>
                                         <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
-                                            <option value = "Size Problem">موجود نبودن سایز </option>
-                                            <option value = "Time Problem">به اتمام رسیدن زمان</option>
-                                            <option value = "Input Problem">ناقص بودن اطلاعات ورودی </option>
+                                            <option value = "نبودن سایز">موجود نبودن سایز </option>
+                                            <option value = "تمام شدن محصول">به اتمام رسیدن زمان</option>
+                                            <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-danger btn-block"> لغو سفارش  </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> لغو سفارش  </button>
                                 </form>
                             </div>
                         </div>
@@ -279,19 +300,22 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                 <h4><span class = "glyphicon glyphicon-briefcase"> </span> خرید محصول </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="cancelorder.php" method="post">
+                                <form role="form" action="addorder.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="rowID"> کد سفارش </label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                    </div>
                                     <div class="form-group">
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
                                         <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" > 
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block"> ثبت </button>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             </body>
             </html>
 

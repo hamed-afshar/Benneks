@@ -207,12 +207,12 @@ $targetDir = 'orderpics/' . $userDir . "/";
                             <table class="table table-bordered table-hover table-striped" style="text-align:center">
                                 <thead>
                                     <tr>
-                                        <th> کد</th>
-                                        <th> عکس</th>
-                                        <th> خرید</th>
-                                        <th> ارسال</th>    
-                                        <th>وضعیت </th>
-                                        <th> جزئیات </th>
+                                        <th style="text-align: center"> کد</th>
+                                        <th style="text-align: center"> عکس</th>
+                                        <th style="text-align: center"> تاریخ خرید</th>
+                                        <th style="text-align: center"> تاریخ ارسال</th>    
+                                        <th style="text-align: center">وضعیت </th>
+                                        <th style="text-align: center"> جزئیات </th>
                                     </tr>
                                 </thead>
                                 <tbody>

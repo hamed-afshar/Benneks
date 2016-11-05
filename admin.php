@@ -14,7 +14,7 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.orderQuantity FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID";
+$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.orderQuantity, orders.status, orders.statusDescription FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID ORDER BY orders.orderDate desc";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -224,15 +224,16 @@ $targetDir = 'orderpics/' . $userDir . "/";
                             <table class="table table-bordered table-hover table-striped" style="text-align:center">
                                 <thead>
                                     <tr>
-                                        <th> کد</th>
-                                        <th> کاربر</th>
-                                        <th> تاریخ</th>
-                                        <th> قیمت</th>
-                                        <th> برند</th>    
-                                        <th>لینک </th>
-                                        <th>عکس </th>
-                                        <th>تعداد </th>
-
+                                        <th style="text-align: center"> کد</th>
+                                        <th style="text-align: center"> کاربر</th>
+                                        <th style="text-align: center"> تاریخ</th>
+                                        <th style="text-align: center"> قیمت</th>
+                                        <th style="text-align: center"> برند</th>    
+                                        <th style="text-align: center">لینک </th>
+                                        <th style="text-align: center">عکس </th>
+                                        <th style="text-align: center">تعداد </th>
+                                        <th style="text-align: center">وضعیت </th>
+                                        <th style="text-align: center">جزئیات </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -251,8 +252,10 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         echo "<td>" . $row[4] . "</td>";
                                         echo "<td> <a href=http://" . $row[5] . ">لینک محصول" . "</a> </td>";
                                         $picURL = str_replace(' ', '%20', $row[6]);
-                                        echo "<td> <img src=" . $targetDir . $picURL . ".jpg" . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </td>";
+                                        echo "<td><a href=" . $targetDir . $picURL . ".jpg" ."> <img src=" . $targetDir . $picURL . ".jpg" . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
                                         echo "<td>" . $row[7] . "</td>";
+                                        echo "<td>" . $row[8] . "</td>";
+                                        echo "<td>" . $row[9] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>

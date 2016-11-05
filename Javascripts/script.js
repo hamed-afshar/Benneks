@@ -6,7 +6,7 @@ var passFlag = false;
 var passAgainFlag = false;
 //Flags to keep making order submit button status home.php
 var priceFlag = false;
-var customerTelFlag = false;
+//var customerTelFlag = false;
 ////////////////////////////////////////////
 var row = 0;
 var index = 0;
@@ -270,7 +270,7 @@ function passAgain() {
     }
 }
 
-//function to check flags and enable submit button
+//function to check flags and enable submit button in register.php
 function submitActivation() {
     if ((usernameFlag == true) && (emailFlag == true) && (charFlag == true) && (passFlag == true) && (passAgainFlag == true)) {
         $("#signupButton").prop('disabled', false);
@@ -396,7 +396,8 @@ function checkPrice() {
 
 }
 // function to check customer Tel in making order section in home.php
-function checkCustomerTel() {
+// This function will not be used in phase 1
+/*function checkCustomerTel() {
     var tel = document.getElementById("customerTel").value;
     var illegalChar = /[^0-9]/g;
     if ((illegalChar.test(tel)) || tel.length < 11) {
@@ -410,10 +411,10 @@ function checkCustomerTel() {
         customerTelFlag = true;
         return customerTelFlag;
     }
-}
+}*/
 // function to activate order buttonin home.php
 function activateOrderButton() {
-    if ((priceFlag === true) && (customerTelFlag === true)) {
+    if (priceFlag === true) {
         $("#submitOrderButton").prop('disabled', false);
     }
 }

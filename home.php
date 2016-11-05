@@ -13,8 +13,9 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitOrderButton'])) {
-    $customerName = $_POST['customerName'];
-    $customerTel = $_POST['customerTel'];
+    // For phase 1 we dont get these information from users
+    $customerName = "نامشخص";
+    $customerTel = "نامشخص";
 //Need to get the last customerID from Database if it is a first record then LastID will be 0;
     $query = "SELECT customerID FROM benneks.customers ORDER BY customerID DESC LIMIT 1";
     if (!$user->executeQuery($query)) {
@@ -57,7 +58,7 @@ if (isset($_POST['submitOrderButton'])) {
     $productLink = $_POST['productLink'];
     $productPrice = $_POST['productPrice'];
     $productPic = $image;
-    $orderQuantity = $_POST['orderQuantity'];
+    $orderQuantity = intval($_POST['orderQuantity']);
     $query = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
             . " '$productBrand', '$productSize', '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
@@ -364,8 +365,10 @@ if (isset($_POST['submitOrderButton'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="quantity"> تعداد :</label>
-                                            <input type="text" class="form-control eng-format" maxlength="2" id="orderQuantity" name="orderQuantity">
+                                            <input type="text" class="form-control eng-format" maxlength="2" id="orderQuantity" name="orderQuantity" placeholder="1" onkeyup="activateOrderButton();">
                                         </div>
+                                        
+                                        <!-- for phase 1 we dont get these information
                                         <div class="form-group">
                                             <label for="customerName"> نام مشتری :</label>
                                             <input type="text" class="form-control eng-format" dir="rtl" maxlength="30" id="customerName" name="customerName">
@@ -373,7 +376,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         <div class="form-group">
                                             <label for=""customerTel"> تلفن مشتری :</label>
                                             <input type="tel" class="form-control eng-format" dir="ltr" maxlength="11" id="customerTel" name="customerTel" onkeyup="checkCustomerTel(); activateOrderButton();">
-                                        </div>
+                                        </div> -->
                                         <div class="form-group">
                                             <span style="color:red" id="telAlert">
                                             </span> 

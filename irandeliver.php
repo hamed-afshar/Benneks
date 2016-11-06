@@ -1,7 +1,8 @@
 <?php
 
 /*
- * This script will be used to cancel a order in admin page 
+ * This script will be used to add iran delivery date and product weight into database
+ * when admin press deliver button in admin page
  * 
  */
 ob_start();
@@ -18,13 +19,13 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitButton'])) {
-    $status = "لغو";
-    $statusDescription = $_POST['cancelDetails'];
+    $benneksDeliverDate = $_POST['benneksDeliverDate'];
+    $productsWeight = $_POST['productsWeight'];
     $orderID = $_POST['rowID'];
 } else  {
     echo "error";
 }
-$query = "UPDATE benneks.orders SET orders.status = '$status', orders.statusDescription='$statusDescription' WHERE orders.orderID = '$orderID'";
+$query = "UPDATE benneks.orders SET orders.benneksDeliverDate = '$benneksDeliverDate', orders.productsWeight = '$productsWeight' WHERE orders.orderID = '$orderID'";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }

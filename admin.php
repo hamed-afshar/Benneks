@@ -72,6 +72,15 @@ $targetDir = 'orderpics/' . $userDir . "/";
         });
     });
 </script>
+<!-- script for iran Delivery modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-iranDeliverModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
 <title>Benneks Order System</title>
 </head>
 <body>
@@ -221,12 +230,12 @@ $targetDir = 'orderpics/' . $userDir . "/";
                     <!-- /.list-panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped" style="text-align:center">
+                            <table class="table table-bordered table-hover table-striped" style="text-align:center; overflow-x: scroll">
                                 <thead>
                                     <tr>
                                         <th style="text-align: center"> کد</th>
                                         <th style="text-align: center"> کاربر</th>
-                                        <th style="text-align: center"> تاریخ</th>
+                                        <th style="text-align: center"> تاریخ خرید</th>
                                         <th style="text-align: center"> قیمت</th>
                                         <th style="text-align: center"> برند</th>    
                                         <th style="text-align: center">لینک </th>
@@ -243,16 +252,17 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         echo "<tr>";
                                         echo "<td> " . $row[0] .
                                         "<hr> "
-                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-plus-square fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-minus-square fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#iranDeliverModal' data-id='$row[0]' class='open-iranDeliverModal'> <i class='fa fa-plane fa-fw fa-lg'></i> </a>"
                                         . " </td>";
                                         echo "<td>" . $row[1] . "</td>";
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
                                         echo "<td>" . $row[4] . "</td>";
-                                        echo "<td> <a href=http://" . $row[5] . ">لینک محصول" . "</a> </td>";
+                                        echo "<td> <a href=" . $row[5] . ">لینک محصول" . "</a> </td>";
                                         $picURL = str_replace(' ', '%20', $row[6]);
-                                        echo "<td><a href=" . $targetDir . $picURL . ".jpg" ."> <img src=" . $targetDir . $picURL . ".jpg" . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+                                        echo "<td><a href=" . $targetDir . $picURL . ".jpg" ."> <img src=" . $targetDir . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
@@ -311,6 +321,35 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                     <div class="form-group">
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
                                         <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" > 
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Iran Deliver order modal -->
+                <div class = "modal fade" id = "iranDeliverModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> خرید محصول </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="iranDeliver.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="rowID"> کد سفارش </label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ ارسال</label>
+                                        <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate" > 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productsWeight"><span class="glyphicon glyphicon-scale"></span>  وزن کالا به گرم</label>
+                                        <input type="text" class="form-control" name="productsWeight" id="productsWeight" maxlength="4"> 
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>

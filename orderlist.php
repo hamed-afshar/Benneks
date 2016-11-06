@@ -204,7 +204,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                     <!-- /.list-panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped" style="text-align:center">
+                            <table class="table table-bordered table-hover table-striped" id="orderTable" style="text-align:center; overflow-x: scroll">
                                 <thead>
                                     <tr>
                                         <th style="text-align: center"> کد</th>
@@ -221,7 +221,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         echo "<tr>";
                                         echo "<td>" . $row[0] . "</td>";
                                         $picURL = str_replace(' ', '%20', $row[1]);
-                                        echo "<td> <a href=". $targetDir . $picURL . ".jpg> لینک" . "</a> </td>";
+                                        echo "<td> <a href=". $targetDir . $picURL . "> لینک" . "</a> </td>";
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
                                         echo "<td>" . $row[4] . "</td>";

@@ -118,7 +118,7 @@ if (isset($_POST['submitOrderButton'])) {
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav in" id="side-menu">
                         <li>
-                            <a href="home.php"> <i class="fa fa-dashboard fa-fw"></i> داشبورد </a>
+                            <a href="home.php#orderPanel"> <i class="fa fa-tags fa-fw"></i>سفارش گذاری </a>
                         </li>
                         <li>
                             <a href="calculator.php"> <i class="fa fa-calculator fa-fw"></i> ماشین حساب </a>

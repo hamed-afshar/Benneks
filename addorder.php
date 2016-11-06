@@ -23,7 +23,6 @@ if (isset($_POST['submitButton'])) {
     $statusDescription = "خرید با موفقیت";
     $shoppingDate = $_POST['shoppingDate'];
     $orderID = $_POST['rowID'];
-    echo $orderID;
 } else  {
     echo "error";
 }

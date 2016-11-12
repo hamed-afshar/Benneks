@@ -11,17 +11,21 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $user = new user();
+mysqli_autocommit($user->conn, false);
+$flag = true;
 date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitOrderButton'])) {
     // For phase 1 we dont get these information from users
     $customerName = "نامشخص";
     $customerTel = "نامشخص";
 //Need to get the last customerID from Database if it is a first record then LastID will be 0;
-    $query = "SELECT customerID FROM benneks.customers ORDER BY customerID DESC LIMIT 1";
-    if (!$user->executeQuery($query)) {
+    $query1 = "SELECT customerID FROM benneks.customers ORDER BY customerID DESC LIMIT 1";
+    if (!$user->executeQuery($query1)) {
+        $flag = false;
+        echo "error1";
         echo mysqli_error($user->conn);
     } else {
-        $lastCustomerIDResult = $user->executeQuery($query);
+        $lastCustomerIDResult = $user->executeQuery($query1);
         $row = mysqli_fetch_array($lastCustomerIDResult);
         $lastID = $row['customerID'];
     }
@@ -43,15 +47,18 @@ if (isset($_POST['submitOrderButton'])) {
     $image = basename($_FILES["productPic"]["name"], ".jpg");
 // Insert customer information into database
     $customerID = $lastID + 1;
-    $query = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
-    if (!$user->executeQuery($query)) {
-        echo mysqli_errno($user->conn);
+    $query2 = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
+    if (!$user->executeQuery($query2)) {
+        $flag = false;
+        echo "error2";
+        echo mysqli_error($user->conn);
     }
+// order id which is a PK is made by combining userID and customerID
+    $userID = $_SESSION['user'];
+    $orderID = intval(strval($userID) . strval($customerID));
 //Insert order information into database orderID is a combination of customerID and userID
     $orderDate = date("Y-m-d");
     $orderTime = date("H:i:s");
-    $userID = $_SESSION['user'];
-    $orderID = intval(strval($userID) . strval($customerID));
     $clothesType = $_POST['clothesType'];
     $productBrand = $_POST['productBrand'];
     $productSize = $_POST['productSize'];
@@ -59,12 +66,33 @@ if (isset($_POST['submitOrderButton'])) {
     $productPrice = $_POST['productPrice'];
     $productPic = $image;
     $orderQuantity = intval($_POST['orderQuantity']);
-    $query = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
+    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
             . " '$productBrand', '$productSize', '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
-    if (!$user->executeQuery($query)) {
+    if (!$user->executeQuery($query3)) {
+        $flag = false;
+        echo "error3";
         echo mysqli_error($user->conn);
     }
+    // once an order submited, we nedd to create three records in shipment, status and cost table for this order
+    $query4 = "INSERT INTO benneks.shipment(orders_orderID) VALUES ('$orderID')";
+    $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
+    $query6 = "INSERT INTO benneks.cost(orders_orderID) VALUES ('$orderID')";
+    if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
+        $flag = true;
+    } else {
+        $flag = false;
+        echo "error4";
+        echo mysqli_error($user->conn);
+    }
+// if all queries executed properly then comit the changes in to database otherwise roll back all changes
+    if($flag) {
+        mysqli_commit($user->conn);
+    } else {
+        mysqli_rollback($user->conn);
+        echo $query3;
+    }
+    mysqli_close($user->conn);
 }
 ?>
 <html>

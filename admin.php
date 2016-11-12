@@ -14,12 +14,11 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.orderQuantity, orders.status, orders.statusDescription FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID ORDER BY orders.orderDate desc";
+$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
 $queryResult = $user->executeQuery($query);
-$count = mysqli_num_rows($queryResult);
 // set directory to have order picture link
 $userDir = $userID;
 $targetDir = 'orderpics/' . $userDir . "/";
@@ -235,7 +234,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                     <tr>
                                         <th style="text-align: center"> کد</th>
                                         <th style="text-align: center"> کاربر</th>
-                                        <th style="text-align: center"> تاریخ خرید</th>
+                                        <th style="text-align: center"> تاریخ سفارش</th>
                                         <th style="text-align: center"> قیمت</th>
                                         <th style="text-align: center"> برند</th>    
                                         <th style="text-align: center">لینک </th>
@@ -297,6 +296,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                             <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
                                         </select>
                                     </div>
+                                    
                                     <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> لغو سفارش  </button>
                                 </form>
                             </div>
@@ -322,6 +322,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
                                         <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" > 
                                     </div>
+                                
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>
                             </div>
@@ -340,7 +341,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form" action="iranDeliver.php" method="post" dir="rtl">
                                     <div class="form-group">
-                                        <label for="rowID"> کد سفارش </label>
+                                        <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
                                     <div class="form-group">
@@ -350,6 +351,10 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                     <div class="form-group">
                                         <label for="productsWeight"><span class="glyphicon glyphicon-scale"></span>  وزن کالا به گرم</label>
                                         <input type="text" class="form-control" name="productsWeight" id="productsWeight" maxlength="4"> 
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
+                                        <input type="text" class="form-control" name="cargoName" id="cargoName">
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>

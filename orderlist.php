@@ -14,12 +14,13 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, orders.productPic, orders.benneksShoppingDate, orders.benneksDeliverDate, orders.status, orders.statusDescription FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID =users.userID WHERE orders.users_userID = '$userID' ORDER BY orders.orderID desc";
+
+$query = "SELECT orders.orderID, orders.productPic, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '1'";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
 $queryResult = $user->executeQuery($query);
-$count = mysqli_num_rows($queryResult);
+//$count = mysqli_num_rows($queryResult);
 // set directory to have order picture link
 $userDir = $userID;
 $targetDir = 'orderpics/' . $userDir . "/";

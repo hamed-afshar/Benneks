@@ -14,7 +14,7 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc";
+$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderID desc";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }

@@ -15,7 +15,7 @@ date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
 
-$query = "SELECT orders.orderID, orders.productPic, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '1'";
+$query = "SELECT orders.orderID, orders.productPic, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '1' ORDER BY orders.orderID desc";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -55,6 +55,15 @@ $targetDir = 'orderpics/' . $userDir . "/";
 
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<!-- script for add modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-delModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
 
 <title>Benneks Order System</title>
 </head>
@@ -220,7 +229,10 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                     <?php
                                     while ($row = mysqli_fetch_row($queryResult)) {
                                         echo "<tr>";
-                                        echo "<td>" . $row[0] . "</td>";
+                                        echo "<td>" . $row[0] . 
+                                        "<hr> "
+                                        . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> لغو سفارش </a>"
+                                        . "</td>";
                                         $picURL = str_replace(' ', '%20', $row[1]);
                                         echo "<td> <a href=". $targetDir . $picURL . "> لینک" . "</a> </td>";
                                         echo "<td>" . $row[2] . "</td>";
@@ -236,6 +248,31 @@ $targetDir = 'orderpics/' . $userDir . "/";
 
                     </div>
                 </div>
+                <!--Delete order modal -->
+                <div class = "modal fade" id = "delModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-trash"> </span> لغو سفارش </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="delorder.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="rowID"> کد سفارش </label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                    </div>
+                                    <div class="form-group">
+                                        <center> شما در حال لغو سفارش خود می باشید، در صورتی که سفارش شما هنوز خریداری نشده باشد این عملیات امکان پذیر خواهد بود.</center> 
+                                    </div>
+                                    <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> لغو سفارش </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Delete order modal end! -->
             </div>
             </body>
             </html>

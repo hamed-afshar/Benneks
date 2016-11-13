@@ -24,7 +24,7 @@ if (isset($_POST['submitButton'])) {
 } else  {
     echo "error";
 }
-$query = "UPDATE benneks.orders SET orders.status = '$status', orders.statusDescription='$statusDescription' WHERE orders.orderID = '$orderID'";
+$query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET stat.orderStatus = '$status', stat.orderStatusDescription='$statusDescription' WHERE orders.orderID = '$orderID'";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }

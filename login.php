@@ -45,12 +45,15 @@ if (isset($_POST['loginButton'])) {
         $loginRes = $user->loginUser($query);
         $row = mysqli_fetch_array($loginRes);
         $count = mysqli_num_rows($loginRes); // if username and password are correct it must return 1
-        if ($count == 1 && $row['userPass'] == $pass) {
-            echo "success";
+        if($count == 1 && $row['userName'] == "benneksadmin" && $row['userPass'] == $pass) {
+            $_SESSION['user'] = $row ['userID'];
+            header("Location: admin.php");
+        }
+        else if ($count == 1 && $row['userPass'] == $pass) {
             $_SESSION['user'] = $row['userID'];
             header("Location: home.php");
-        } else {
-            $errMSG = "Incorrect Username or Password, Please try again...";
+        }  else {
+            $errMSG = "نام کاربری و یا کلمه عبور صحیح نمی باشد.";
             echo $errMSG;
         }
     }

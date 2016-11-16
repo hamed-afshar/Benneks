@@ -4,7 +4,7 @@ session_start();
 require 'src/benneks.php';
 // if session is not set this will redirect to login page
 if (!isset($_SESSION['user'])) {
-    header("Location: register.php");
+    header("Location: index.php");
     exit();
 }
 ini_set('display_errors', 1);
@@ -100,13 +100,10 @@ $targetDir = 'orderpics/' . $userDir . "/";
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav in" id="side-menu">
                         <li>
-                            <a href="home.php"> <i class="fa fa-dashboard fa-fw"></i> داشبورد </a>
+                            <a href="admin.php"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
                         </li>
                         <li>
                             <a href="calculator.php"> <i class="fa fa-calculator fa-fw"></i> ماشین حساب </a>
-                        </li>
-                        <li>
-                            <a href="orderlist.php"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-area-chart fa-fw"> </i> گزارش مفصل </a>

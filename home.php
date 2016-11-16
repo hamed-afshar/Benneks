@@ -4,7 +4,7 @@ session_start();
 require 'src/benneks.php';
 // if session is not set this will redirect to login page
 if (!isset($_SESSION['user'])) {
-    header("Location: register.php");
+    header("Location: index.php");
     exit();
 }
 ini_set('display_errors', 1);
@@ -42,9 +42,9 @@ if (isset($_POST['submitOrderButton'])) {
     }
     $targetFile = $targetDir . basename($_FILES["productPic"]["name"]);
     $uploadOk = 1;
-    $imageFileType = pathinfo($targetFile, PATHINFO_EXTENSION);
+    $imageFileType = pathinfo($targetFile);
     move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetFile);
-    $image = basename($_FILES["productPic"]["name"], ".jpg");
+    $image = basename($_FILES["productPic"]["name"]);
 // Insert customer information into database
     $customerID = $lastID + 1;
     $query2 = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
@@ -64,8 +64,13 @@ if (isset($_POST['submitOrderButton'])) {
     $productSize = $_POST['productSize'];
     $productLink = $_POST['productLink'];
     $productPrice = $_POST['productPrice'];
+    // need to remove pic extension from the original file
     $productPic = $image;
+    // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = intval($_POST['orderQuantity']);
+    if ($orderQuantity == 0) {
+        $orderQuantity = 1;
+    }
     $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
             . " '$productBrand', '$productSize', '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
@@ -86,11 +91,14 @@ if (isset($_POST['submitOrderButton'])) {
         echo mysqli_error($user->conn);
     }
 // if all queries executed properly then comit the changes in to database otherwise roll back all changes
-    if($flag) {
+    if ($flag) {
         mysqli_commit($user->conn);
+        echo '<script language="javascript">';
+        echo 'alert("سفارش شما با موفقیت در سیستم ثبت گردید")';
+        echo '</script>';
     } else {
         mysqli_rollback($user->conn);
-        echo $query3;
+        echo "سیستم دچار اختلال در ورود اطلاعات گردیده است لطفا با مدیر  تماس برقرار نمایید";
     }
     mysqli_close($user->conn);
 }
@@ -385,7 +393,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="productPrice"> قیمت :</label>
-                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton()" id="productPrice" name = "productPrice">
+                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice();" id="productPrice" name = "productPrice">
                                         </div>
                                         <div class="form-group">
                                             <span style="color:red" id="priceAlert">
@@ -393,9 +401,13 @@ if (isset($_POST['submitOrderButton'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="quantity"> تعداد :</label>
-                                            <input type="text" class="form-control eng-format" maxlength="2" id="orderQuantity" name="orderQuantity" placeholder="1" onkeyup="activateOrderButton();">
+                                            <input type="text" class="form-control eng-format" maxlength="2" id="orderQuantity" name="orderQuantity" placeholder="1" onkeyup="checkQuantity();activateOrderButton()">
                                         </div>
-                                        
+                                        <div class="form-group">
+                                            <span style="color:red" id="quantityAlert">
+                                            </span>
+                                        </div>
+
                                         <!-- for phase 1 we dont get these information
                                         <div class="form-group">
                                             <label for="customerName"> نام مشتری :</label>
@@ -404,12 +416,12 @@ if (isset($_POST['submitOrderButton'])) {
                                         <div class="form-group">
                                             <label for=""customerTel"> تلفن مشتری :</label>
                                             <input type="tel" class="form-control eng-format" dir="ltr" maxlength="11" id="customerTel" name="customerTel" onkeyup="checkCustomerTel(); activateOrderButton();">
-                                        </div> -->
+                                        </div> 
                                         <div class="form-group">
                                             <span style="color:red" id="telAlert">
                                             </span> 
-                                        </div>
-                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="disabled" onclick="alert('سفارش شما با موفقیت ثبت گردید')"> ثبت سفارش 
+                                        </div> -->
+                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="disabled"> ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>
                                             </span>

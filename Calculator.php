@@ -4,7 +4,7 @@ session_start();
 require 'src/benneks.php';
 // if session is not set this will redirect to login page
 if (!isset($_SESSION['user'])) {
-    header("Location: register.php");
+    header("Location: index.php");
     exit();
 }
 ?>
@@ -109,8 +109,6 @@ if (!isset($_SESSION['user'])) {
                                 </div>
                             </div>
                     </form>
-                    <span id = "test"> </span>
-                    <span id = "test2"> </span>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@ ob_start();
 session_start();
 require 'src/benneks.php';
 if (isset($_SESSION['user']) != "") {
-    header("Location: home.php");
+    header("Location: index.php");
     exit();
 }
 

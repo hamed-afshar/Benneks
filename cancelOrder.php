@@ -9,7 +9,7 @@ session_start();
 require 'src/benneks.php';
 // if session is not set this will redirect to login page
 if (!isset($_SESSION['user'])) {
-    header("Location: register.php");
+    header("Location: index.php");
     exit();
 }
 ini_set('display_errors', 1);

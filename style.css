@@ -447,4 +447,11 @@ table.dataTable thead .sorting:after {
       text-align: center;
       font-size: 30px;
   }
- 
+  .table-responsive {
+      -webkit-overflow-scrolling: touch;
+      overflow-x: scroll;
+      overflow-y: scroll;
+  }
+  .table-responsive .table {
+    max-width: none;
+}

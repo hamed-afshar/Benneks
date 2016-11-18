@@ -38,7 +38,7 @@ if (isset($_POST['submitOrderButton'])) {
         $targetDir = 'orderpics/' . $userDir . "/";
     } else {
         mkdir('orderpics/' . $userDir);
-        $targetDir = $targetDir = 'orderpics/' . $userDir . "/";
+        $targetDir = 'orderpics/' . $userDir . "/";
     }
     $targetFile = $targetDir . basename($_FILES["productPic"]["name"]);
     $uploadOk = 1;
@@ -64,19 +64,15 @@ if (isset($_POST['submitOrderButton'])) {
     $productSize = $_POST['productSize'];
     $productLink = $_POST['productLink'];
     $productPrice = $_POST['productPrice'];
-    // need to remove pic extension from the original file
-    $productPic = $image;
+    // user directory needs to be added before pic name
+    $productPic = $targetDir . $image;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
-    $orderQuantity = intval($_POST['orderQuantity']);
-    if ($orderQuantity == 0) {
-        $orderQuantity = 1;
-    }
+    $orderQuantity = 1;
     $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
             . " '$productBrand', '$productSize', '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
     if (!$user->executeQuery($query3)) {
         $flag = false;
-        echo "error3";
         echo mysqli_error($user->conn);
     }
     // once an order submited, we nedd to create three records in shipment, status and cost table for this order
@@ -87,7 +83,6 @@ if (isset($_POST['submitOrderButton'])) {
         $flag = true;
     } else {
         $flag = false;
-        echo "error4";
         echo mysqli_error($user->conn);
     }
 // if all queries executed properly then comit the changes in to database otherwise roll back all changes
@@ -151,7 +146,7 @@ if (isset($_POST['submitOrderButton'])) {
             </div>
 
             <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
+                <div class="sidebar-nav navbar-collapse collapse">
                     <ul class="nav in" id="side-menu">
                         <li>
                             <a href="home.php#orderPanel"> <i class="fa fa-tags fa-fw"></i>سفارش گذاری </a>
@@ -192,7 +187,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         <i class="fa fa-comments fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"> 23 </div>
+                                        <div class="huge"> # </div>
                                         <div> آخرین خرید های انجام شده </div>
                                     </div>
                                 </div>
@@ -214,7 +209,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         <i class="fa fa-tasks fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"> 12 </div>
+                                        <div class="huge"> # </div>
                                         <div> جدیدترین سفارشات رسیده به استانبول </div>
                                     </div>
                                 </div>
@@ -236,7 +231,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         <i class="fa fa-shopping-cart fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"> 4 </div>
+                                        <div class="huge"> # </div>
                                         <div> آخرین ارسالی ها به تهران</div>
                                     </div>
                                 </div>
@@ -258,7 +253,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"> 13 </div>
+                                        <div class="huge"> # </div>
                                         <div> سفارشات کنسل شده </div>
 
                                     </div>
@@ -393,21 +388,13 @@ if (isset($_POST['submitOrderButton'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="productPrice"> قیمت :</label>
-                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice();" id="productPrice" name = "productPrice">
+                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton()" id="productPrice" name = "productPrice">
                                         </div>
                                         <div class="form-group">
                                             <span style="color:red" id="priceAlert">
                                             </span>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="quantity"> تعداد :</label>
-                                            <input type="text" class="form-control eng-format" maxlength="2" id="orderQuantity" name="orderQuantity" placeholder="1" onkeyup="checkQuantity();activateOrderButton()">
-                                        </div>
-                                        <div class="form-group">
-                                            <span style="color:red" id="quantityAlert">
-                                            </span>
-                                        </div>
-
+                                        
                                         <!-- for phase 1 we dont get these information
                                         <div class="form-group">
                                             <label for="customerName"> نام مشتری :</label>

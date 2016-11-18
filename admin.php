@@ -19,9 +19,6 @@ if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
 $queryResult = $user->executeQuery($query);
-// set directory to have order picture link
-$userDir = $userID;
-$targetDir = 'orderpics/' . $userDir . "/";
 ?>
 <html>
     <head>
@@ -97,7 +94,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
             </div>
 
             <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
+                <div class="sidebar-nav navbar-collapse collapse">
                     <ul class="nav in" id="side-menu">
                         <li>
                             <a href="admin.php"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
@@ -135,7 +132,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <i class="fa fa-comments fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"> 23 </div>
+                                        <div class="huge"> # </div>
                                         <div> آخرین خرید های انجام شده </div>
                                     </div>
                                 </div>
@@ -157,7 +154,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <i class="fa fa-tasks fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"> 12 </div>
+                                        <div class="huge"> # </div>
                                         <div> جدیدترین سفارشات رسیده به استانبول </div>
                                     </div>
                                 </div>
@@ -179,7 +176,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <i class="fa fa-shopping-cart fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"> 4 </div>
+                                        <div class="huge"> # </div>
                                         <div> آخرین ارسالی ها به تهران</div>
                                     </div>
                                 </div>
@@ -201,7 +198,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge"> 13 </div>
+                                        <div class="huge"> # </div>
                                         <div> سفارشات کنسل شده </div>
 
                                     </div>
@@ -256,9 +253,9 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
                                         echo "<td>" . $row[4] . "</td>";
-                                        echo "<td> <a href=" . $row[5] . ">لینک محصول" . "</a> </td>";
+                                        echo "<td> <a href= " . $row[5] . ">لینک محصول" . "</a> </td>";
                                         $picURL = str_replace(' ', '%20', $row[6]);
-                                        echo "<td><a href=" . $targetDir . $picURL . ".jpg" ."> <img src=" . $targetDir . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+                                        echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
@@ -280,20 +277,20 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                 <h4><span class = "glyphicon glyphicon-briefcase"> </span> لغو سفارش </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="cancelOrder.php" method="post">
+                                <form role="form" action="cancelOrder.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="rowID"> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
                                     <div class="form-group">
-                                        <label for="cancelDetails"><span class="glyphicon glyphicon-calendar"></span>  دلیل لغو سفارش</label>
+                                        <label for="cancelDetails"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
                                         <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
                                             <option value = "نبودن سایز">موجود نبودن سایز </option>
                                             <option value = "تمام شدن محصول">به اتمام رسیدن زمان</option>
                                             <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
                                         </select>
                                     </div>
-                                    
+
                                     <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> لغو سفارش  </button>
                                 </form>
                             </div>
@@ -319,7 +316,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
                                         <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" > 
                                     </div>
-                                
+
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>
                             </div>
@@ -349,7 +346,7 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         <label for="productsWeight"><span class="glyphicon glyphicon-scale"></span>  وزن کالا به گرم</label>
                                         <input type="text" class="form-control" name="productsWeight" id="productsWeight" maxlength="4"> 
                                     </div>
-                                     <div class="form-group">
+                                    <div class="form-group">
                                         <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
                                         <input type="text" class="form-control" name="cargoName" id="cargoName">
                                     </div>

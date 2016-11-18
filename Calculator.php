@@ -34,7 +34,7 @@ if (!isset($_SESSION['user'])) {
                 <div class = "list-group">
                     <h3 class = "list-group-item list-group-item-success"> <center> Bennkes Calculator</center> </h3>
                     <form class = "form-horizontal"  role = "form" method = "post">	
-                        <div class = "form-group" id = "calculator">	
+                        <div class = "form-group" id = "calculator" style="margin-top: 40px">	
                             <div class = "form-group">
                                 <label class = "control-label col-sm-4" for = "productType"> Type: </label>
                                 <div class = "col-sm-5">
@@ -108,11 +108,12 @@ if (!isset($_SESSION['user'])) {
                                     <input class = "form-control" id = "finalPrice" placeholder = "Finall Price" disabled = "true">
                                 </div>
                             </div>
+                            <div class="form-group"><center> <a href="home.php"> بازگشت به صفحه اصلی </a> </center> </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class = "col-sm-4"> </div>
+           
     </div>
 </div>
 

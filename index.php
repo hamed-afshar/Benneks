@@ -63,17 +63,19 @@ if (isset($_POST['signupButton'])) {
 <script type="text/javascript" src="./Javascripts/script.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="http://ifont.ir/apicode/33" rel='stylesheet' type='text/css'>
-<link rel="stylesheet" type="text/css" href="style.css" />         
+<link rel="stylesheet" type="text/css" href="style.css" />  
+<!-- custom fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 <title>Benneks Order System</title>
 </head>
-<body>
+<body style="background-color: #CF5F5C">
     <div class = "container-fluid">
         <div class = "row">
             <div class = "col-sm-4"> </div>
             <div class = "col-sm-4"> </div>
             <div class = "col-sm-4"> </div>
         </div>
-        <div class = "row">
+        <div class = "row" style="margin-top: 100px">
             <div class = "col-sm-4"> </div>
             <div class = "col-sm-4">
                 <ul class = "nav nav-pills nav-justified">
@@ -82,26 +84,26 @@ if (isset($_POST['signupButton'])) {
                 </ul>
 
                 <div class = "list-group">
-                    <h3 class = "list-group-item list-group-item-success"> <center> Bennkes Credential System </center> </h3>	
+                    <h3  style="color: white"> <center> Welcome </center> </h3>	
                 </div>
 
                 <div class = "tab-content">
                     <div class = "tab-pane fade in active" id = "signIn">
                         <form class = "form-horizontal"  role = "form" action = "login.php" method = "post" >
                             <div class = "form-group" >
-                                <label class = "control-label col-sm-4" for = "email"> Email: </label>
+                                <label class = "control-label col-sm-4" for = "email" style="color:white"> Email: </label>
                                 <div class="col-sm-5">
                                     <input type = "email" class = "form-control" name = "email" placeholder = "Enter Email">
                                 </div>
                             </div>
                             <div class = "form-group">
-                                <label class = "control-label col-sm-4" for = "password"> Password: </label>
+                                <label class = "control-label col-sm-4" for = "password" style="color:white"> Password: </label>
                                 <div class = "col-sm-5">
                                     <input type = "password" class = "form-control" name = "password" placeholder = "Enter Password">
                                 </div>
                             </div>
                             <div class = "form-group">
-                                <label class = "control-label col-sm-4"> Click to Login </label>
+                                <label class = "control-label col-sm-4" style="color:white"> Click to Login </label>
                                 <div class = "col-sm-5">
                                     <button class = "btn btn-primary btn-block" class = "form-control" name = "loginButton"> Login </button>
                                 </div>
@@ -111,7 +113,7 @@ if (isset($_POST['signupButton'])) {
                     <div id = "signUp" class = "tab-pane fade">
                         <form class = "form-horizontal" role = "form" method = "post">
                             <div class = "form-group has-feedback">
-                                <label class = "control-label col-sm-4" for = "username"> Username: </label>
+                                <label class = "control-label col-sm-4" for = "username" style="color:white"> Username: </label>
                                 <div class = "col-sm-5">
                                     <input type = "text" class = "form-control" name = "username" id = "username" onkeyup = "checkUserName(); submitActivation()" placeholder = "Choose Username" required>
                                     <span id = "userNameIcon" class = "glyphicon form-control-feedback"> </span>
@@ -119,7 +121,7 @@ if (isset($_POST['signupButton'])) {
                                 </div>
                             </div>
                             <div class = "form-group has-feedback">
-                                <label class = "control-label col-sm-4" for = "email"> Email: </label> 
+                                <label class = "control-label col-sm-4" for = "email" style="color:white"> Email: </label> 
                                 <div class = "col-sm-5">
                                     <input type = "email" class = "form-control" name = "email" id = "email" onkeyup = "checkEmail(); submitActivation()" placeholder = "Enter Email" required>
                                     <span id = "emailIcon" class = "glyphicon form-control-feedback"> </span>
@@ -127,7 +129,7 @@ if (isset($_POST['signupButton'])) {
                                 </div>
                             </div>
                             <div class = "form-group has-feedback">
-                                <label class = "control-label col-sm-4" for = "password"> Password: </label>
+                                <label class = "control-label col-sm-4" for = "password" style="color:white"> Password: </label>
                                 <div class = "col-sm-5">
                                     <input type = "password" class = "form-control" name = "password" id = "password" onkeyup = "checkPass(); submitActivation()" placeholder = "Password" required>
                                     <span id = "passIcon" class = "glyphicon form-control-feedback"> </span>
@@ -135,7 +137,7 @@ if (isset($_POST['signupButton'])) {
                                 </div>
                             </div>
                             <div class = "form-group has-feedback">
-                                <label class = "control-label col-sm-4" for = "re-password"> Password Again: </label>
+                                <label class = "control-label col-sm-4" for = "re-password" style="color:white"> Password Again: </label>
                                 <div class = "col-sm-5">
                                     <input type = "password" class = "form-control" name = "re-password" id = "re-password" onkeyup = "passAgain(); submitActivation()"  placeholder = "Repeat Password" required>
                                     <span id = "passReIcon" class = "glyphicon form-control-feedback"> </span>
@@ -143,7 +145,7 @@ if (isset($_POST['signupButton'])) {
                                 </div>
                             </div>
                             <div class = "form-group">
-                                <label class = "control-label col-sm-4"> Click to Join! </label>
+                                <label class = "control-label col-sm-4" style="color:white"> Click to Join! </label>
                                 <div class = "col-sm-5">
                                     <button class = "btn btn-primary btn-block" class = "form-control" name= "signupButton" id = "signupButton" disabled = "disabled"> Signup </button>
                                 </div>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 ob_start();
 session_start();
 require 'src/benneks.php';
@@ -39,7 +39,6 @@ if (!isset($_SESSION['user'])) {
                                 <label class = "control-label col-sm-4" for = "productType"> Type: </label>
                                 <div class = "col-sm-5">
                                     <select dir = "rtl" class = "form-control" id = "productType">
-
                                         <option value="" disabled selected>نوع لباس را مشخص نمایید</option>
                                         <option value = "bag"> انواع کیف </option>
                                         <option value = "shoes"> انواع کفش و بوت </option>
@@ -51,32 +50,31 @@ if (!isset($_SESSION['user'])) {
                                         <option value = "watch"> ساعت </option>
                                         <option value = "accessory"> اکسسوری </option>
                                         \\Products around 200 gr
-                                        <option value = "shomiz"> شمیز و سرهمی </option>
-                                        <option value = "short"> شلوارک </option>
-                                        <option value = "blouse"> بلوز </option>
-                                        <option value = "sweater"> پلیورهای نازک</option>
-                                        <option value = "top"> تاپ </option>
-                                        <option value = "skirt"> دامن </option>
-                                        <option value = "womenshirt"> پیراهن زنانه </option>
-                                        <option value = "manshirt"> پیراهن مردانه </option>
-                                        <option value = "dress"> پیراهن بلند زنانه </option>
-                                        <option value = "lingerie"> لباس زیر </option>
-                                        <option value = "tshirt"> تی شرت </option>
-                                        <option value = "scarf"> انواع روسری و شال </option>
-                                        <option value = "bikini"> مایو </option>
-                                        <option value = "swimsuit"> رو مایو </option>
-                                        <option value = "sleepwear"> لباس خواب </option>
-                                        <option value = "support"> ساپورت </option>
-                                        <option value = "pancho">  پانچو </option>
-                                        <option value = "pant"> شلوار معمولی </option>
+                                        <option value = "short"> شلوارک </option> 
+                                        <option value = "blouse"> بلوز </option> 
+                                        <option value = "top"> تاپ </option> 
+                                        <option value = "skirt"> دامن </option> 
+                                        <option value = "womenshirt"> پیراهن زنانه </option> 
+                                        <option value = "manshirt"> پیراهن مردانه </option> 
+                                        <option value = "dress"> پیراهن بلند زنانه </option> 
+                                        <option value = "lingerie"> لباس زیر </option> 
+                                        <option value = "tshirt"> تی شرت </option> 
+                                        <option value = "scarf"> انواع روسری و شال </option> 
+                                        <option value = "bikini"> مایو </option> 
+                                        <option value = "swimsuit"> رو مایو </option> 
+                                        <option value = "sleepwear"> لباس خواب </option> 
+                                        <option value = "support"> ساپورت </option> 
                                         \\Products around 450 gr
                                         <option value = "cardigan"> کاردیگان</option>
                                         <option value = "manto"> مانتو </option>
-                                        <option value = "rainingcoat"> بارونی </option>
-                                        <option value = "sweater"> پلیور </option>
+                                        <option value = "rainingcoat"> بارونی </option> 
                                         <option value = "summerjacket"> انواع کت های تابستانی </option>
                                         <option value = "jean"> شلوار جین </option>
                                         <option value = "coat&skirt"> کت و دامن به همراه هم </option>
+                                        <option value = "shomiz"> شمیز و سرهمی </option> 
+                                        <option value = "sweater"> پلیورهای نازک</option> 
+                                        <option value = "pancho">  پانچو </option> 
+                                        <option value = "pant"> شلوار معمولی </option> 
                                         \\Products around 600 gr
                                         <option value = "wintercoat"> کت زمستانی</option>
                                         <option value = "palto"> پالتو سبک </option>
@@ -113,7 +111,7 @@ if (!isset($_SESSION['user'])) {
                 </div>
             </div>
         </div>
-           
+
     </div>
 </div>
 

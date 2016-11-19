@@ -164,16 +164,16 @@ function calculator() {
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
             break;
-        case "cardigan":
-        case "rainingcoat":
-        case "manto":
-        case "sweater":
-        case "summerjacket":
-        case "jean":
-        case "pant":
-        case "coat&skirt":
-        case "pancho":
-        case "shomiz":
+        case "cardigan": 
+        case "rainingcoat": 
+        case "manto": 
+        case "sweater": 
+        case "summerjacket": 
+        case "jean": 
+        case "pant": 
+        case "coat&skirt": 
+        case "pancho": 
+        case "shomiz": 
             shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);

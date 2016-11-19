@@ -286,46 +286,53 @@ if (isset($_POST['submitOrderButton'])) {
                                         <div class="form-group">
                                             <label for="clothesType"> نوع لباس:</label>
                                             <select dir = "rtl" class="form-control" id = "clothesType" name="clothesType">
-                                                <option value = "کیف"> انواع کیف </option>
-                                                <option value = "نواع کفش و بوت"> انواع کفش و بوت </option>
-
-                                                <option value = "کیف پول"> کیف پول </option> 
-                                                <option value = "کمربند"> کمربند </option>
-                                                <option value = "عینک"> عینک </option>
-                                                <option value = "عطر"> عطر </option>
-                                                <option value = "ساعت"> ساعت </option>
-                                                <option value = "اکسسوری"> اکسسوری </option>
-
-                                                <option value = "شمیز و سرهمی"> شمیز و سرهمی </option>
-                                                <option value = "شلوارک"> شلوارک </option>
-                                                <option value = "بلوز"> بلوز </option>
-                                                <option value = "sweater"> پلیور </option>
-                                                <option value = "پلیور"> تاپ </option>
-                                                <option value = "دامن"> دامن </option>
-                                                <option value = "پیراهن زنانه"> پیراهن زنانه </option>
-                                                <option value = "پیراهن مردانه"> پیراهن مردانه </option>
-                                                <option value = "پیراهن بلند زنانه"> پیراهن بلند زنانه </option>
-                                                <option value = "لباس زیر"> لباس زیر </option>
-                                                <option value = "تی شرت"> تی شرت </option>
-                                                <option value = "انواع روسری و شال"> انواع روسری و شال </option>
-                                                <option value = "مایو"> مایو </option>
-                                                <option value = "رو مایو"> رو مایو </option>
-                                                <option value = "لباس خواب"> لباس خواب </option>
-                                                <option value = "ساپورت"> ساپورت </option>
-                                                <option value = "پانچو">  پانچو </option>
-                                                <option value = "شلوار معمولی"> شلوار معمولی </option>
-
-                                                <option value = "کاردیگان"> کاردیگان</option>
-                                                <option value = "مانتو"> مانتو </option>
-                                                <option value = "بارونی"> بارونی </option>
-                                                <option value = "انواع کت های جین و تابستانی"> انواع کت های جین و تابستانی </option>
-                                                <option value = "شلوار جین"> شلوار جین </option>
-                                                <option value = "کت و دامن به همراه هم"> کت و دامن به همراه هم </option>
-
-                                                <option value = "کت چرم"> کت چرم </option>
-                                                <option value = "کاپشن"> کاپشن </option>
-                                                <option value = "کت زمستانی"> کت زمستانی</option>
-                                                <option value = "پالتو"> پالتو </option>
+                                                <option value="" disabled selected>نوع لباس را مشخص نمایید</option>
+                                                <option value = "bag"> انواع کیف </option>
+                                                <option value = "shoes"> انواع کفش و بوت </option>
+                                                \\Products around 120 gr                         
+                                                <option value = "wallet"> کیف پول </option> 
+                                                <option value = "belt"> کمربند </option>
+                                                <option value = "sunglass"> عینک </option>
+                                                <option value = "perfium"> عطر </option>
+                                                <option value = "watch"> ساعت </option>
+                                                <option value = "accessory"> اکسسوری </option>
+                                                \\Products around 200 gr
+                                                <option value = "short"> شلوارک </option> 
+                                                <option value = "blouse"> بلوز </option> 
+                                                <option value = "top"> تاپ </option> 
+                                                <option value = "skirt"> دامن </option> 
+                                                <option value = "womenshirt"> پیراهن زنانه </option> 
+                                                <option value = "manshirt"> پیراهن مردانه </option> 
+                                                <option value = "dress"> پیراهن بلند زنانه </option> 
+                                                <option value = "lingerie"> لباس زیر </option> 
+                                                <option value = "tshirt"> تی شرت </option> 
+                                                <option value = "scarf"> انواع روسری و شال </option> 
+                                                <option value = "bikini"> مایو </option> 
+                                                <option value = "swimsuit"> رو مایو </option> 
+                                                <option value = "sleepwear"> لباس خواب </option> 
+                                                <option value = "support"> ساپورت </option> 
+                                                \\Products around 450 gr
+                                                <option value = "cardigan"> کاردیگان</option>
+                                                <option value = "manto"> مانتو </option>
+                                                <option value = "rainingcoat"> بارونی </option> 
+                                                <option value = "summerjacket"> انواع کت های تابستانی </option>
+                                                <option value = "jean"> شلوار جین </option>
+                                                <option value = "coat&skirt"> کت و دامن به همراه هم </option>
+                                                <option value = "shomiz"> شمیز و سرهمی </option> 
+                                                <option value = "sweater"> پلیورهای نازک</option> 
+                                                <option value = "pancho">  پانچو </option> 
+                                                <option value = "pant"> شلوار معمولی </option> 
+                                                \\Products around 600 gr
+                                                <option value = "wintercoat"> کت زمستانی</option>
+                                                <option value = "palto"> پالتو سبک </option>
+                                                <option value = "jacket"> کاپشن سبک </option>
+                                                \\ Products around 800 gr
+                                                <option value = "jeancoat"> کت جین </option>
+                                                <option value = "leathercoat"> کت چرم </option>
+                                                <option value = "winterjacket"> کاپشن سنگین </option>
+                                                <option value = "heavysweater"> پلیورهای سنگین</option>
+                                                \\ Products more than 1 kg
+                                                <option value = "heavy"> کاپشن و کت و پالتو های سنگین و ضخیم </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -394,7 +401,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             <span style="color:red" id="priceAlert">
                                             </span>
                                         </div>
-                                        
+
                                         <!-- for phase 1 we dont get these information
                                         <div class="form-group">
                                             <label for="customerName"> نام مشتری :</label>

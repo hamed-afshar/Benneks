@@ -119,7 +119,7 @@ function submitActivation() {
 //Function to automatically calculate the price for sellers in calculator.php
 function calculator() {
     var rateTL = 1200;
-    var weightCost = 50000;
+    var weightCost = 55000; //50000 per killo dor kargo + 5000 Peik Iran
     var shippingCost = 0;
     var benneksMargin = 0;
     var totalCost = 0;
@@ -134,20 +134,19 @@ function calculator() {
     }
     switch (productType) {
         case "bag":
-            shippingCost = 40000;
+            shippingCost = 50000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
             break;
         case "shoes":
-            shippingCost = 45000;
+            shippingCost = 50000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
             document.getElementById("finalPrice").value = totalCost;
             break;
         case "blouse":
         case "short":
-        case "shomiz":
         case "top":
         case "skirt":
         case "womenshirt":
@@ -160,8 +159,6 @@ function calculator() {
         case "swimsuit":
         case "sleepwear":
         case "support":
-        case "pancho":
-        case "pant":
             shippingCost = (weightCost * 200) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);
@@ -173,7 +170,10 @@ function calculator() {
         case "sweater":
         case "summerjacket":
         case "jean":
+        case "pant":
         case "coat&skirt":
+        case "pancho":
+        case "shomiz":
             shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             document.getElementById("finalPrice").setAttribute("disabled", false);

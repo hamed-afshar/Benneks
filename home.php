@@ -64,6 +64,7 @@ if (isset($_POST['submitOrderButton'])) {
     $productSize = $_POST['productSize'];
     $productLink = $_POST['productLink'];
     $productPrice = $_POST['productPrice'];
+    $benneksPrice = intval($_POST['benneksPrice']);
     // user directory needs to be added before pic name
     $productPic = $targetDir . $image;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
@@ -78,7 +79,7 @@ if (isset($_POST['submitOrderButton'])) {
     // once an order submited, we nedd to create three records in shipment, status and cost table for this order
     $query4 = "INSERT INTO benneks.shipment(orders_orderID) VALUES ('$orderID')";
     $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
-    $query6 = "INSERT INTO benneks.cost(orders_orderID) VALUES ('$orderID')";
+    $query6 = "INSERT INTO benneks.cost(orders_orderID, benneksPrice) VALUES ('$orderID', '$benneksPrice')";
     if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
         $flag = true;
     } else {
@@ -285,7 +286,7 @@ if (isset($_POST['submitOrderButton'])) {
                                     <form role = "form" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label for="clothesType"> نوع لباس:</label>
-                                            <select dir = "rtl" class="form-control" id = "clothesType" name="clothesType">
+                                            <select dir = "rtl" class="form-control" id = "clothesType" name="clothesType" onchange="showRealPrice()">
                                                 <option value="" disabled selected>نوع لباس را مشخص نمایید</option>
                                                 <option value = "bag"> انواع کیف </option>
                                                 <option value = "shoes"> انواع کفش و بوت </option>
@@ -370,67 +371,64 @@ if (isset($_POST['submitOrderButton'])) {
                                             <input type="file" class="eng-format" id="productPic" name = "productPic" accept="image/*">
                                         </div>
                                         <div class="form-group">
-                                            <label for="productSize"> سایز:</label>
+                                            <label for="productSize"> سایز زنانه:</label>
                                             <select dir = "ltr"  class="eng-format form-control" id = "productSize" name = "productSize">
-                                                <option value="xxs"> XX-Small </option>
-                                                <option value="xs"> X-Small </option>
-                                                <option value="s"> Small </option>
-                                                <option value="m"> Medium </option>
-                                                <option value="l"> Large </option>
-                                                <option value="xl"> X-Large </option>
-                                                <option value="xxl"> XX-Large </option>
-                                                <option value="35"> 35-Shoes </option>
-                                                <option value="36"> 36-Shoes </option>
-                                                <option value="37"> 37-Shoes </option>
-                                                <option value="38"> 38-Shoes </option>
-                                                <option value="39"> 39-Shoes </option>
-                                                <option value="40"> 40-Shoes </option>
-                                                <option value="41"> 41-Shoes </option>
-                                                <option value="42"> 42-Shoes </option>
-                                                <option value="43"> 43-Shoes </option>
-                                                <option value="44"> 44-Shoes </option>
-                                                <option value="45"> 45-Shoes </option>
-                                                <option value="45"> بدون سایز </option>
+                                                <option value="XXSmall-UK4-EU32-US1-AUS4"> XX-Small(UK=4, EU=32, US=1) </option>
+                                                <option value="XSmall-UK6-EU34-US2-AUS6"> X-Small(UK=6, EU=34, US=2) </option>
+                                                <option value="Small-UK8-EU36-US4-AUS8"> Small(UK=8, EU=36, US=4) </option>
+                                                <option value="Small-UK10-EU38-US6-AUS10"> Small(UK=10, EU=38, US=6) </option>
+                                                <option value="Medium-UK12-EU40-US8-AUS12"> Medium(UK=12, EU=40, US=8) </option>
+                                                <option value="Medium-UK14-EU42-US10-AUS14"> Medium(UK=14, EU=42, US=10) </option>
+                                                <option value="Large-UK16-EU44-US12-AUS16"> Large(UK=16, EU=44, US=12) </option>
+                                                <option value="Large-UK18-EU46-US14-AUS18"> Large(UK=18, EU=46, US=14) </option>
+                                                <option value="XLarge-UK20-EU48-US16-AUS20"> X-Large(UK=20, EU=48, US=16) </option>
+                                                <option value="Shoes-35"> Shoes(EU=35, UK=2, US=4) </option>
+                                                <option value="Shoes-36"> Shoes(EU=36, UK=3, US=5) </option>
+                                                <option value="Shoes-37"> Shoes(EU=37, UK=4, US=6) </option>
+                                                <option value="Shoes-38"> Shoes(EU=38, UK=5, US=7) </option>
+                                                <option value="Shoes-39"> Shoes(EU=39, UK=6, US=8) </option>
+                                                <option value="Shoes-40"> Shoes(EU=40, UK=7, US=9) </option>
+                                                <option value="Shoes-41"> Shoes(EU=41, UK=8, US=10)</option>
+                                                <option value="Shoes-42"> بدون سایز </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="productPrice"> قیمت :</label>
-                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton()" id="productPrice" name = "productPrice">
+                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton(); showRealPrice();" id="productPrice" name = "productPrice">
                                         </div>
                                         <div class="form-group">
                                             <span style="color:red" id="priceAlert">
                                             </span>
                                         </div>
-
-                                        <!-- for phase 1 we dont get these information
-                                        <div class="form-group">
-                                            <label for="customerName"> نام مشتری :</label>
-                                            <input type="text" class="form-control eng-format" dir="rtl" maxlength="30" id="customerName" name="customerName">
+                                        <div class = "form-group">
+                                            <label for = "benneksPrice"> قیمت فروش سیستم :</label>
+                                            <input type = "text" class = "form-control eng-format" dir="ltr" id = "benneksPrice" name = "benneksPrice" readonly="readonly" placeholder = "قیمت فروش سیستم ">
                                         </div>
-                                        <div class="form-group">
-                                            <label for=""customerTel"> تلفن مشتری :</label>
-                                            <input type="tel" class="form-control eng-format" dir="ltr" maxlength="11" id="customerTel" name="customerTel" onkeyup="checkCustomerTel(); activateOrderButton();">
-                                        </div> 
-                                        <div class="form-group">
-                                            <span style="color:red" id="telAlert">
-                                            </span> 
-                                        </div> -->
+
+                                        <!-- javascript to pass variables to calculator() in script.js file -->
+                                        <script>
+                                            function showRealPrice() {
+                                                var clothesType = document.getElementById("clothesType").value;
+                                                var productPrice = document.getElementById("productPrice").value;
+                                                document.getElementById("benneksPrice").value = calculator(clothesType, productPrice);
+                                            }
+                                        </script>
+
                                         <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="disabled"> ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>
                                             </span>
-
                                         </button>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
-                        <!-- /.new-order-panel-body -->
                     </div>
-                    <!--new-order-panel-->
+                    <!-- /.new-order-panel-body -->
                 </div>
+                <!--new-order-panel-->
             </div>
-            </body>
-            </html>
+        </div>
+</body>
+</html>
 

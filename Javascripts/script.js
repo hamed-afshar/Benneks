@@ -117,14 +117,12 @@ function submitActivation() {
 }
 
 //Function to automatically calculate the price for sellers in calculator.php
-function calculator() {
+function calculator(clothesType, productPrice) {
     var rateTL = 1200;
     var weightCost = 55000; //50000 per killo dor kargo + 5000 Peik Iran
     var shippingCost = 0;
     var benneksMargin = 0;
     var totalCost = 0;
-    var productType = document.getElementById("productType").value;
-    var productPrice = document.getElementById("productPrice").value;
     if (productPrice >= 0 && productPrice <= 100) {
         benneksMargin = 0.2;
     } else if (productPrice > 100 && productPrice <= 200) {
@@ -132,18 +130,18 @@ function calculator() {
     } else {
         benneksMargin = 0.1;
     }
-    switch (productType) {
+    switch (clothesType) {
         case "bag":
             shippingCost = 50000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            document.getElementById("finalPrice").setAttribute("disabled", false);
-            document.getElementById("finalPrice").value = totalCost;
+            //document.getElementById("finalPrice").setAttribute("disabled", false);
+            //document.getElementById("finalPrice").value = totalCost;
+            return totalCost;
             break;
         case "shoes":
             shippingCost = 50000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            document.getElementById("finalPrice").setAttribute("disabled", false);
-            document.getElementById("finalPrice").value = totalCost;
+            return totalCost;
             break;
         case "blouse":
         case "short":
@@ -161,31 +159,28 @@ function calculator() {
         case "support":
             shippingCost = (weightCost * 200) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            document.getElementById("finalPrice").setAttribute("disabled", false);
-            document.getElementById("finalPrice").value = totalCost;
+            return totalCost;
             break;
-        case "cardigan": 
-        case "rainingcoat": 
-        case "manto": 
-        case "sweater": 
-        case "summerjacket": 
-        case "jean": 
-        case "pant": 
-        case "coat&skirt": 
-        case "pancho": 
-        case "shomiz": 
+        case "cardigan":
+        case "rainingcoat":
+        case "manto":
+        case "sweater":
+        case "summerjacket":
+        case "jean":
+        case "pant":
+        case "coat&skirt":
+        case "pancho":
+        case "shomiz":
             shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            document.getElementById("finalPrice").setAttribute("disabled", false);
-            document.getElementById("finalPrice").value = totalCost;
+            return totalCost;
             break;
         case "wintercoat":
         case "palto":
         case "jacket":
             shippingCost = (weightCost * 600) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            document.getElementById("finalPrice").setAttribute("disabled", false);
-            document.getElementById("finalPrice").value = totalCost;
+            return totalCost;
             break;
         case "jeancoat":
         case "leathercoat":
@@ -193,14 +188,12 @@ function calculator() {
         case "heavysweater":
             shippingCost = (weightCost * 800) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            document.getElementById("finalPrice").setAttribute("disabled", false);
-            document.getElementById("finalPrice").value = totalCost;
+            return totalCost;
             break;
         case "heavy":
             shippingCost = (weightCost * 1200) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            document.getElementById("finalPrice").setAttribute("disabled", false);
-            document.getElementById("finalPrice").value = totalCost;
+            return totalCost;
             break;
         case "wallet":
         case "belt":
@@ -210,8 +203,7 @@ function calculator() {
         case "accessory":
             shippingCost = (weightCost * 120) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            document.getElementById("finalPrice").setAttribute("disabled", false);
-            document.getElementById("finalPrice").value = totalCost;
+            return totalCost;
             break;
     }
 }
@@ -252,29 +244,13 @@ function checkQuantity() {
     }
 
 }
-// function to check customer Tel in making order section in home.php
-// This function will not be used in phase 1
-/*function checkCustomerTel() {
-    var tel = document.getElementById("customerTel").value;
-    var illegalChar = /[^0-9]/g;
-    if ((illegalChar.test(tel)) || tel.length < 11) {
-        document.getElementById("telAlert").innerHTML = "شماره موبایل معتبر باید وارد گردد";
-        $("#submitOrderButton").prop('disabled', true);
-        customerTelFlag = false;
-        return customerTelFlag;
-    } else
-    {
-        document.getElementById("telAlert").innerHTML = "";
-        customerTelFlag = true;
-        return customerTelFlag;
-    }
-}*/
 // function to activate order buttonin home.php
 function activateOrderButton() {
     if (priceFlag === true) {
         $("#submitOrderButton").prop('disabled', false);
     }
 }
+
 
 
 

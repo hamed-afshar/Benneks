@@ -235,7 +235,6 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                         . "</td>";
                                         $picURL = str_replace(' ', '%20', $row[1]);
                                         $productLink = $row[2];
-                                        //echo "<td> <a href=". $picURL . "> لینک" . "</a> </td>";
                                         echo "<td> <a href=" .$productLink . "> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
                                         echo "<td>" . $row[3] . "</td>";
                                         echo "<td>" . $row[4] . "</td>";

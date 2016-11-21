@@ -60,6 +60,7 @@ if (isset($_POST['submitOrderButton'])) {
     $orderDate = date("Y-m-d");
     $orderTime = date("H:i:s");
     $clothesType = $_POST['clothesType'];
+    $productGender = $_POST['productGender'];
     $productBrand = $_POST['productBrand'];
     $productSize = $_POST['productSize'];
     $productLink = $_POST['productLink'];
@@ -69,9 +70,9 @@ if (isset($_POST['submitOrderButton'])) {
     $productPic = $targetDir . $image;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = 1;
-    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
+    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
-            . " '$productBrand', '$productSize', '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
+            . "'$productGender' ,'$productBrand', '$productSize', '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
     if (!$user->executeQuery($query3)) {
         $flag = false;
         echo mysqli_error($user->conn);
@@ -285,6 +286,10 @@ if (isset($_POST['submitOrderButton'])) {
                                 <div class="col-lg-6 col-lg-push-6" >
                                     <form role = "form" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
+                                            <input type="radio" name="productGender" id="productGender" value="female" checked> زنانه
+                                            <input type="radio" name="productGender" id="productGender" value="male" > مردانه  
+                                        </div>
+                                        <div class="form-group">
                                             <label for="clothesType"> نوع لباس:</label>
                                             <select dir = "rtl" class="form-control" id = "clothesType" name="clothesType" onchange="showRealPrice()">
                                                 <option value="" disabled selected>نوع لباس را مشخص نمایید</option>
@@ -371,17 +376,19 @@ if (isset($_POST['submitOrderButton'])) {
                                             <input type="file" class="eng-format" id="productPic" name = "productPic" accept="image/*">
                                         </div>
                                         <div class="form-group">
-                                            <label for="productSize"> سایز زنانه:</label>
+                                            <label for="productSize"> سایز:</label>
                                             <select dir = "ltr"  class="eng-format form-control" id = "productSize" name = "productSize">
-                                                <option value="XXSmall-UK4-EU32-US1-AUS4"> XX-Small(UK=4, EU=32, US=1) </option>
-                                                <option value="XSmall-UK6-EU34-US2-AUS6"> X-Small(UK=6, EU=34, US=2) </option>
-                                                <option value="Small-UK8-EU36-US4-AUS8"> Small(UK=8, EU=36, US=4) </option>
-                                                <option value="Small-UK10-EU38-US6-AUS10"> Small(UK=10, EU=38, US=6) </option>
-                                                <option value="Medium-UK12-EU40-US8-AUS12"> Medium(UK=12, EU=40, US=8) </option>
-                                                <option value="Medium-UK14-EU42-US10-AUS14"> Medium(UK=14, EU=42, US=10) </option>
-                                                <option value="Large-UK16-EU44-US12-AUS16"> Large(UK=16, EU=44, US=12) </option>
-                                                <option value="Large-UK18-EU46-US14-AUS18"> Large(UK=18, EU=46, US=14) </option>
-                                                <option value="XLarge-UK20-EU48-US16-AUS20"> X-Large(UK=20, EU=48, US=16) </option>
+                                                <option value="" disabled selected>  سایزهای لباس زنانه </option>
+                                                <option value="XXSmall-UK4-EU32-US1"> XX-Small(UK=4, EU=32, US=1) </option>
+                                                <option value="XSmall-UK6-EU34-US2"> X-Small(UK=6, EU=34, US=2) </option>
+                                                <option value="Small-UK8-EU36-US4"> Small(UK=8, EU=36, US=4) </option>
+                                                <option value="Small-UK10-EU38-US6"> Small(UK=10, EU=38, US=6) </option>
+                                                <option value="Medium-UK12-EU40-US8"> Medium(UK=12, EU=40, US=8) </option>
+                                                <option value="Medium-UK14-EU42-US10"> Medium(UK=14, EU=42, US=10) </option>
+                                                <option value="Large-UK16-EU44-US12"> Large(UK=16, EU=44, US=12) </option>
+                                                <option value="Large-UK18-EU46-US14"> Large(UK=18, EU=46, US=14) </option>
+                                                <option value="XLarge-UK20-EU48-US16"> X-Large(UK=20, EU=48, US=16) </option>
+                                                <option value="" disabled selected>  سایزهای کفش زنانه</option>
                                                 <option value="Shoes-35"> Shoes(EU=35, UK=2, US=4) </option>
                                                 <option value="Shoes-36"> Shoes(EU=36, UK=3, US=5) </option>
                                                 <option value="Shoes-37"> Shoes(EU=37, UK=4, US=6) </option>
@@ -390,6 +397,15 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Shoes-40"> Shoes(EU=40, UK=7, US=9) </option>
                                                 <option value="Shoes-41"> Shoes(EU=41, UK=8, US=10)</option>
                                                 <option value="Shoes-42"> بدون سایز </option>
+                                                <option value="" disabled selected>سایزهای مردانه</option>
+                                                 <option value="X-Small UK=34-EU=44-US=34"> X-Small(UK=34, EU=44, US=34) </option>
+                                                <option value="Small UK=36-EU=46-US=36"> Small(UK=36, EU=46, US=36) </option>
+                                                <option value="Medium UK=38-EU=48-US=38"> Medium(UK=38, EU=48, US=38) </option>
+                                                <option value="Large UK=40-EU=50-US=40"> Large(UK=40, EU=50, US=40) </option>
+                                                <option value="X-Large UK=42-EU=52-US=42"> X-Large(UK=42, EU=52, US=42) </option>
+                                                <option value="XX-Large UK=44-EU=54-US=44"> XX-Large(UK=44, EU=54, US=44) </option>
+                                                <option value="XXX-Large UK=46-EU=56-US=46"> XXX-Large(UK=46, EU=56, US=46) </option>
+                                                <option value="XXXX-Large UK=48-EU=58-US=48"> XXXX-Large(UK=48, EU=58, US=48) </option>
                                             </select>
                                         </div>
                                         <div class="form-group">

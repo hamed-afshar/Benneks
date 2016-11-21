@@ -63,6 +63,7 @@ if (isset($_POST['submitOrderButton'])) {
     $productGender = $_POST['productGender'];
     $productBrand = $_POST['productBrand'];
     $productSize = $_POST['productSize'];
+    $productColor = $_POST['productColor'];
     $productLink = $_POST['productLink'];
     $productPrice = $_POST['productPrice'];
     $benneksPrice = intval($_POST['benneksPrice']);
@@ -70,9 +71,9 @@ if (isset($_POST['submitOrderButton'])) {
     $productPic = $targetDir . $image;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = 1;
-    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productLink, productPrice, productPic, orderQuantity) "
+    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
-            . "'$productGender' ,'$productBrand', '$productSize', '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
+            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
     if (!$user->executeQuery($query3)) {
         $flag = false;
         echo mysqli_error($user->conn);
@@ -181,14 +182,14 @@ if (isset($_POST['submitOrderButton'])) {
                     <h1 class="page-header" dir="rtl">پنل کاربری</h1>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-3 col-md-4">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
+                                        <i class="fa fa-comments fa-3x"></i>
                                     </div>
-                                    <div class="col-xs-9 text-right">
+                                    <div class="col-xs-9  text-right">
                                         <div class="huge"> # </div>
                                         <div> آخرین خرید های انجام شده </div>
                                     </div>
@@ -203,16 +204,16 @@ if (isset($_POST['submitOrderButton'])) {
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-3 col-md-4">
                         <div class="panel panel-green">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
+                                        <i class="fa fa-tasks fa-3x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge"> # </div>
-                                        <div> جدیدترین سفارشات رسیده به استانبول </div>
+                                        <div> سفارشات رسیده به استانبول </div>
                                     </div>
                                 </div>
                             </div>
@@ -225,12 +226,12 @@ if (isset($_POST['submitOrderButton'])) {
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-3 col-md-4">
                         <div class="panel panel-yellow">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
+                                        <i class="fa fa-shopping-cart fa-3x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge"> # </div>
@@ -247,12 +248,12 @@ if (isset($_POST['submitOrderButton'])) {
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-3 col-md-4">
                         <div class="panel panel-red">
                             <div class="panel-heading"> 
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-support fa-5x"></i>
+                                        <i class="fa fa-support fa-3x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge"> # </div>
@@ -344,6 +345,24 @@ if (isset($_POST['submitOrderButton'])) {
                                         <div class="form-group">
                                             <label for="productBrand"> نام برند:</label>
                                             <select dir = "rtl" class="form-control" id = "productBrand" name = "productBrand">
+                                                <option value="" disabled selected>نام برند را انتخاب کنید</option>
+                                                <option value="Trendyol"> Trendyol </option>
+                                                <option value="Stradivarius"> Stradivarius </option>
+                                                <option value="H & M "> H & M </option>
+                                                <option value="Vepa"> Vepa</option>
+                                                <option value="Morhipo"> Morhipo </option>
+                                                <option value="Patirti"> Patirti </option>
+                                                <option value="Aldo"> Aldo </option>
+                                                <option value="Hotic"> Hotic </option>
+                                                <option value="Bonprix"> Bonprix </option>
+                                                <option value="Brandroom"> Brandroom </option>
+                                                <option value="Defacto"> Defacto </option>
+                                                <option value="Delisiyim"> Delisiyim </option>
+                                                <option value="LCWALKIKI"> LCWALKIKI </option>
+                                                <option value="Inci"> Inci </option>
+                                                <option value="Koton"> Koton </option>
+                                                <option value="Oysho"> Oysho </option>
+                                                <option value="Saat ve Saat"> Saat ve Saat </option>
                                                 <option value="Zara"> Zara </option>
                                                 <option value="Mango"> Mango </option>
                                                 <option value="Breshka"> Breshka </option>
@@ -368,6 +387,10 @@ if (isset($_POST['submitOrderButton'])) {
                                             </select>
                                         </div>
                                         <div class="form-group">
+                                            <span style="color:red" id="list2Alert">
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="productLink"> لینک محصول :</label>
                                             <input type="text" dir="ltr" class="form-control eng-format" id="productLink" name="productLink">
                                         </div>
@@ -388,32 +411,71 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Large-UK16-EU44-US12"> Large(UK=16, EU=44, US=12) </option>
                                                 <option value="Large-UK18-EU46-US14"> Large(UK=18, EU=46, US=14) </option>
                                                 <option value="XLarge-UK20-EU48-US16"> X-Large(UK=20, EU=48, US=16) </option>
-                                                <option value="" disabled selected>  سایزهای کفش زنانه</option>
-                                                <option value="Shoes-35"> Shoes(EU=35, UK=2, US=4) </option>
-                                                <option value="Shoes-36"> Shoes(EU=36, UK=3, US=5) </option>
-                                                <option value="Shoes-37"> Shoes(EU=37, UK=4, US=6) </option>
-                                                <option value="Shoes-38"> Shoes(EU=38, UK=5, US=7) </option>
-                                                <option value="Shoes-39"> Shoes(EU=39, UK=6, US=8) </option>
-                                                <option value="Shoes-40"> Shoes(EU=40, UK=7, US=9) </option>
-                                                <option value="Shoes-41"> Shoes(EU=41, UK=8, US=10)</option>
-                                                <option value="Shoes-42"> بدون سایز </option>
-                                                <option value="" disabled selected>سایزهای مردانه</option>
-                                                 <option value="X-Small UK=34-EU=44-US=34"> X-Small(UK=34, EU=44, US=34) </option>
-                                                <option value="Small UK=36-EU=46-US=36"> Small(UK=36, EU=46, US=36) </option>
-                                                <option value="Medium UK=38-EU=48-US=38"> Medium(UK=38, EU=48, US=38) </option>
-                                                <option value="Large UK=40-EU=50-US=40"> Large(UK=40, EU=50, US=40) </option>
-                                                <option value="X-Large UK=42-EU=52-US=42"> X-Large(UK=42, EU=52, US=42) </option>
-                                                <option value="XX-Large UK=44-EU=54-US=44"> XX-Large(UK=44, EU=54, US=44) </option>
-                                                <option value="XXX-Large UK=46-EU=56-US=46"> XXX-Large(UK=46, EU=56, US=46) </option>
-                                                <option value="XXXX-Large UK=48-EU=58-US=48"> XXXX-Large(UK=48, EU=58, US=48) </option>
+                                                <option value="Women-Free-Size"> فری سایز زنانه </option>
+                                                <option value="" disabled>  سایزهای کفش زنانه</option>
+                                                <option value="Shoes-35"> Shoes(EU=35, UK=2.5, US=5) </option>
+                                                <option value="Shoes-36"> Shoes(EU=36, UK=3.5, US=6) </option>
+                                                <option value="Shoes-37"> Shoes(EU=37, UK=4, US=6.5) </option>
+                                                <option value="Shoes-38"> Shoes(EU=38, UK=5, US=7.5) </option>
+                                                <option value="Shoes-39"> Shoes(EU=39, UK=6, US=8.5) </option>
+                                                <option value="Shoes-40"> Shoes(EU=40, UK=6.5, US=9) </option>
+                                                <option value="Shoes-41"> Shoes(EU=41, UK=7, US=9.5)</option>
+                                                <option value="Shoes-42"> Shoes(EU=42, UK=7.5, US=10)</option>
+                                                <option value="Shoes-43"> Shoes(EU=43, UK=8, US=10.5)</option>
+                                                <option value="" disabled>سایزهای مردانه</option>
+                                                <option value="XX-Small UK=34-EU=44-US=34"> XX-Small(UK=30, EU=40, US=30) </option>
+                                                <option value="X-Small UK=36-EU=46-US=36"> X-Small(UK=32, EU=42, US=32) </option>
+                                                <option value="Small UK=38-EU=48-US=38"> Small(UK=34, EU=44, US=34) </option>
+                                                <option value="Small UK=40-EU=50-US=40"> Small(UK=36, EU=46, US=36) </option>
+                                                <option value="Medium UK=42-EU=52-US=42"> Medium(UK=38, EU=48, US=38) </option>
+                                                <option value="Medium UK=44-EU=54-US=44"> Medium(UK=40, EU=50, US=40) </option>
+                                                <option value="Large UK=46-EU=56-US=46"> Large(UK=42, EU=52, US=42) </option>
+                                                <option value="Large UK=48-EU=58-US=48"> Large(UK=44, EU=54, US=44) </option>
+                                                <option value="X-Large UK=48-EU=58-US=48"> X-Large(UK=46, EU=56, US=46) </option>
+                                                <option value="XX-Large UK=48-EU=58-US=48"> XX-Large(UK=48, EU=58, US=48) </option>
+                                                <option value="XXX-Large UK=48-EU=58-US=48"> XXXL-Large(UK=50, EU=60, US=50) </option>
+                                                <option value="Men-Free-Size"> فری سایز مردانه </option>
+                                                <option value="" disabled>  سایزهای کفش مردانه</option>
+                                                <option value="Shoes-38"> Shoes(EU=38, UK=5, US=6) </option>
+                                                <option value="Shoes-39"> Shoes(EU=39, UK=6, US=7) </option>
+                                                <option value="Shoes-40"> Shoes(EU=40, UK=6.5, US=7.5) </option>
+                                                <option value="Shoes-41"> Shoes(EU=41, UK=7, US=8) </option>
+                                                <option value="Shoes-42"> Shoes(EU=42, UK=7.5, US=8.5) </option>
+                                                <option value="Shoes-43"> Shoes(EU=43, UK=8, US=9) </option>
+                                                <option value="Shoes-44"> Shoes(EU=44, UK=9.5, US=10.5)</option>
+                                                <option value="Shoes-45"> Shoes(EU=45, UK=10.5, US=11.5)</option>
+                                                <option value="Shoes-46"> Shoes(EU=46, UK=11, US=12)</option>
+                                                <option value="Shoes-47"> Shoes(EU=47, UK=12, US=13)</option>
+                                                <option value="Shoes-48"> Shoes(EU=48, UK=13, US=14)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="productColor">  رنگ:</label>
+                                            <select dir = "rtl"  class="form-control" id = "productColor" name = "productColor">
+                                                <option value="" disabled selected>  انتخاب رنگ</option>
+                                                <option value="White">  سفید</option>
+                                                <option value="Black">  مشکی</option>
+                                                <option value="Green">  سبز</option>
+                                                <option value="Blue">  آبی</option>
+                                                <option value="Red">  قرمز</option>
+                                                <option value="Yellow">  زرد</option>
+                                                <option value="Brown">  قهوای</option>
+                                                <option value="Grey">  طوسی</option>
+                                                <option value="Dark Blue">  سرمه ای</option>
+                                                <option value="Purple">  بنفش</option>
+                                                <option value="Pink">  صورتی</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="productPrice"> قیمت :</label>
-                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton(); showRealPrice();" id="productPrice" name = "productPrice">
+                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); activateOrderButton(); showRealPrice(); checkSelect();" id="productPrice" name = "productPrice">
                                         </div>
                                         <div class="form-group">
                                             <span style="color:red" id="priceAlert">
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
+                                            <span style="color:red" id="listAlert">
                                             </span>
                                         </div>
                                         <div class = "form-group">

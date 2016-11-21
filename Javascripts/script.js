@@ -244,6 +244,23 @@ function checkQuantity() {
     }
 
 }
+//function to check all select lists in home.php
+function checkSelect() {
+    var list1 = document.getElementById("clothesType");
+    var list2 = document.getElementById("productBrand");
+    var list3 = document.getElementById("productSize");
+    var list4 = document.getElementById("productColor");
+    var selectedList1 = list1.options[list1.selectedIndex].value;
+    var selectedList2 = list2.options[list2.selectedIndex].value;
+    var selectedList3 = list3.options[list3.selectedIndex].value;
+    var selectedList4 = list4.options[list4.selectedIndex].value;
+    if(selectedList1 == "" || selectedList2 == "" || selectedList3 == "" || selectedList4 == "" ) {
+        document.getElementById("listAlert").innerHTML = "شما یکی از موراد نوع لباس، سایز، رنگ و یا  نام برند را انتخاب نکرده اید!";
+        //$("#submitOrderButton").prop('disabled', false);
+    } else {
+        document.getElementById("listAlert").innerHTML = "";
+    } 
+}
 // function to activate order buttonin home.php
 function activateOrderButton() {
     if (priceFlag === true) {

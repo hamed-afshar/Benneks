@@ -219,6 +219,7 @@ $queryResult = $user->executeQuery($query);
                 <div class="panel panel-default" dir="rtl" >
                     <div class="panel-heading">
                         <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات
+                        <center><a href="admin.php"> <i class="fa fa-refresh fa-fw"></i> به روز رسانی </center> </a>
                     </div>
                     <!-- /.list-panel-heading -->
                     <div class="panel-body">
@@ -287,6 +288,7 @@ $queryResult = $user->executeQuery($query);
                                         <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
                                             <option value = "نبودن سایز">موجود نبودن سایز </option>
                                             <option value = "تمام شدن محصول">به اتمام رسیدن زمان</option>
+                                            <option value = "موجود نبودن رنگ">موجود نبودن رنگ</option>
                                             <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
                                         </select>
                                     </div>

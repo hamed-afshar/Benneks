@@ -7,9 +7,6 @@ var passAgainFlag = false;
 //Flags to keep making order submit button status home.php
 var priceFlag = false;
 //var customerTelFlag = false;
-////////////////////////////////////////////
-var row = 0;
-var index = 0;
 
 //Function to check username existence on registeration
 function checkUserName() {
@@ -131,66 +128,93 @@ function calculator(clothesType, productPrice) {
         benneksMargin = 0.1;
     }
     switch (clothesType) {
-        case "bag":
+        //Man and Women bag
+        case "women-bag":
+        case "man-bag":
             shippingCost = 50000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             //document.getElementById("finalPrice").setAttribute("disabled", false);
             //document.getElementById("finalPrice").value = totalCost;
             return totalCost;
             break;
-        case "shoes":
+            //Man and Women shoes
+        case "women-shoes":
+        case "man-shoes":
             shippingCost = 50000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
             break;
-        case "blouse":
-        case "short":
-        case "top":
-        case "skirt":
-        case "womenshirt":
-        case "manshirt":
-        case "dress":
-        case "lingerie":
-        case "tshirt":
-        case "scarf":
-        case "bikini":
-        case "swimsuit":
-        case "sleepwear":
-        case "support":
+            //Man and Women products around 200 gr
+        case "man-shirt":
+        case "man-tshirt":
+        case "man-underwear":
+        case "man-short":
+        case "man-overcoat":
+        case "women-blouse":
+        case "women-short":
+        case "women-top":
+        case "women-skirt":
+        case "women-shirt":
+        case "women-dress":
+        case "women-lingerie":
+        case "women-tshirt":
+        case "women-scarf":
+        case "women-bikini":
+        case "women-swimsuit":
+        case "women-sleepwear":
+        case "women-support":
             shippingCost = (weightCost * 200) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
             break;
-        case "cardigan":
-        case "rainingcoat":
-        case "manto":
-        case "sweater":
-        case "summerjacket":
-        case "jean":
-        case "pant":
-        case "coat&skirt":
-        case "pancho":
-        case "shomiz":
+            //Man and Women products around 450 gr
+        case "man-pant":
+        case "man-jean":
+        case "man-sweater":
+        case "women-cardigan":
+        case "women-rainingcoat":
+        case "women-manto":
+        case "women-sweater":
+        case "women-summerjacket":
+        case "women-jean":
+        case "women-pant":
+        case "women-coat&skirt":
+        case "women-pancho":
+        case "women-shomiz":
             shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
             break;
-        case "wintercoat":
-        case "palto":
-        case "jacket":
+        //Man and Women products around 600 gr
+        case "man-coat":
+        case "women-wintercoat":
+        case "women-palto":
+        case "women-jacket":
             shippingCost = (weightCost * 600) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
             break;
-        case "jeancoat":
-        case "leathercoat":
-        case "winterjacket":
-        case "heavysweater":
+            //Man and Women products around 800 gr
+        case "man-sportwear":
+        case "man-jean-coat":
+        case "man-heavy-sweater":
+        case "man-jacket":
+        case "women-sportwear":
+        case "women-jeancoat":
+        case "women-leathercoat":
+        case "women-winterjacket":
+        case "women-heavysweater":
             shippingCost = (weightCost * 800) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
             break;
-        case "heavy":
+            //Man and Women products more than 1 kg
+        case "man-heavy-jacket":
+        case "man-leather-coat":
+        case "man-palto":
+        case "man-overcoat":
+        case "man-suit":
+        case "women-heavy":
             shippingCost = (weightCost * 1200) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
@@ -201,6 +225,7 @@ function calculator(clothesType, productPrice) {
         case "perfium":
         case "watch":
         case "accessory":
+        case "sucks":
             shippingCost = (weightCost * 120) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
@@ -221,52 +246,27 @@ function checkPrice() {
     } else
     {
         document.getElementById("priceAlert").innerHTML = "";
-        priceFlag = true;
-        return priceFlag;
-    }
-
-}
-//Function to check numeric quantity only in making order section in home.php
-function checkQuantity() {
-    var quantity = document.getElementById("orderQuantity").value;
-    // check if quantity is all numeric
-    var illegalChar = /[^0-9.]/g;
-    if ((illegalChar.test(quantity))) {
-        document.getElementById("quantityAlert").innerHTML = "برای تعداد تنها از اعداد استفاده نمایید";
-        $("#submitOrderButton").prop('disabled', true);
-        priceFlag = false;
-        return priceFlag;
-    } else
-    {
-        document.getElementById("quantityAlert").innerHTML = "";
-        priceFlag = true;
-        return priceFlag;
-    }
-
-}
-//function to check all select lists in home.php
-function checkSelect() {
-    var list1 = document.getElementById("clothesType");
-    var list2 = document.getElementById("productBrand");
-    var list3 = document.getElementById("productSize");
-    var list4 = document.getElementById("productColor");
-    var selectedList1 = list1.options[list1.selectedIndex].value;
-    var selectedList2 = list2.options[list2.selectedIndex].value;
-    var selectedList3 = list3.options[list3.selectedIndex].value;
-    var selectedList4 = list4.options[list4.selectedIndex].value;
-    if(selectedList1 == "" || selectedList2 == "" || selectedList3 == "" || selectedList4 == "" ) {
-        document.getElementById("listAlert").innerHTML = "شما یکی از موراد نوع لباس، سایز، رنگ و یا  نام برند را انتخاب نکرده اید!";
-        //$("#submitOrderButton").prop('disabled', false);
-    } else {
-        document.getElementById("listAlert").innerHTML = "";
-    } 
-}
-// function to activate order buttonin home.php
-function activateOrderButton() {
-    if (priceFlag === true) {
         $("#submitOrderButton").prop('disabled', false);
+        priceFlag = true;
+        return priceFlag;
+    }
+
+}
+
+function validateForm() {
+    var clothesType = document.forms["orderForm"]["clothesType"].value;
+    var productBrand = document.forms["orderForm"]["productBrand"].value;
+    var productLink = document.forms["orderForm"]["productLink"].value;
+    var productPic = document.forms["orderForm"]["productPic"].value;
+    var productSize = document.forms["orderForm"]["productSize"].value;
+    var productColor = document.forms["orderForm"]["productColor"].value;
+    var productPrice = document.forms["orderForm"]["productPrice"].value;
+    if (clothesType == "" || productBrand == "" || productPic == "" || productLink == "" || productSize == "" || productColor == "" || productPrice == "") {
+        alert("خطا! یکی از اطلاعات ورودی پر نشده است. لطفا تمامی اطلاعات را وارد نمایید");
+        return false;
     }
 }
+
 
 
 

@@ -1,4 +1,7 @@
 <?php
+/*
+ * This page shows detailed information about orders in admin panel
+ */
 ob_start();
 session_start();
 require 'src/benneks.php';
@@ -14,7 +17,9 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderID desc";
+$query = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.productPrice, cost.benneksPrice, orders.productsWeight, shipment.benneksDeliverDate, shipment.cargoName " .
+        "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
+        "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) ORDER BY orders.orderDate desc, orders.orderID desc";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -219,7 +224,7 @@ $queryResult = $user->executeQuery($query);
                 <div class="panel panel-default" dir="rtl" >
                     <div class="panel-heading">
                         <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات
-                        <center><a href="admin.php"> <i class="fa fa-refresh fa-fw"></i> به روز رسانی </center> </a>
+                        <center><a href="admindetails.php"> <i class="fa fa-refresh fa-fw"></i> به روز رسانی </center> </a>
                     </div>
                     <!-- /.list-panel-heading -->
                     <div class="panel-body">
@@ -229,14 +234,13 @@ $queryResult = $user->executeQuery($query);
                                     <tr>
                                         <th style="text-align: center"> کد</th>
                                         <th style="text-align: center"> کاربر</th>
+                                        <th style="text-align: center">  عکس</th>
                                         <th style="text-align: center"> تاریخ سفارش</th>
-                                        <th style="text-align: center"> قیمت</th>
-                                        <th style="text-align: center"> برند</th>    
-                                        <th style="text-align: center">لینک </th>
-                                        <th style="text-align: center">عکس </th>
-                                        <th style="text-align: center">تعداد </th>
-                                        <th style="text-align: center">وضعیت </th>
-                                        <th style="text-align: center">جزئیات </th>
+                                        <th style="text-align: center"> قیمت اصلی(لیر)</th>    
+                                        <th style="text-align: center">قیمت محاسبه شده </th>
+                                        <th style="text-align: center">وزن(گرم) </th>
+                                        <th style="text-align: center">تاریخ ارسال </th>
+                                        <th style="text-align: center">کد کارگو </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -244,19 +248,14 @@ $queryResult = $user->executeQuery($query);
                                     while ($row = mysqli_fetch_row($queryResult)) {
 
                                         echo "<tr>";
-                                        echo "<td> " . $row[0] .
-                                        "<hr> "
-                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#iranDeliverModal' data-id='$row[0]' class='open-iranDeliverModal'> <i class='fa fa-plane fa-fw fa-lg'></i> </a>"
-                                        . " </td>";
+                                        echo "<td> " . $row[0] . "</td>";
                                         echo "<td>" . $row[1] . "</td>";
-                                        echo "<td>" . $row[2] . "</td>";
-                                        echo "<td>" . $row[3] . "</td>";
+                                        $picURL = str_replace(' ', '%20', $row[2]);
+                                        $productLink = $row[3];
+                                        echo "<td><a href=" . $productLink . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
                                         echo "<td>" . $row[4] . "</td>";
-                                        echo "<td> <a href= " . $row[5] . ">لینک محصول" . "</a> </td>";
-                                        $picURL = str_replace(' ', '%20', $row[6]);
-                                        echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+                                        echo "<td>" . $row[5] . "</td>";
+                                        echo "<td>" . $row[6] . "</td>";
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
@@ -267,99 +266,8 @@ $queryResult = $user->executeQuery($query);
                             </table>
                         </div>
                     </div>
-                </div>
-                <!--cancel order modal -->
-                <div class = "modal fade" id = "cancelModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> لغو سفارش </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="cancelOrder.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="rowID"> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cancelDetails"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
-                                        <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
-                                            <option value = "نبودن سایز">موجود نبودن سایز </option>
-                                            <option value = "تمام شدن محصول">به اتمام رسیدن زمان</option>
-                                            <option value = "موجود نبودن رنگ">موجود نبودن رنگ</option>
-                                            <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
-                                        </select>
-                                    </div>
-
-                                    <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> لغو سفارش  </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--accept order modal -->
-                <div class = "modal fade" id = "addModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> خرید محصول </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="addorder.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="rowID"> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
-                                        <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" > 
-                                    </div>
-
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Iran Deliver order modal -->
-                <div class = "modal fade" id = "iranDeliverModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> خرید محصول </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="iranDeliver.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ ارسال</label>
-                                        <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate" > 
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="productsWeight"><span class="glyphicon glyphicon-scale"></span>  وزن کالا به گرم</label>
-                                        <input type="text" class="form-control" name="productsWeight" id="productsWeight" maxlength="4"> 
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
-                                        <input type="text" class="form-control" name="cargoName" id="cargoName">
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div>                
             </div>
             </body>
             </html>
-
 

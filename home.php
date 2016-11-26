@@ -32,13 +32,14 @@ if (isset($_POST['submitOrderButton'])) {
     if (is_null($lastID)) {
         $lastID = 0;
     }
+    $customerID = $lastID + 1;
 // create folder for each user based on userID and upload the product pic into database
     $userDir = $_SESSION['user'];
     if (file_exists('orderpics/' . $userDir)) {
         $targetDir = 'orderpics/' . $userDir . "/";
     } else {
         mkdir('orderpics/' . $userDir);
-        $targetDir = 'orderpics/' . $userDir . "/";
+        $targetDir = 'orderpics/' . $userDir . "/" . strval($customerID);
     }
     $targetFile = $targetDir . basename($_FILES["productPic"]["name"]);
     $uploadOk = 1;
@@ -46,7 +47,6 @@ if (isset($_POST['submitOrderButton'])) {
     move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetFile);
     $image = basename($_FILES["productPic"]["name"]);
 // Insert customer information into database
-    $customerID = $lastID + 1;
     $query2 = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
     if (!$user->executeQuery($query2)) {
         $flag = false;

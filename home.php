@@ -314,7 +314,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value = "women-dress"> پیراهن بلند زنانه </option> 
                                                 <option value = "women-lingerie"> لباس زیر  زنانه</option> 
                                                 <option value = "women-tshirt"> تی شرت زنانه </option> 
-                                                <option value = "women-scarf"> انواع روسری و شال  زنانه</option> 
+                                                <option value = "women-scarf"> انواع روسری،شال وکلاه  زنانه</option> 
                                                 <option value = "women-bikini"> مایو زنانه </option> 
                                                 <option value = "women-swimsuit">  رو مایو زنانه </option> 
                                                 <option value = "women-sleepwear"> لباس خواب  زنانه</option> 
@@ -429,15 +429,21 @@ if (isset($_POST['submitOrderButton'])) {
                                             <label for="productSize"> سایز:</label>
                                             <select dir = "ltr"  class="eng-format form-control" id = "productSize" name = "productSize">
                                                 <option value="" disabled selected style="color: red">  سایزهای لباس زنانه انتخاب کنید </option>
-                                                <option value="XXSmall-UK4-EU32-US1"> XX-Small(UK=4, EU=32, US=1) </option>
-                                                <option value="XSmall-UK6-EU34-US2"> X-Small(UK=6, EU=34, US=2) </option>
-                                                <option value="Small-UK8-EU36-US4"> Small(UK=8, EU=36, US=4) </option>
-                                                <option value="Small-UK10-EU38-US6"> Small(UK=10, EU=38, US=6) </option>
-                                                <option value="Medium-UK12-EU40-US8"> Medium(UK=12, EU=40, US=8) </option>
-                                                <option value="Medium-UK14-EU42-US10"> Medium(UK=14, EU=42, US=10) </option>
-                                                <option value="Large-UK16-EU44-US12"> Large(UK=16, EU=44, US=12) </option>
-                                                <option value="Large-UK18-EU46-US14"> Large(UK=18, EU=46, US=14) </option>
-                                                <option value="XLarge-UK20-EU48-US16"> X-Large(UK=20, EU=48, US=16) </option>
+                                                <option value="Women-XXSmall"> XX-Small </option>
+                                                <option value="Women-XSmall"> X-Small </option>
+                                                <option value="Women-Small"> Small </option>
+                                                <option value="Women-Medium"> Medium </option>
+                                                <option value="Women-Large"> Large</option>
+                                                <option value="Women-XLarge"> X-Large</option>
+                                                <option value="Women-XXLarge"> XX-Large</option>
+                                                <option value="Women-32"> 32</option>
+                                                <option value="Women-34"> 34</option>
+                                                <option value="Women-36"> 36</option>
+                                                <option value="Women-38"> 38</option>
+                                                <option value="Women-40"> 40</option>
+                                                <option value="Women-42"> 42</option>
+                                                <option value="Women-44"> 44</option>
+                                                <option value="Women-46"> 46</option>
                                                 <option value="Women-Free-Size"> فری سایز زنانه </option>
                                                 <option value="" disabled style="color: red">  سایزهای کفش زنانه</option>
                                                 <option value="Shoes-35"> Shoes(EU=35, UK=2.5) </option>
@@ -457,17 +463,20 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Shoes-42"> Shoes(EU=42, UK=9.5)</option>
                                                 <option value="Shoes-42.5"> Shoes(EU=42.5, UK=10)</option>
                                                 <option value="" disabled style="color: red">سایزهای مردانه</option>
-                                                <option value="XX-Small UK=34-EU=44-US=34"> XX-Small(UK=30, EU=40, US=30) </option>
-                                                <option value="X-Small UK=36-EU=46-US=36"> X-Small(UK=32, EU=42, US=32) </option>
-                                                <option value="Small UK=38-EU=48-US=38"> Small(UK=34, EU=44, US=34) </option>
-                                                <option value="Small UK=40-EU=50-US=40"> Small(UK=36, EU=46, US=36) </option>
-                                                <option value="Medium UK=42-EU=52-US=42"> Medium(UK=38, EU=48, US=38) </option>
-                                                <option value="Medium UK=44-EU=54-US=44"> Medium(UK=40, EU=50, US=40) </option>
-                                                <option value="Large UK=46-EU=56-US=46"> Large(UK=42, EU=52, US=42) </option>
-                                                <option value="Large UK=48-EU=58-US=48"> Large(UK=44, EU=54, US=44) </option>
-                                                <option value="X-Large UK=48-EU=58-US=48"> X-Large(UK=46, EU=56, US=46) </option>
-                                                <option value="XX-Large UK=48-EU=58-US=48"> XX-Large(UK=48, EU=58, US=48) </option>
-                                                <option value="XXX-Large UK=48-EU=58-US=48"> XXXL-Large(UK=50, EU=60, US=50) </option>
+                                                <option value="Men-XXSmall"> XX-Small</option>
+                                                <option value="Men-XSmall"> X-Small</option>
+                                                <option value="Men-Small"> Small</option>
+                                                <option value="Men-Medium"> Medium</option>
+                                                <option value="Men-Large"> Large</option>
+                                                <option value="Men-XLarge"> X-Large</option>
+                                                <option value="Men-XXLarge"> XX-Large</option>
+                                                <option value="Men-XXXLarge"> XXX-Large</option>
+                                                <option value="Men-36"> 36</option>
+                                                <option value="Men-38"> 38</option>
+                                                <option value="Men-40"> 40</option>
+                                                <option value="Men-42"> 42</option>
+                                                <option value="Men-44"> 44</option>
+                                                <option value="Men-46"> 46</option>
                                                 <option value="Men-Free-Size"> فری سایز مردانه </option>
                                                 <option value="" disabled style="color: red">  سایزهای کفش مردانه</option>
                                                 <option value="Shoes-38"> Shoes(EU=38, UK=5) </option>

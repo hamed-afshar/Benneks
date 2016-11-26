@@ -14,7 +14,7 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderID desc";
+$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderTime desc";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -230,10 +230,12 @@ $queryResult = $user->executeQuery($query);
                                         <th style="text-align: center"> کد</th>
                                         <th style="text-align: center"> کاربر</th>
                                         <th style="text-align: center"> تاریخ سفارش</th>
+                                        <th style="text-align: center"> زمان سفارش</th>
                                         <th style="text-align: center"> قیمت</th>
                                         <th style="text-align: center"> برند</th>    
                                         <th style="text-align: center">لینک </th>
                                         <th style="text-align: center">عکس </th>
+                                        <th style="text-align: center">سایز </th>
                                         <th style="text-align: center">تعداد </th>
                                         <th style="text-align: center">وضعیت </th>
                                         <th style="text-align: center">جزئیات </th>
@@ -254,12 +256,14 @@ $queryResult = $user->executeQuery($query);
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
                                         echo "<td>" . $row[4] . "</td>";
-                                        echo "<td> <a href= " . $row[5] . ">لینک محصول" . "</a> </td>";
-                                        $picURL = str_replace(' ', '%20', $row[6]);
+                                        echo "<td>" . $row[5] . "</td>";
+                                        echo "<td> <a href= " . $row[6] . ">لینک محصول" . "</a> </td>";
+                                        $picURL = str_replace(' ', '%20', $row[7]);
                                         echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
-                                        echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
+                                        echo "<td>" . $row[10] . "</td>";
+                                        echo "<td>" . $row[11] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>

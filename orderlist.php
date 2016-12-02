@@ -48,7 +48,8 @@ $targetDir = 'orderpics/' . $userDir . "/";
 <script type="text/javascript" src="./Javascripts/script.js"></script>
 
 <!--Farsi Font-->
-<link rel="stylesheet" href="http://ifont.ir/apicode/30">
+<link rel="stylesheet" href="http://ifont.ir/apicode/33">
+
 
 <!--CSS Style-->
 <link rel="stylesheet" type="text/css" href="style.css" />

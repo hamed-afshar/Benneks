@@ -185,7 +185,7 @@ function calculator(clothesType, productPrice) {
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
             break;
-        //Man and Women products around 600 gr
+            //Man and Women products around 600 gr
         case "man-coat":
         case "women-wintercoat":
         case "women-palto":
@@ -266,6 +266,28 @@ function validateForm() {
         return false;
     }
 }
+
+//script for search in data table 
+function searchOrderTable() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("orderDataTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
 
 
 

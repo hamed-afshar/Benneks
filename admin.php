@@ -14,11 +14,32 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID
 $userID = $_SESSION['user'];
-$query = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderTime desc";
-if (!$user->executeQuery($query)) {
+$query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderTime desc";
+if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
-$queryResult = $user->executeQuery($query);
+$queryResult1 = $user->executeQuery($query1);
+//Get totall value(TL) and numbers for yesterday orders
+$query2 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1)";
+if (!$user->executeQuery($query2)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult2 = $user->executeQuery($query2);
+$yesterdayValue = mysqli_fetch_row($queryResult2);
+//Get totall value(TL) and numbers for Today orders
+$query3 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = current_date()";
+if (!$user->executeQuery($query2)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult3 = $user->executeQuery($query3);
+$todayValue = mysqli_fetch_row($queryResult3);
+//Get totall value(TL) and numbers for month orders
+$query4 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date())";
+if (!$user->executeQuery($query4)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult4 = $user->executeQuery($query4);
+$monthValue = mysqli_fetch_row($queryResult4);
 ?>
 <html>
     <head>
@@ -43,13 +64,14 @@ $queryResult = $user->executeQuery($query);
 <script type="text/javascript" src="./Javascripts/script.js"></script>
 
 <!--Farsi Font-->
-<link rel="stylesheet" href="http://ifont.ir/apicode/30">
+<link rel="stylesheet" href="http://ifont.ir/apicode/33">
 
 <!--CSS Style-->
 <link rel="stylesheet" type="text/css" href="style.css" />
 
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+
 <!-- script for add modal -->
 <script>
     $(document).ready(function () {
@@ -218,13 +240,68 @@ $queryResult = $user->executeQuery($query);
                 <!-- /.row -->
                 <div class="panel panel-default" dir="rtl" >
                     <div class="panel-heading">
-                        <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات
-                        <center><a href="admin.php"> <i class="fa fa-refresh fa-fw"></i> به روز رسانی </center> </a>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i></center>
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-lg-push-4 col-md-push-4 col-sm-push-4 col-xs-push-4" dir="rtl">
+                                <div class="panel panel-default" dir="rtl">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-exchange fa-fw"></i> حجم مالی:
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> امروز:</label>
+                                                <label id="dayQuantity" style="color: red"> <?php echo $todayValue[0]; ?>  </label> &nbsp &nbsp &nbsp &nbsp 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> روز گذشته:</label>
+                                                <label id="yesterdayQuantuty" style="color: red"> <?php echo $yesterdayValue[0]; ?> </label> &nbsp &nbsp &nbsp &nbsp  
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> ماه:</label>
+                                                <label id="monthQuantity" style="color: red"> <?php echo $monthValue[0]; ?> </label> &nbsp &nbsp &nbsp &nbsp 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-lg-push-4 col-md-push-4 col-sm-push-4 col-xs-push-4" dir="rtl">
+                                <div class="panel panel-default" dir="rtl">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-bullhorn fa-fw"></i> تعداد سفارشات:
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> امروز:</label>
+                                                <label id="dayQuantity" style="color: red"> <?php echo $todayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> روز گذشته:</label>
+                                                <label id="yesterdayQuantuty" style="color: red"> <?php echo $yesterdayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> ماه:</label>
+                                                <label id="monthQuantity" style="color: red"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-lg-pull-8 col-md-pull-8 col-sm-pull-8 col-xs-pull-8" dir="rtl">
+                                <div class="panel panel-default" dir="rtl">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-filter fa-fw"></i> فیلترهای جستجو:
+                                        <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" onclick="return false;" onkeyup="searchOrderTable();" placeholder="search...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.list-panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped" style="text-align:center; overflow-x: scroll">
+                            <table class="table table-bordered table-hover table-striped" id="orderDataTable" style="text-align:center; overflow-x: scroll">
                                 <thead>
                                     <tr>
                                         <th style="text-align: center"> کد</th>
@@ -243,7 +320,7 @@ $queryResult = $user->executeQuery($query);
                                 </thead>
                                 <tbody>
                                     <?php
-                                    while ($row = mysqli_fetch_row($queryResult)) {
+                                    while ($row = mysqli_fetch_row($queryResult1)) {
 
                                         echo "<tr>";
                                         echo "<td> " . $row[0] .

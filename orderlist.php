@@ -28,10 +28,24 @@ if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
 $queryResult = $user->executeQuery($query);
-//$count = mysqli_num_rows($queryResult);
 // set directory to have order picture link
 $userDir = $userID;
 $targetDir = 'orderpics/' . $userDir . "/";
+//Get totall numbers of today orders
+$query3 = "SELECT count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' AND orders.orderDate = current_date()";
+if (!$user->executeQuery($query3)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult3 = $user->executeQuery($query3);
+$todayQuantity = mysqli_fetch_row($queryResult3);
+//Get totall value(TL) of month orders
+$query4 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' AND MONTH(orders.orderDate) = month(current_date())";
+if (!$user->executeQuery($query4)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult4 = $user->executeQuery($query4);
+$monthValue = mysqli_fetch_row($queryResult4);
+
 ?>
 <html>
     <head>
@@ -123,100 +137,37 @@ $targetDir = 'orderpics/' . $userDir . "/";
                 <div class="col-lg-12">
                     <h1 class="page-header" dir="rtl">پنل کاربری</h1>
                 </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> آخرین خرید های انجام شده </div>
+                <div class="panel panel-success" dir="rtl" >
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i></center>
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" dir="rtl">
+                                <div class="panel panel-primary" dir="rtl">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-exchange fa-fw"></i> خلاصه وضعیت:
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> مجموع تعداد سفارشات امروز شما:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayQuantity[0]; ?>  </label> &nbsp &nbsp
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> مجموع تعداد سفارشات شما در این ماه(میلادی):</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> مجموع سفارشات شما در ماه میلادی(لیر):</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label>  &nbsp &nbsp
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"> </div>
-                                </div>
-                            </a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> جدیدترین سفارشات رسیده به استانبول </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات</span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"> </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> آخرین ارسالی ها به تهران</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-red">
-                            <div class="panel-heading"> 
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-support fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> سفارشات کنسل شده </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- /.row -->
-                <div class="panel panel-default" dir="rtl" >
                     <div class="panel-heading">
                         <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات
                     </div>
@@ -235,40 +186,40 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                     </tr>
                                 </thead>
                                 <tbody>
-<?php
-while ($row = mysqli_fetch_row($queryResult)) {
-    echo "<tr>";
-    echo "<td>" . $row[0] .
-    "<hr> "
-    . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> لغو سفارش </a>"
-    . "</td>";
-    $picURL = str_replace(' ', '%20', $row[1]);
-    $productLink = $row[2];
-    echo "<td> <a href=" . $productLink . "> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
-    echo "<td>" . $row[3] . "</td>";
-    echo "<td>" . $row[4] . "</td>";
-    echo "<td>" . $row[5] . "</td>";
-    echo "<td>" . $row[6] . "</td>";
-    echo "</tr>";
-}
-?>
+                                    <?php
+                                    while ($row = mysqli_fetch_row($queryResult)) {
+                                        echo "<tr>";
+                                        echo "<td>" . $row[0] .
+                                        "<hr> "
+                                        . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> لغو سفارش </a>"
+                                        . "</td>";
+                                        $picURL = str_replace(' ', '%20', $row[1]);
+                                        $productLink = $row[2];
+                                        echo "<td> <a href=" . $productLink . "> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+                                        echo "<td>" . $row[3] . "</td>";
+                                        echo "<td>" . $row[4] . "</td>";
+                                        echo "<td>" . $row[5] . "</td>";
+                                        echo "<td>" . $row[6] . "</td>";
+                                        echo "</tr>";
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
-<?php
-$query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID'";
-$queryResult2 = $user->executeQuery($query2);
-$records = mysqli_fetch_row($queryResult2);
-$totalRecords = $records[0];
-$totalPages = ceil($totalRecords / $limit);
-echo "<div class='container'>";
-echo "<ul class='pagination'>";
-for ($i = 1; $i <= $totalPages; $i++) {
-    echo "<li><a href='orderlist.php?page=" . $i . "'>" . $i . "</a></li>";
-}
-echo "</ul>";
-echo "</div>";
-?>
+                        <?php
+                        $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID'";
+                        $queryResult2 = $user->executeQuery($query2);
+                        $records = mysqli_fetch_row($queryResult2);
+                        $totalRecords = $records[0];
+                        $totalPages = ceil($totalRecords / $limit);
+                        echo "<div class='container'>";
+                        echo "<ul class='pagination'>";
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            echo "<li><a href='orderlist.php?page=" . $i . "'>" . $i . "</a></li>";
+                        }
+                        echo "</ul>";
+                        echo "</div>";
+                        ?>
 
                     </div>
                 </div>

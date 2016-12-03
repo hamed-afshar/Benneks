@@ -12,10 +12,18 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
-// fetch order table for a user that owns curent session ID
+// fetch order table for a user that owns curent session ID with pagination
+$limit = 10;
 $userID = $_SESSION['user'];
-
-$query = "SELECT orders.orderID, orders.productPic, orders.Productlink, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID' ORDER BY orders.orderID desc";
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
+    $startFrom = ($page - 1) * $limit;
+    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID' ORDER BY orders.orderID desc LIMIT " . $startFrom . "," . $limit;
+} else {
+    $page = 1;
+    $startFrom = ($page - 1) * $limit;
+    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID' ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
+};
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -227,26 +235,40 @@ $targetDir = 'orderpics/' . $userDir . "/";
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    while ($row = mysqli_fetch_row($queryResult)) {
-                                        echo "<tr>";
-                                        echo "<td>" . $row[0] . 
-                                        "<hr> "
-                                        . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> لغو سفارش </a>"
-                                        . "</td>";
-                                        $picURL = str_replace(' ', '%20', $row[1]);
-                                        $productLink = $row[2];
-                                        echo "<td> <a href=" .$productLink . "> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
-                                        echo "<td>" . $row[3] . "</td>";
-                                        echo "<td>" . $row[4] . "</td>";
-                                        echo "<td>" . $row[5] . "</td>";
-                                        echo "<td>" . $row[6] . "</td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
+<?php
+while ($row = mysqli_fetch_row($queryResult)) {
+    echo "<tr>";
+    echo "<td>" . $row[0] .
+    "<hr> "
+    . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> لغو سفارش </a>"
+    . "</td>";
+    $picURL = str_replace(' ', '%20', $row[1]);
+    $productLink = $row[2];
+    echo "<td> <a href=" . $productLink . "> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+    echo "<td>" . $row[3] . "</td>";
+    echo "<td>" . $row[4] . "</td>";
+    echo "<td>" . $row[5] . "</td>";
+    echo "<td>" . $row[6] . "</td>";
+    echo "</tr>";
+}
+?>
                                 </tbody>
                             </table>
                         </div>
+<?php
+$query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID'";
+$queryResult2 = $user->executeQuery($query2);
+$records = mysqli_fetch_row($queryResult2);
+$totalRecords = $records[0];
+$totalPages = ceil($totalRecords / $limit);
+echo "<div class='container'>";
+echo "<ul class='pagination'>";
+for ($i = 1; $i <= $totalPages; $i++) {
+    echo "<li><a href='orderlist.php?page=" . $i . "'>" . $i . "</a></li>";
+}
+echo "</ul>";
+echo "</div>";
+?>
 
                     </div>
                 </div>

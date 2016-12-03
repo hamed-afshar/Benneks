@@ -40,6 +40,9 @@ if (!$user->executeQuery($query4)) {
 }
 $queryResult4 = $user->executeQuery($query4);
 $monthValue = mysqli_fetch_row($queryResult4);
+
+//limit pagination variable
+$limit = 50;
 ?>
 <html>
     <head>
@@ -255,6 +258,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 </tbody>
                             </table>
                         </div>
+                        <?php
+                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders";
+                        $queryResult5 = $user->executeQuery($query5);
+                        $records = mysqli_fetch_row($queryResult5);
+                        $totalRecords = $records[0];
+                        $total_pages = ceil($totalRecords / $limit);
+                        echo "<div class='container'>";
+                        echo "<ul class='pagination'>";
+                        for ($i = 1; $i <= $total_pages; $i++) {
+                            echo "<li><a href='home.php?page=" . $i . "'>" . $i . "</a></li>";
+                        }
+                        echo "</ul>";
+                        echo "</div>";
+                        ?>
                     </div>
                 </div>
                 <!--cancel order modal -->

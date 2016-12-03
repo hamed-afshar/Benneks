@@ -12,9 +12,18 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
-// fetch order table for a user that owns curent session ID
+// fetch order table for a user that owns curent session ID with pagination
+$limit = 50;
 $userID = $_SESSION['user'];
-$query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderTime desc";
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
+    $startFrom = ($page - 1) * $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+} else {
+    $page = 1;
+    $startFrom = ($page - 1) * $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+};
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
@@ -40,9 +49,6 @@ if (!$user->executeQuery($query4)) {
 }
 $queryResult4 = $user->executeQuery($query4);
 $monthValue = mysqli_fetch_row($queryResult4);
-
-//limit pagination variable
-$limit = 50;
 ?>
 <html>
     <head>
@@ -164,15 +170,15 @@ $limit = 50;
                                         <div class="form-inline">
                                             <div class="form-group">
                                                 <label for="dayQuantity"> امروز:</label>
-                                                <label id="dayQuantity" style="color: red"> <?php echo $todayValue[0]; ?>  </label>  
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
                                                 <label for="yesterdayQuantuty"> روز گذشته:</label>
-                                                <label id="yesterdayQuantuty" style="color: red"> <?php echo $yesterdayValue[0]; ?> </label>  
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[0]; ?> </label>  
                                             </div>
                                             <div class="form-group">
                                                 <label for="monthQuantity"> ماه:</label>
-                                                <label id="monthQuantity" style="color: red"> <?php echo $monthValue[0]; ?> </label> 
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
                                             </div>
                                         </div>
                                     </div>
@@ -185,15 +191,15 @@ $limit = 50;
                                         <div class="form-inline">
                                             <div class="form-group">
                                                 <label for="dayQuantity"> امروز:</label>
-                                                <label id="dayQuantity" style="color: red"> <?php echo $todayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[1]; ?> </label> &nbsp &nbsp &nbsp
                                             </div>
                                             <div class="form-group">
                                                 <label for="yesterdayQuantuty"> روز گذشته:</label>
-                                                <label id="yesterdayQuantuty" style="color: red"> <?php echo $yesterdayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[1]; ?> </label> &nbsp &nbsp &nbsp
                                             </div>
                                             <div class="form-group">
                                                 <label for="monthQuantity"> ماه:</label>
-                                                <label id="monthQuantity" style="color: red"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp &nbsp
                                             </div>
                                         </div>
                                     </div>
@@ -263,11 +269,11 @@ $limit = 50;
                         $queryResult5 = $user->executeQuery($query5);
                         $records = mysqli_fetch_row($queryResult5);
                         $totalRecords = $records[0];
-                        $total_pages = ceil($totalRecords / $limit);
+                        $totalPages = ceil($totalRecords / $limit);
                         echo "<div class='container'>";
                         echo "<ul class='pagination'>";
-                        for ($i = 1; $i <= $total_pages; $i++) {
-                            echo "<li><a href='home.php?page=" . $i . "'>" . $i . "</a></li>";
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            echo "<li><a href='admin.php?page=" . $i . "'>" . $i . "</a></li>";
                         }
                         echo "</ul>";
                         echo "</div>";

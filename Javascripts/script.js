@@ -6,7 +6,6 @@ var passFlag = false;
 var passAgainFlag = false;
 //Flags to keep making order submit button status home.php
 var priceFlag = false;
-//var customerTelFlag = false;
 
 //Function to check username existence on registeration
 function checkUserName() {
@@ -16,21 +15,20 @@ function checkUserName() {
     if ((illegalChar.test(username)) || username.length < 3) {
         $('#userNameIcon').closest('.form-group').removeClass('has-success').addClass('has-error');
         $('#userNameIcon').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-        $("#signupButton").prop('disabled', true);
+        // $("#signupButton").prop('disabled', true);
         charFlag = false;
-        return charFlag
+        return charFlag;
     }
-    $.getJSON("/Benneks/phpscripts/registerCheck.php?input=username&value=" + username, function (data) {
+    $.getJSON("/phpscripts/registerCheck.php?input=username&value=" + username, function (data) {
         // if user is already exist in database, shows proper icon and make the signup button disabled
-        if (data.icon == "remove-icon") {
+        if (data.icon === "remove-icon") {
             $('#userNameIcon').closest('.form-group').removeClass('has-success').addClass('has-error');
             $('#userNameIcon').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-            $("#signupButton").prop('disabled', true);
-            usernameflag = false;
+            usernameFlag = false;
             return usernameFlag;
         }
         // if username is new then show appropriate icon and make the signup button active
-        else if (data.icon == "success-icon") {
+        else if (data.icon === "success-icon") {
             $('#userNameIcon').closest('.form-group').removeClass('has-error').addClass('has-success');
             $('#userNameIcon').removeClass('glyphicon-remove').addClass('glyphicon-ok');
             usernameFlag = true;
@@ -45,17 +43,16 @@ function checkUserName() {
 function checkEmail() {
     var email = document.getElementsByName("email")[1].value;
 
-    $.getJSON("/Benneks/phpscripts/registerCheck.php?input=email&value=" + email, function (data) {
+    $.getJSON("/phpscripts/registerCheck.php?input=email&value=" + email, function (data) {
         // if email is already exist in database, then shows proper icon and make the signup button disabled
-        if (data.icon == "remove-icon" || email.length < 5) {
+        if (data.icon === "remove-icon" || email.length < 5) {
             $('#emailIcon').closest('.form-group').removeClass('has-success').addClass('has-error');
             $('#emailIcon').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-            $("#signupButton").prop('disabled', true);
             emailFlag = false;
             return emailFlag;
         }
         // if email is new then show appropriate icon and make the signup button active
-        else if (data.icon == "success-icon") {
+        else if (data.icon === "success-icon") {
             $('#emailIcon').closest('.form-group').removeClass('has-error').addClass('has-success');
             $('#emailIcon').removeClass('glyphicon-remove').addClass('glyphicon-ok');
             emailFlag = true;
@@ -72,7 +69,6 @@ function checkPass() {
     if (password.length < 6) {
         $('#passIcon').closest('.form-group').removeClass('has-success').addClass('has-error');
         $('#passIcon').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-        $("#signupButton").prop('disabled', true);
         passFlag = false;
         return passFlag;
     }
@@ -90,15 +86,14 @@ function passAgain() {
     var passwordRe = document.getElementById("re-password").value;
     var password = document.getElementsByName("password")[1].value;
     //if password-re is not equal to pass
-    if (passwordRe != password) {
+    if (passwordRe !== password) {
         $('#passReIcon').closest('.form-group').removeClass('has-success').addClass('has-error');
         $('#passReIcon').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-        $("#signupButton").prop('disabled', true);
         passAgainFlag = false;
         return passAgainFlag;
     }
     // //if password-re is equal to pass
-    else if (passwordRe == password) {
+    else if (passwordRe === password) {
         $('#passReIcon').closest('.form-group').removeClass('has-error').addClass('has-success');
         $('#passReIcon').removeClass('glyphicon-remove').addClass('glyphicon-ok');
         passAgainFlag = true;
@@ -108,8 +103,9 @@ function passAgain() {
 
 //function to check flags and enable submit button in register.php
 function submitActivation() {
-    if ((usernameFlag == true) && (emailFlag == true) && (charFlag == true) && (passFlag == true) && (passAgainFlag == true)) {
-        $("#signupButton").prop('disabled', false);
+    if ((usernameFlag === false) || (emailFlag === false) || (charFlag === false) || (passFlag === false) || (passAgainFlag === false)) {
+        alert("خطا! یکی از فیلدهای ورود اطلاعات به درستی وارد نشده است");
+        return false;
     }
 }
 
@@ -261,7 +257,7 @@ function validateForm() {
     var productSize = document.forms["orderForm"]["productSize"].value;
     var productColor = document.forms["orderForm"]["productColor"].value;
     var productPrice = document.forms["orderForm"]["productPrice"].value;
-    if (clothesType == "" || productBrand == "" || productPic == "" || productLink == "" || productSize == "" || productColor == "" || productPrice == "") {
+    if (clothesType === "" || productBrand === "" || productPic === "" || productLink === "" || productSize === "" || productColor === "" || productPrice === "") {
         alert("خطا! یکی از اطلاعات ورودی پر نشده است. لطفا تمامی اطلاعات را وارد نمایید");
         return false;
     }

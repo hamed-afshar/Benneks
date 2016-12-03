@@ -111,11 +111,11 @@ if (isset($_POST['signupButton'])) {
                         </form>
                     </div>
                     <div id = "signUp" class = "tab-pane fade">
-                        <form class = "form-horizontal" role = "form" method = "post">
+                        <form class = "form-horizontal" role = "form" method = "post" onsubmit="return submitActivation();">
                             <div class = "form-group has-feedback">
                                 <label class = "control-label col-sm-4" for = "username" style="color:white"> Username: </label>
                                 <div class = "col-sm-5">
-                                    <input type = "text" class = "form-control" name = "username" id = "username" onkeyup = "checkUserName(); submitActivation()" placeholder = "Choose Username" required>
+                                    <input type = "text" class = "form-control" name = "username" id = "username" onkeyup = "checkUserName();" placeholder = "Choose Username" required>
                                     <span id = "userNameIcon" class = "glyphicon form-control-feedback"> </span>
                                     <span id = "userNameText">  </span>
                                 </div>
@@ -123,7 +123,7 @@ if (isset($_POST['signupButton'])) {
                             <div class = "form-group has-feedback">
                                 <label class = "control-label col-sm-4" for = "email" style="color:white"> Email: </label> 
                                 <div class = "col-sm-5">
-                                    <input type = "email" class = "form-control" name = "email" id = "email" onkeyup = "checkEmail(); submitActivation()" placeholder = "Enter Email" required>
+                                    <input type = "email" class = "form-control" name = "email" id = "email" onkeyup = "checkEmail();" placeholder = "Enter Email" required>
                                     <span id = "emailIcon" class = "glyphicon form-control-feedback"> </span>
                                     <span id = "emailText">  </span>
                                 </div>
@@ -131,7 +131,7 @@ if (isset($_POST['signupButton'])) {
                             <div class = "form-group has-feedback">
                                 <label class = "control-label col-sm-4" for = "password" style="color:white"> Password: </label>
                                 <div class = "col-sm-5">
-                                    <input type = "password" class = "form-control" name = "password" id = "password" onkeyup = "checkPass(); submitActivation()" placeholder = "Password" required>
+                                    <input type = "password" class = "form-control" name = "password" id = "password" onkeyup = "checkPass();" placeholder = "Password" required>
                                     <span id = "passIcon" class = "glyphicon form-control-feedback"> </span>
                                     <span id = "passText">  </span>
                                 </div>
@@ -139,7 +139,7 @@ if (isset($_POST['signupButton'])) {
                             <div class = "form-group has-feedback">
                                 <label class = "control-label col-sm-4" for = "re-password" style="color:white"> Password Again: </label>
                                 <div class = "col-sm-5">
-                                    <input type = "password" class = "form-control" name = "re-password" id = "re-password" onkeyup = "passAgain(); submitActivation()"  placeholder = "Repeat Password" required>
+                                    <input type = "password" class = "form-control" name = "re-password" id = "re-password" onkeyup = "passAgain();"  placeholder = "Repeat Password" required>
                                     <span id = "passReIcon" class = "glyphicon form-control-feedback"> </span>
                                     <span id = "passReText">  </span>
                                 </div>
@@ -147,7 +147,7 @@ if (isset($_POST['signupButton'])) {
                             <div class = "form-group">
                                 <label class = "control-label col-sm-4" style="color:white"> Click to Join! </label>
                                 <div class = "col-sm-5">
-                                    <button class = "btn btn-primary btn-block" class = "form-control" name= "signupButton" id = "signupButton" disabled = "disabled"> Signup </button>
+                                    <button class = "btn btn-primary btn-block" class = "form-control" name= "signupButton" id = "signupButton"> Signup </button>
                                 </div>
                                 <div class = "col-sm-12" id = "submitResultDialog" title = "Signup"> <?php echo $errMSG ?> </div>
                             </div>	

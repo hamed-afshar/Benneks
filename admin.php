@@ -327,7 +327,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </div>
                                     <div class="form-group">
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
-                                        <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" > 
+                                        <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" onclick="return false;"> 
                                     </div>
 
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
@@ -349,19 +349,19 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <form role="form" action="iranDeliver.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                        <input type="text" class="form-control" name="rowID" id="rowID" onclick="return false;">
                                     </div>
                                     <div class="form-group">
                                         <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ ارسال</label>
-                                        <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate" > 
+                                        <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate" onclick="return false;"> 
                                     </div>
                                     <div class="form-group">
                                         <label for="productsWeight"><span class="glyphicon glyphicon-scale"></span>  وزن کالا به گرم</label>
-                                        <input type="text" class="form-control" name="productsWeight" id="productsWeight" maxlength="4"> 
+                                        <input type="text" class="form-control" name="productsWeight" id="productsWeight" maxlength="4" onclick="return false;"> 
                                     </div>
                                     <div class="form-group">
                                         <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
-                                        <input type="text" class="form-control" name="cargoName" id="cargoName">
+                                        <input type="text" class="form-control" name="cargoName" id="cargoName" onclick="return false;">
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>

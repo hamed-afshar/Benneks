@@ -512,6 +512,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Light-Grey">  نقره ای</option>
                                                 <option value="Crimson">  زرشکی</option>
                                                 <option value="Bisque">  کرم</option>
+                                                <option value="Pink">  صورتی</option>
                                             </select>
                                         </div>
                                         <div class="form-group">

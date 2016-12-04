@@ -327,7 +327,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </div>
                                     <div class="form-group">
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
-                                        <input type="date" class="form-control" name="shoppingDate" id="shoppingDate" onclick="return false;"> 
+                                        <input type="date" class="form-control" name="shoppingDate" id="shoppingDate"> 
                                     </div>
 
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
@@ -353,7 +353,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </div>
                                     <div class="form-group">
                                         <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ ارسال</label>
-                                        <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate" onclick="return false;"> 
+                                        <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate"> 
                                     </div>
                                     <div class="form-group">
                                         <label for="productsWeight"><span class="glyphicon glyphicon-scale"></span>  وزن کالا به گرم</label>

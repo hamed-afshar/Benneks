@@ -314,7 +314,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value = "women-dress"> پیراهن بلند زنانه </option> 
                                                 <option value = "women-lingerie"> لباس زیر  زنانه</option> 
                                                 <option value = "women-tshirt"> تی شرت زنانه </option> 
-                                                <option value = "women-scarf"> انواع روسری،شال وکلاه  زنانه</option> 
+                                                <option value = "women-scarf"> انواع شال، کلاه، روسری و دستکش </option> 
                                                 <option value = "women-bikini"> مایو زنانه </option> 
                                                 <option value = "women-swimsuit">  رو مایو زنانه </option> 
                                                 <option value = "women-sleepwear"> لباس خواب  زنانه</option> 
@@ -477,6 +477,11 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Men-42"> 42</option>
                                                 <option value="Men-44"> 44</option>
                                                 <option value="Men-46"> 46</option>
+                                                <option value="Men-48"> 48</option>
+                                                <option value="Men-50"> 50</option>
+                                                <option value="Men-52"> 52</option>
+                                                <option value="Men-54"> 54</option>
+                                                <option value="Men-56"> 56</option>
                                                 <option value="Men-Free-Size"> فری سایز مردانه </option>
                                                 <option value="" disabled style="color: red">  سایزهای کفش مردانه</option>
                                                 <option value="Shoes-38"> Shoes(EU=38, UK=5) </option>

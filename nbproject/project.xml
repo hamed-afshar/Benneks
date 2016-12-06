@@ -9,6 +9,7 @@
             <word>kg</word>
             <word>orderDataTable</word>
             <word>سفارش</word>
+            <word>نامشخص</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

@@ -129,8 +129,6 @@ function calculator(clothesType, productPrice) {
         case "man-bag":
             shippingCost = 50000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
-            //document.getElementById("finalPrice").setAttribute("disabled", false);
-            //document.getElementById("finalPrice").value = totalCost;
             return totalCost;
             break;
             //Man and Women shoes
@@ -146,12 +144,9 @@ function calculator(clothesType, productPrice) {
         case "man-underwear":
         case "man-short":
         case "man-overcoat":
-        case "women-blouse":
         case "women-short":
         case "women-top":
-        case "women-skirt":
         case "women-shirt":
-        case "women-dress":
         case "women-lingerie":
         case "women-tshirt":
         case "women-scarf":
@@ -168,15 +163,14 @@ function calculator(clothesType, productPrice) {
         case "man-jean":
         case "man-sweater":
         case "women-cardigan":
-        case "women-rainingcoat":
-        case "women-manto":
         case "women-sweater":
-        case "women-summerjacket":
         case "women-jean":
         case "women-pant":
-        case "women-coat&skirt":
         case "women-pancho":
         case "women-shomiz":
+        case "women-blouse":
+        case "women-skirt":
+        case "women-dress":
             shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
@@ -184,8 +178,10 @@ function calculator(clothesType, productPrice) {
             //Man and Women products around 600 gr
         case "man-coat":
         case "women-wintercoat":
-        case "women-palto":
         case "women-jacket":
+        case "women-rainingcoat":
+        case "women-manto":
+        case "women-summerjacket":
             shippingCost = (weightCost * 600) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;
@@ -200,6 +196,8 @@ function calculator(clothesType, productPrice) {
         case "women-leathercoat":
         case "women-winterjacket":
         case "women-heavysweater":
+        case "women-jircoat":
+        case "women-palto":
             shippingCost = (weightCost * 800) / 1000;
             totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
             return totalCost;

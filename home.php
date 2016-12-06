@@ -307,11 +307,8 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value = "sucks"> جوراب زنانه یا مردانه </option>
                                                 \\Women products around 200 gr
                                                 <option value = "women-short"> شلوارک  زنانه</option> 
-                                                <option value = "women-blouse"> بلوز زنانه </option> 
                                                 <option value = "women-top"> تاپ زنانه </option> 
-                                                <option value = "women-skirt"> دامن زنانه </option> 
                                                 <option value = "women-shirt"> پیراهن زنانه </option> 
-                                                <option value = "women-dress"> پیراهن بلند زنانه </option> 
                                                 <option value = "women-lingerie"> لباس زیر  زنانه</option> 
                                                 <option value = "women-tshirt"> تی شرت زنانه </option> 
                                                 <option value = "women-scarf"> انواع شال، کلاه، روسری و دستکش </option> 
@@ -321,20 +318,23 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value = "women-support"> ساپورت  زنانه</option> 
                                                 \\Women products around 450 gr
                                                 <option value = "women-cardigan"> کاردیگان زنانه</option>
-                                                <option value = "women-manto"> مانتو  زنانه</option>
-                                                <option value = "women-rainingcoat"> بارونی  زنانه</option> 
-                                                <option value = "women-summerjacket"> انواع کت های تابستانی زنانه </option>
                                                 <option value = "women-jean"> شلوار جین زنانه </option>
-                                                <option value = "women-coat&skirt"> کت و دامن به همراه هم زنانه </option>
+                                                <option value = "women-dress"> پیراهن بلند زنانه </option> 
                                                 <option value = "women-shomiz"> شمیز و سرهمی  زنانه</option> 
                                                 <option value = "women-sweater">  پلیورهای نازک زنانه</option> 
                                                 <option value = "women-pancho">  پانچو  زنانه</option> 
                                                 <option value = "women-pant"> شلوار معمولی  زنانه</option> 
+                                                <option value = "women-skirt"> دامن زنانه </option>
+                                                <option value = "women-blouse"> بلوز زنانه </option> 
                                                 \\Women products around 600 gr
+                                                <option value = "women-manto"> مانتو  زنانه</option>
+                                                <option value = "women-rainingcoat"> بارونی  زنانه</option>
+                                                <option value = "women-summerjacket"> انواع کت های تابستانی زنانه </option>
                                                 <option value = "women-wintercoat"> کت زمستانی زنانه</option>
-                                                <option value = "women-palto"> پالتو سبک  زنانه</option>
                                                 <option value = "women-jacket"> کاپشن سبک  زنانه</option>
                                                 \\Women products 800 gr
+                                                <option value = "women-jircoat"> کت جیر زنانه</option>
+                                                <option value = "women-palto"> پالتو سبک  زنانه</option>
                                                 <option value = "women-sportwear"> گرمکن زنانه</option>
                                                 <option value = "women-jeancoat"> کت جین  زنانه</option>
                                                 <option value = "women-leathercoat"> کت چرم  زنانه</option>
@@ -342,6 +342,8 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value = "women-heavysweater"> پلیورهای سنگین زنانه</option>
                                                 \\ Women products more than 1 kg
                                                 <option value = "women-heavy"> کاپشن و کت و پالتو های سنگین و ضخیم  زنانه</option>
+                                                <option value = "women-heavy">انواع کت دامن زنانه</option>
+                                                <option value = "women-heavy"> انواع کت شلوار زنانه</option>
                                                 \\\\\Man Products
                                                 <option value="" disabled style="color:red">انواع لباس مردانه:</option>
                                                 \\ Man bag & shoes

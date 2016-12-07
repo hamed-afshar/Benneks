@@ -15,14 +15,20 @@ date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID with pagination
 $limit = 50;
 $userID = $_SESSION['user'];
+// if search button submited then search query will be created
+if(isset($_SESSION['searchQuery'])) {
+    $searchQuery = $_SESSION['searchQuery']; 
+} else {
+   $searchQuery = ""; 
+} 
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 };
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
@@ -207,8 +213,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-pull-8 col-md-pull-8 col-sm-pull-8" dir="rtl">
                                 <div class="panel panel-primary" dir="rtl">
                                     <div class="panel-heading">
-                                        <i class="fa fa-filter fa-fw"></i> فیلترهای جستجو:
-                                        <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" onclick="return false;" onkeyup="searchOrderTable();" placeholder="search...">
+                                        <form role = "form" method="post" name="searchForm" id="searchForm" action="search.php">
+                                            <i class="fa fa-filter fa-fw"></i> فیلترهای جستجو:
+                                            <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" onclick="return false;" onkeyup="searchOrderTable();" placeholder="search...">
+                                            <input type="radio" name="searchOption" id="searchOption" value="code" checked> کد&nbsp &nbsp 
+                                            <input type="radio" name="searchOption" id="searchOption" value="name"> نام &nbsp &nbsp
+                                            <input type="radio" name="searchOption" id="searchOption" value="done"> خریداری شده &nbsp &nbsp
+                                            <input type="radio" name="searchOption" id="searchOption" value="cancel"> لغو شده &nbsp &nbsp
+                                            <input type="radio" name="searchOption" id="searchOption" value="unknown"> نامشخص
+                                            <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
+                                                <span>
+                                                    <i class="fa fa-search"> </i>
+                                                </span>
+                                            </button>
+                                        </form>                                    
                                     </div>
                                 </div>
                             </div>

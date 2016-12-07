@@ -24,13 +24,13 @@ if (isset($_POST['searchButton'])) {
             $searchQuery = "WHERE orders.orderID = " . $searchValue . "";  
             break;
         case "name":
-            $searchQuery = "WHERE users.userName = " . $searchValue . "";
+            $searchQuery = "WHERE users.userName = " . "'" . $searchValue . "'" . "";
             break;
         case "done":
-            $searchQuery = "WHERE stat.orderStatus = انجام شده";
+            $searchQuery = "WHERE stat.orderStatus = " . "'انجام شده'";
             break;
         case "cancel":
-            $searchQuery = "WHERE stat.orderStatus = لغو";
+            $searchQuery = "WHERE stat.orderStatus = " . "'لغو'";
             break;
         case "unknown":
             $searchQuery = "WHERE stat.orderStatus IS NULL";

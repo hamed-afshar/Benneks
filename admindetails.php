@@ -1,6 +1,5 @@
 <?php
-/*
- * This page shows detailed information about orders in admin panel
+/* This page shows detailed information about orders in admin panel
  */
 ob_start();
 session_start();
@@ -15,15 +14,55 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
-// fetch order table for a user that owns curent session ID
+// fetch order table for a user that owns curent session ID with pagination
+$limit = 50;
 $userID = $_SESSION['user'];
-$query = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.productPrice, cost.benneksPrice, orders.productsWeight, shipment.benneksDeliverDate, shipment.cargoName " .
-        "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
-        "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) ORDER BY orders.orderDate desc, orders.orderID desc";
-if (!$user->executeQuery($query)) {
+// if search button submited then search query will be created
+if (isset($_SESSION['searchQuery'])) {
+    $searchQuery = "AND " . $_SESSION['searchQuery'];
+} else {
+    $searchQuery = "";
+}
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
+    $startFrom = ($page - 1) * $limit;
+    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.productPrice, cost.benneksPrice, orders.productsWeight, shipment.benneksDeliverDate, shipment.cargoName " .
+            "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
+            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc";
+    unset($_SESSION['searchQuery']);
+} else {
+    $page = 1;
+    $startFrom = ($page - 1) * $limit;
+    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.productPrice, cost.benneksPrice, orders.productsWeight, shipment.benneksDeliverDate, shipment.cargoName " .
+            "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
+            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc";
+};
+unset($_SESSION['searchQuery']);
+if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
-$queryResult = $user->executeQuery($query);
+$queryResult1 = $user->executeQuery($query1);
+//Get totall value(TL) and numbers for yesterday orders
+$query2 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1)";
+if (!$user->executeQuery($query2)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult2 = $user->executeQuery($query2);
+$yesterdayValue = mysqli_fetch_row($queryResult2);
+//Get totall value(TL) and numbers for Today orders
+$query3 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = current_date()";
+if (!$user->executeQuery($query2)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult3 = $user->executeQuery($query3);
+$todayValue = mysqli_fetch_row($queryResult3);
+//Get totall value(TL) and numbers for month orders
+$query4 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date())";
+if (!$user->executeQuery($query4)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult4 = $user->executeQuery($query4);
+$monthValue = mysqli_fetch_row($queryResult4);
 ?>
 <html>
     <head>
@@ -55,33 +94,8 @@ $queryResult = $user->executeQuery($query);
 
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-<!-- script for add modal -->
-<script>
-    $(document).ready(function () {
-        $(document).on("click", ".open-addModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
-        });
-    });
-</script>
-<!-- script for cancel modal -->
-<script>
-    $(document).ready(function () {
-        $(document).on("click", ".open-cancelModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
-        });
-    });
-</script>
-<!-- script for iran Delivery modal -->
-<script>
-    $(document).ready(function () {
-        $(document).on("click", ".open-iranDeliverModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
-        });
-    });
-</script>
+
+
 <title>Benneks Order System</title>
 </head>
 <body>
@@ -128,103 +142,88 @@ $queryResult = $user->executeQuery($query);
                 <div class="col-lg-12">
                     <h1 class="page-header" dir="rtl">پنل کاربری</h1>
                 </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> آخرین خرید های انجام شده </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"> </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> جدیدترین سفارشات رسیده به استانبول </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات</span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"> </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> آخرین ارسالی ها به تهران</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-red">
-                            <div class="panel-heading"> 
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-support fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> سفارشات کنسل شده </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- /.row -->
-                <div class="panel panel-default" dir="rtl" >
+                <div class="panel panel-success" dir="rtl" >
                     <div class="panel-heading">
-                        <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات
-                        <center><a href="admindetails.php"> <i class="fa fa-refresh fa-fw"></i> به روز رسانی </center> </a>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i></center>
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-push-4 col-md-push-4 col-sm-push-4" dir="rtl">
+                                <div class="panel panel-primary" dir="rtl">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-exchange fa-fw"></i> حجم مالی:
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> امروز:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> روز گذشته:</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[0]; ?> </label>  
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> ماه:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-push-4 col-md-push-4 col-sm-push-4" dir="rtl">
+                                <div class="panel panel-primary" dir="rtl">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-bullhorn fa-fw"></i> تعداد سفارشات:
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> امروز:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> روز گذشته:</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> ماه:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-pull-8 col-md-pull-8 col-sm-pull-8" dir="rtl">
+                                <div class="panel panel-primary" dir="rtl">
+                                    <div class="panel-heading">
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <form role = "form" action="search.php" method="post" dir="rtl">
+                                            <i class="fa fa-filter fa-fw"></i> عبارت جستجو:
+                                            <div class="form-group">
+                                                <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" placeholder="search...">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="searchOption"></span>  نوع فیلتر:</label>
+                                                <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption" disabled>
+                                                    <option value="code" selected> کد </option>
+                                                    <option value="name"> نام </option>
+                                                    <option value="done"> خریداری شده</option>
+                                                    <option value="cancel"> لغو شده</option>
+                                                    <option value="unknown"> نامشخص </option>
+                                                </select>
+                                            </div>
+                                            <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
+                                                <span>
+                                                    <i class="fa fa-search"> </i>
+                                                </span>
+                                            </button>
+                                        </form> 
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.list-panel-heading -->
                     <div class="panel-body">
@@ -236,7 +235,7 @@ $queryResult = $user->executeQuery($query);
                                         <th style="text-align: center"> کاربر</th>
                                         <th style="text-align: center">  عکس</th>
                                         <th style="text-align: center"> تاریخ سفارش</th>
-                                        <th style="text-align: center"> قیمت اصلی(لیر)</th>    
+                                        <th style="text-align: center"> قیمت اصلی(لیر)</th>
                                         <th style="text-align: center">قیمت محاسبه شده </th>
                                         <th style="text-align: center">وزن(گرم) </th>
                                         <th style="text-align: center">تاریخ ارسال </th>
@@ -245,7 +244,7 @@ $queryResult = $user->executeQuery($query);
                                 </thead>
                                 <tbody>
                                     <?php
-                                    while ($row = mysqli_fetch_row($queryResult)) {
+                                    while ($row = mysqli_fetch_row($queryResult1)) {
 
                                         echo "<tr>";
                                         echo "<td> " . $row[0] . "</td>";
@@ -266,8 +265,8 @@ $queryResult = $user->executeQuery($query);
                             </table>
                         </div>
                     </div>
-                </div>                
-            </div>
-            </body>
-            </html>
+                </div>
+                </body>
+                </html>
+
 

@@ -47,5 +47,5 @@ if($flag == true ) {
     $user->executeQuery($query2);
 }
 echo $msg;
-//header("Location: orderlist.php");
+mysqli_close($user->conn);
 ?>

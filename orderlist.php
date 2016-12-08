@@ -219,6 +219,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         }
                         echo "</ul>";
                         echo "</div>";
+                        mysqli_close($user->conn);
                         ?>
 
                     </div>

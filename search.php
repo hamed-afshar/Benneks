@@ -18,28 +18,36 @@ error_reporting(E_ALL);
 if (isset($_POST['searchButton'])) {
     $searchOption = $_POST['searchOption'];
     $searchValue = $_POST['searchInput'];
+    $searchReq = $_POST['searchReq'];
     $searchquery = "";
     switch ($searchOption) {
         case "code":
-            $searchQuery = "WHERE orders.orderID = " . $searchValue . "";  
+            $searchQuery = "orders.orderID = " . $searchValue . "";  
             break;
         case "name":
-            $searchQuery = "WHERE users.userName = " . "'" . $searchValue . "'" . "";
+            $searchQuery = "users.userName = " . "'" . $searchValue . "'" . "";
             break;
         case "done":
-            $searchQuery = "WHERE stat.orderStatus = " . "'انجام شده'";
+            $searchQuery = "stat.orderStatus = " . "'انجام شده'";
             break;
         case "cancel":
-            $searchQuery = "WHERE stat.orderStatus = " . "'لغو'";
+            $searchQuery = "stat.orderStatus = " . "'لغو'";
             break;
         case "unknown":
-            $searchQuery = "WHERE stat.orderStatus IS NULL";
+            $searchQuery = "stat.orderStatus IS NULL";
             break;
         default :
             $searchQuery = "";
             break;
     }
     $_SESSION['searchQuery'] = $searchQuery;
-    header("Location: admin.php");
+    switch ($searchReq) {
+        case "adminPage":
+            header("Location: admin.php");
+            break;
+        case "admindetailsPage":
+           header("Location: admindetails.php");
+           break;
+    }    
 }
 ?>

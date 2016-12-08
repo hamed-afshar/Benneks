@@ -17,7 +17,7 @@ $limit = 50;
 $userID = $_SESSION['user'];
 // if search button submited then search query will be created
 if (isset($_SESSION['searchQuery'])) {
-    $searchQuery = $_SESSION['searchQuery'];
+    $searchQuery = "WHERE " . $_SESSION['searchQuery'];
 } else {
     $searchQuery = "";
 }
@@ -25,7 +25,6 @@ if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
-    unset($_SESSION['searchQuery']);
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
@@ -33,7 +32,8 @@ if (isset($_GET["page"])) {
 };
 unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query1)) {
-    echo mysqli_error($user->conn);
+    //echo mysqli_error($user->conn);
+    echo "خطا! لطفا نوع فیلتر را صحیح وارد نمایید.";
 }
 $queryResult1 = $user->executeQuery($query1);
 //Get totall value(TL) and numbers for yesterday orders
@@ -47,6 +47,7 @@ $yesterdayValue = mysqli_fetch_row($queryResult2);
 $query3 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = current_date()";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
+    
 }
 $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
@@ -166,7 +167,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
-                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i></center>
+                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i> </a></center>
                             </div>
                         </div>
                         <div class="row"> 
@@ -217,7 +218,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     <div class="panel-heading">
                                         <form role = "form" method="post" name="searchForm" id="searchForm"  action="search.php">
                                             <i class="fa fa-filter fa-fw"></i> عبارت جستجو:
-                                            <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" onclick="return false;" placeholder="search...">
+                                            <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" placeholder="search...">
                                             <label for="searchOption"></span>  نوع فیلتر:</label>
                                             <div class="form-group">
                                                 <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption">
@@ -227,6 +228,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                     <option value="cancel"> لغو شده</option>
                                                     <option value="unknown"> نامشخص </option>
                                                 </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" name="searchReq" value="adminPage"/>
                                             </div>
                                             <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
                                                 <span>
@@ -289,7 +293,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             </table>
                         </div>
                         <?php
-                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders";
+                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
+                        unset($_SESSION['searchQuery']);
                         $queryResult5 = $user->executeQuery($query5);
                         $records = mysqli_fetch_row($queryResult5);
                         $totalRecords = $records[0];
@@ -301,6 +306,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         }
                         echo "</ul>";
                         echo "</div>";
+                        mysqli_close($user->conn); 
                         ?>
                     </div>
                 </div>
@@ -395,7 +401,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                     </div>
                 </div>
             </div>
-            </body>
-            </html>
+        </div>
+    </div>
+</body>
+</html>
 
 

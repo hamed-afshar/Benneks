@@ -30,5 +30,6 @@ $query = "UPDATE benneks.shipment inner JOIN benneks.stat ON shipment.orders_ord
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
+mysqli_close($user->conn);
 header("Location: admin.php");
 ?>

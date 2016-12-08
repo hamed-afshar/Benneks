@@ -28,16 +28,14 @@ if (isset($_GET["page"])) {
     $startFrom = ($page - 1) * $limit;
     $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.productPrice, cost.benneksPrice, orders.productsWeight, shipment.benneksDeliverDate, shipment.cargoName " .
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
-            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc";
-    unset($_SESSION['searchQuery']);
+            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
     $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.productPrice, cost.benneksPrice, orders.productsWeight, shipment.benneksDeliverDate, shipment.cargoName " .
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
-            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc";
+            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 };
-unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
@@ -146,7 +144,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
-                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i></center>
+                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i> </a></center>
                             </div>
                         </div>
                         <div class="row"> 
@@ -195,17 +193,14 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-pull-8 col-md-pull-8 col-sm-pull-8" dir="rtl">
                                 <div class="panel panel-primary" dir="rtl">
                                     <div class="panel-heading">
-                                    </div>
-                                    <div class="panel-body">
-
                                         <form role = "form" action="search.php" method="post" dir="rtl">
                                             <i class="fa fa-filter fa-fw"></i> عبارت جستجو:
                                             <div class="form-group">
                                                 <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" placeholder="search...">
                                             </div>
                                             <div class="form-group">
-                                                <label for="searchOption"></span>  نوع فیلتر:</label>
-                                                <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption" disabled>
+                                                <label for="searchOption"> نوع فیلتر:</label>
+                                                <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption">
                                                     <option value="code" selected> کد </option>
                                                     <option value="name"> نام </option>
                                                     <option value="done"> خریداری شده</option>
@@ -213,13 +208,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                     <option value="unknown"> نامشخص </option>
                                                 </select>
                                             </div>
+                                            <div class="form-group">
+                                                <input type="hidden" name="searchReq" value="admindetailsPage"/>
+                                            </div>
                                             <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
                                                 <span>
                                                     <i class="fa fa-search"> </i>
                                                 </span>
                                             </button>
                                         </form> 
-                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -264,9 +261,28 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 </tbody>
                             </table>
                         </div>
+                        <?php
+                        $query5 = "select count(orders.orderID) FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
+                                "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery";
+                        unset($_SESSION['searchQuery']);
+                        $queryResult5 = $user->executeQuery($query5);
+                        $records = mysqli_fetch_row($queryResult5);
+                        $totalRecords = $records[0];
+                        $totalPages = ceil($totalRecords / $limit);
+                        echo "<div class='container'>";
+                        echo "<ul class='pagination'>";
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            echo "<li><a href='admindetails.php?page=" . $i . "'>" . $i . "</a></li>";
+                        }
+                        echo "</ul>";
+                        echo "</div>";
+                        mysqli_close($user->conn);
+                        ?>
                     </div>
                 </div>
-                </body>
-                </html>
+            </div>
+        </div>
+</body>
+</html>
 
 

@@ -67,6 +67,8 @@ if (isset($_POST['submitOrderButton'])) {
     $productLink = $_POST['productLink'];
     $productPrice = $_POST['productPrice'];
     $benneksPrice = intval($_POST['benneksPrice']);
+    $rateTL = intval($_POST['rateTL']);
+    $originalTomanPrice = intval($productPrice) * $rateTL;
     // user directory needs to be added before pic name
     $productPic = $targetDir . $image;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
@@ -81,7 +83,7 @@ if (isset($_POST['submitOrderButton'])) {
     // once an order submited, we nedd to create three records in shipment, status and cost table for this order
     $query4 = "INSERT INTO benneks.shipment(orders_orderID) VALUES ('$orderID')";
     $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
-    $query6 = "INSERT INTO benneks.cost(orders_orderID, benneksPrice) VALUES ('$orderID', '$benneksPrice')";
+    $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice')";
     if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
         $flag = true;
     } else {
@@ -534,13 +536,17 @@ if (isset($_POST['submitOrderButton'])) {
                                             <label for = "benneksPrice"> قیمت فروش سیستم :</label>
                                             <input type = "text" class = "form-control eng-format" dir="ltr" id = "benneksPrice" name = "benneksPrice" readonly="readonly" placeholder = "قیمت فروش سیستم ">
                                         </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="rateTL" name="rateTL" >
+                                        </div>
 
                                         <!-- javascript to pass variables to calculator() in script.js file -->
                                         <script>
                                             function showRealPrice() {
                                                 var clothesType = document.getElementById("clothesType").value;
                                                 var productPrice = document.getElementById("productPrice").value;
-                                                document.getElementById("benneksPrice").value = calculator(clothesType, productPrice);
+                                                 document.getElementById("benneksPrice").value = calculator(clothesType, productPrice);
+                                                 document.getElementById("rateTL").value = currencyRate();
                                             }
                                         </script>
 

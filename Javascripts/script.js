@@ -108,6 +108,11 @@ function submitActivation() {
         return false;
     }
 }
+//Function to return TL Rate
+function currencyRate() {
+    var rateTL = 1200;
+    return rateTL;
+}
 
 //Function to automatically calculate the price for sellers in calculator.php
 function calculator(clothesType, productPrice) {

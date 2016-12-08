@@ -5,7 +5,7 @@ ob_start();
 session_start();
 require 'src/benneks.php';
 // if Admin session is not set this will get access denied msg
-if ($_SESSION['userAccess'] !== '2' ) {
+if ($_SESSION['userAccess'] !== '2') {
     echo "اجازه دسترسی ندارید";
     exit();
 }
@@ -26,13 +26,13 @@ if (isset($_SESSION['searchQuery'])) {
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.productPrice, cost.benneksPrice, orders.productsWeight, shipment.benneksDeliverDate, shipment.cargoName " .
+    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink ,orders.orderDate, orders.productPrice, cost.rateTL, cost.originalTomanPrice ,cost.benneksPrice ,shipment.cargoName " .
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
             "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.productPrice, cost.benneksPrice, orders.productsWeight, shipment.benneksDeliverDate, shipment.cargoName " .
+    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink ,orders.orderDate, orders.productPrice, cost.rateTL, cost.originalTomanPrice ,cost.benneksPrice ,shipment.cargoName " .
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
             "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 };
@@ -233,9 +233,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <th style="text-align: center">  عکس</th>
                                         <th style="text-align: center"> تاریخ سفارش</th>
                                         <th style="text-align: center"> قیمت اصلی(لیر)</th>
+                                        <th style="text-align: center"> نرخ لیر(لیر)</th>
+                                        <th style="text-align: center"> قیمت اصلی(تومان)</th>
                                         <th style="text-align: center">قیمت محاسبه شده </th>
-                                        <th style="text-align: center">وزن(گرم) </th>
-                                        <th style="text-align: center">تاریخ ارسال </th>
                                         <th style="text-align: center">کد کارگو </th>
                                     </tr>
                                 </thead>

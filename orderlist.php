@@ -39,7 +39,7 @@ if (!$user->executeQuery($query3)) {
 $queryResult3 = $user->executeQuery($query3);
 $todayQuantity = mysqli_fetch_row($queryResult3);
 //Get totall value(TL) of month orders
-$query4 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' AND MONTH(orders.orderDate) = month(current_date())";
+$query4 = "SELECT SUM(CAST(cost.benneksPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID WHERE orders.users_userID = '$userID' AND MONTH(orders.orderDate) = month(current_date())";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
@@ -159,7 +159,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> مجموع سفارشات شما در ماه میلادی(لیر):</label>
+                                                <label for="monthQuantity"> مجموع سفارشات شما در ماه میلادی(تومان):</label>
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label>  &nbsp &nbsp
                                             </div>
                                         </div>

@@ -5,7 +5,7 @@ ob_start();
 session_start();
 require 'src/benneks.php';
 // if Admin session is not set this will get access denied msg
-if ($_SESSION['userAccess'] !== 2 ) {
+if ($_SESSION['userAccess'] !== '2' ) {
     echo "اجازه دسترسی ندارید";
     exit();
 }

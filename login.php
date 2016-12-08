@@ -41,16 +41,20 @@ if (isset($_POST['loginButton'])) {
     // if there is no error
     if (!$error) {
         $pass = hash('sha256', $password); //password using SHA256
-        $query = "SELECT userID, userName, userPass FROM benneks.users WHERE userEmail='" . $email . "'";
+        $query = "SELECT userID, userName, userPass, userAccess FROM benneks.users WHERE userEmail='" . $email . "'";
         $loginRes = $user->loginUser($query);
         $row = mysqli_fetch_array($loginRes);
         $count = mysqli_num_rows($loginRes); // if username and password are correct it must return 1
+        //For admin user
         if($count == 1 && $row['userName'] == "benneksadmin" && $row['userPass'] == $pass) {
             $_SESSION['user'] = $row ['userID'];
+            $_SESSION['userAccess'] = $row ['userAccess']; 
             header("Location: admin.php");
         }
+        //for Normal users
         else if ($count == 1 && $row['userPass'] == $pass) {
             $_SESSION['user'] = $row['userID'];
+            $_SESSION['userAccess'] = $row ['userAccess'];
             header("Location: home.php");
         }  else {
             $errMSG = "نام کاربری و یا کلمه عبور صحیح نمی باشد.";

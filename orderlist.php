@@ -18,11 +18,11 @@ $userID = $_SESSION['user'];
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID' ORDER BY orders.orderID desc LIMIT " . $startFrom . "," . $limit;
+    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' ORDER BY orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID' ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
+    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
 };
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
@@ -39,13 +39,12 @@ if (!$user->executeQuery($query3)) {
 $queryResult3 = $user->executeQuery($query3);
 $todayQuantity = mysqli_fetch_row($queryResult3);
 //Get totall value(TL) of month orders
-$query4 = "SELECT SUM(CAST(cost.benneksPrice AS decimal(8,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID WHERE orders.users_userID = '$userID' AND MONTH(orders.orderDate) = month(current_date())";
+$query4 = "SELECT SUM(CAST(cost.benneksPrice AS decimal(8))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID WHERE orders.users_userID = '$userID' AND MONTH(orders.orderDate) = month(current_date())";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
 $queryResult4 = $user->executeQuery($query4);
 $monthValue = mysqli_fetch_row($queryResult4);
-
 ?>
 <html>
     <head>
@@ -179,10 +178,13 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     <tr>
                                         <th style="text-align: center"> کد</th>
                                         <th style="text-align: center"> عکس</th>
+                                        <th style="text-align: center"> سایز</th>
+                                        <th style="text-align: center"> قیمت(تومان)</th>
                                         <th style="text-align: center"> تاریخ خرید</th>
                                         <th style="text-align: center"> تاریخ ارسال</th>    
                                         <th style="text-align: center">وضعیت </th>
                                         <th style="text-align: center"> جزئیات </th>
+                                        <th style="text-align: center"> کد کارگو</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -200,6 +202,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[4] . "</td>";
                                         echo "<td>" . $row[5] . "</td>";
                                         echo "<td>" . $row[6] . "</td>";
+                                        echo "<td>" . $row[7] . "</td>";
+                                        echo "<td>" . $row[8] . "</td>";
+                                        echo "<td>" . $row[9] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>

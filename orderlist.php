@@ -39,7 +39,7 @@ if (!$user->executeQuery($query3)) {
 $queryResult3 = $user->executeQuery($query3);
 $todayQuantity = mysqli_fetch_row($queryResult3);
 //Get totall value(TL) of month orders
-$query4 = "SELECT SUM(CAST(cost.benneksPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID WHERE orders.users_userID = '$userID' AND MONTH(orders.orderDate) = month(current_date())";
+$query4 = "SELECT SUM(CAST(cost.benneksPrice AS decimal(8,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID WHERE orders.users_userID = '$userID' AND MONTH(orders.orderDate) = month(current_date())";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }

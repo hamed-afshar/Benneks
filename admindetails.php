@@ -28,34 +28,34 @@ if (isset($_GET["page"])) {
     $startFrom = ($page - 1) * $limit;
     $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink ,orders.orderDate, orders.productPrice, cost.rateTL, cost.originalTomanPrice ,cost.benneksPrice ,shipment.cargoName " .
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
-            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
+            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY users.userName, orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
     $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink ,orders.orderDate, orders.productPrice, cost.rateTL, cost.originalTomanPrice ,cost.benneksPrice ,shipment.cargoName " .
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
-            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
+            "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY users.username, orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 };
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
 $queryResult1 = $user->executeQuery($query1);
-//Get totall value(TL) and numbers for yesterday orders
-$query2 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1)";
+//Get totall value(TL) and numbers for yesterday orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
+$query2 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE stat.orderStatus = 'انجام شده' AND orders.orderDate = subdate(current_date(), 1)";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult2 = $user->executeQuery($query2);
 $yesterdayValue = mysqli_fetch_row($queryResult2);
-//Get totall value(TL) and numbers for Today orders
-$query3 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = current_date()";
+//Get totall value(TL) and numbers for Today orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
+$query3 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE stat.orderStatus = 'انجام شده' AND orders.orderDate = current_date()";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
-//Get totall value(TL) and numbers for month orders
-$query4 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date())";
+//Get totall value(TL) and numbers for month orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
+$query4 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE stat.orderStatus = 'انجام شده' AND MONTH(orders.orderDate) = month(current_date());";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
@@ -206,6 +206,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                     <option value="done"> خریداری شده</option>
                                                     <option value="cancel"> لغو شده</option>
                                                     <option value="unknown"> نامشخص </option>
+                                                    <option value="cargo"> کارگو </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">

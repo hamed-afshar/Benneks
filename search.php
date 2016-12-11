@@ -36,6 +36,9 @@ if (isset($_POST['searchButton'])) {
         case "unknown":
             $searchQuery = "stat.orderStatus IS NULL";
             break;
+        case "cargo":
+            $searchQuery = "shipment.cargoName = " . "'" . $searchValue . "'" . "";
+            break;
         default :
             $searchQuery = "";
             break;

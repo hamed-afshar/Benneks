@@ -229,6 +229,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <table class="table table-bordered table-hover table-striped" style="text-align:center; overflow-x: scroll">
                                 <thead>
                                     <tr>
+                                        <th style="text-align: center"> ردیف</th>
                                         <th style="text-align: center"> کد</th>
                                         <th style="text-align: center"> کاربر</th>
                                         <th style="text-align: center">  عکس</th>
@@ -242,9 +243,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 </thead>
                                 <tbody>
                                     <?php
+                                    $i = 1; // keep the row number
                                     while ($row = mysqli_fetch_row($queryResult1)) {
-
                                         echo "<tr>";
+                                        echo "<td> " . $i . "</td>";
                                         echo "<td> " . $row[0] . "</td>";
                                         echo "<td>" . $row[1] . "</td>";
                                         $picURL = str_replace(' ', '%20', $row[2]);
@@ -257,7 +259,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
                                         echo "</tr>";
+                                        $i++;
                                     }
+                                    
                                     ?>
                                 </tbody>
                             </table>

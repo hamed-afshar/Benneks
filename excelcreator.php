@@ -18,17 +18,13 @@ ini_set('display_startup_errors', TRUE);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 
-define('EOL', (PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
-
 /** Include PHPExcel */
 require_once dirname(__FILE__) . '/Excel-Classes/PHPExcel.php';
 
 // Create new PHPExcel object
-echo date('H:i:s'), " Create new PHPExcel object", EOL;
 $objPHPExcel = new PHPExcel();
 
 // Set document properties
-echo date('H:i:s'), " Set document properties", EOL;
 $objPHPExcel->getProperties()->setCreator("Benneks")
         ->setLastModifiedBy("Admin")
         ->setTitle("Admin Report")
@@ -39,7 +35,6 @@ $objPHPExcel->getProperties()->setCreator("Benneks")
 
 
 // Add header titles
-echo date('H:i:s'), " Add some data", EOL;
 $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('A1', 'ردیف')
         ->setCellValue('B1', 'کد')
@@ -61,22 +56,22 @@ while ($row = mysqli_fetch_row($queryResult1)){
     $objPHPExcel->getActiveSheet()->setCellValue('F'.$i, $row[9]);
     $i++;
 }
-
+// autosize the columns
+$objSheet = $objPHPExcel->getActiveSheet();
+$objSheet->getColumnDimension('A')->setAutoSize(true);
+$objSheet->getColumnDimension('B')->setAutoSize(true);
+$objSheet->getColumnDimension('C')->setAutoSize(true);
+$objSheet->getColumnDimension('D')->setAutoSize(true);
+$objSheet->getColumnDimension('E')->setAutoSize(true);
+$objSheet->getColumnDimension('F')->setAutoSize(true);
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
 
-
 // Save Excel 2007 file
-echo date('H:i:s'), " Write to Excel2007 format", EOL;
-$callStartTime = microtime(true);
-
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-$objWriter->save(str_replace('.php', '.xlsx', __FILE__));
-$callEndTime = microtime(true);
-$callTime = $callEndTime - $callStartTime;
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment;filename="report.xlsx"');
+header('Cache-Control: max-age=0');
 
-echo date('H:i:s'), " File written to ", str_replace('.php', '.xlsx', pathinfo(__FILE__, PATHINFO_BASENAME)), EOL;
-echo 'Call time to write Workbook was ', sprintf('%.4f', $callTime), " seconds", EOL;
-// Echo memory usage
-echo date('H:i:s'), ' Current memory usage: ', (memory_get_usage(true) / 1024 / 1024), " MB", EOL;
+$objWriter->save('php://output');
 

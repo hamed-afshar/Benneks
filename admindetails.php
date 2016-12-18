@@ -36,6 +36,8 @@ if (isset($_GET["page"])) {
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
             "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY users.username, orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 };
+// This session variable will be used in excel creator 
+$_SESSION['query1'] = $query1;
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
@@ -167,6 +169,11 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="panel-body">
+                                        <i class="fa fa-circle fa-fw"></i> گزارشات:
+                                        <a href='excelcreator.php'> <i class='fa fa-file-excel-o fa-fw'> </i> </a>
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-push-4 col-md-push-4 col-sm-push-4" dir="rtl">
@@ -243,6 +250,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 </thead>
                                 <tbody>
                                     <?php
+                                    // Creating table
                                     $i = 1; // keep the row number
                                     while ($row = mysqli_fetch_row($queryResult1)) {
                                         echo "<tr>";
@@ -261,18 +269,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "</tr>";
                                         $i++;
                                     }
-                                    
                                     ?>
                                 </tbody>
                             </table>
                         </div>
                         <?php
+                        //Pagination
+                        // query to get data
                         $query5 = "select count(orders.orderID) FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
                                 "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery";
                         unset($_SESSION['searchQuery']);
                         $queryResult5 = $user->executeQuery($query5);
                         $records = mysqli_fetch_row($queryResult5);
                         $totalRecords = $records[0];
+                        // calculate total pages and create links based on numbers of the pages
                         $totalPages = ceil($totalRecords / $limit);
                         echo "<div class='container'>";
                         echo "<ul class='pagination'>";

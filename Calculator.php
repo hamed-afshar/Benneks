@@ -35,6 +35,15 @@ if (!isset($_SESSION['user'])) {
                     <h3 class = "list-group-item list-group-item-success"> <center> Bennkes Calculator</center> </h3>
                     <form class = "form-horizontal"  role = "form" method = "post">	
                         <div class = "form-group" id = "calculator" style="margin-top: 40px">	
+                            <div class="form-group">
+                                <label class = "control-label col-sm-4" for="country"> Country </label>
+                                <div class="col-sm-5">
+                                    <select dir="rtl" class="form-control" id="country" name ="country">
+                                        <option value="ترکیه" selected> ترکیه </option>
+                                        <option value="انگلیس"> انگلیس </option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class = "form-group">
                                 <label class = "control-label col-sm-4" for = "productType"> Type: </label>
                                 <div class = "col-sm-5">
@@ -129,9 +138,10 @@ if (!isset($_SESSION['user'])) {
                             </div>
                             <script>
                                 function calculate() {
+                                    var country = document.getElementById("country").value;
                                     var clothesType = document.getElementById("clothesType").value;
                                     var productPrice = document.getElementById("productPrice").value;
-                                    var finalPrice = calculator(clothesType, productPrice);
+                                    var finalPrice = calculator(country, clothesType, productPrice);
                                     document.getElementById('finalPrice').value = finalPrice;
                                 }
                             </script>

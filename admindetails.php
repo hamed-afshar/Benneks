@@ -26,13 +26,13 @@ if (isset($_SESSION['searchQuery'])) {
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink ,orders.orderDate, orders.productPrice, cost.rateTL, cost.originalTomanPrice ,cost.benneksPrice ,shipment.cargoName " .
+    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink, orders.orderDate, orders.country, orders.productPrice, cost.rateTL, cost.originalTomanPrice ,cost.benneksPrice ,shipment.cargoName " .
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
             "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY users.userName, orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink ,orders.orderDate, orders.productPrice, cost.rateTL, cost.originalTomanPrice ,cost.benneksPrice ,shipment.cargoName " .
+    $query1 = "select orders.orderID, users.userName, orders.productPic, orders.productLink ,orders.orderDate, orders.country, orders.productPrice, cost.rateTL, cost.originalTomanPrice ,cost.benneksPrice ,shipment.cargoName " .
             "FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
             "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY users.username, orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 };
@@ -217,6 +217,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 </select>
                                             </div>
                                             <div class="form-group">
+                                                <!-- To determine which page request for search -->
                                                 <input type="hidden" name="searchReq" value="admindetailsPage"/>
                                             </div>
                                             <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
@@ -241,8 +242,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <th style="text-align: center"> کاربر</th>
                                         <th style="text-align: center">  عکس</th>
                                         <th style="text-align: center"> تاریخ سفارش</th>
-                                        <th style="text-align: center"> قیمت اصلی(لیر)</th>
-                                        <th style="text-align: center"> نرخ لیر(لیر)</th>
+                                        <th style="text-align: center"> کشور</th>
+                                        <th style="text-align: center"> قیمت سایت</th>
+                                        <th style="text-align: center"> نرخ ارز</th>
                                         <th style="text-align: center"> قیمت اصلی(تومان)</th>
                                         <th style="text-align: center">قیمت محاسبه شده </th>
                                         <th style="text-align: center">کد کارگو </th>
@@ -265,6 +267,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[6] . "</td>";
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
+                                        echo "<td>" . $row[9] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
                                         echo "</tr>";
                                         $i++;

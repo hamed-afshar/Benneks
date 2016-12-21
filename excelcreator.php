@@ -39,9 +39,10 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('A1', 'ردیف')
         ->setCellValue('B1', 'کد')
         ->setCellValue('C1', 'کاربر')
-        ->setCellValue('D1', 'قیمت اصلی')
-        ->setCellValue('E1', 'قیمت محاسبه شده')
-        ->setCellValue('F1', 'کارگو');
+        ->setCellValue('D1', 'کشور')
+        ->setCellValue('E1', 'قیمت اصلی')
+        ->setCellValue('F1', 'قیمت محاسبه شده')
+        ->setCellValue('G1', 'کارگو');
 // Insert data to cells based on queries in session variables.
 //Extract all recordes from query coming From admindetails.php also limitation must be removed from this query. 
 $query1 = substr($_SESSION['query1'], 0, strpos($_SESSION['query1'], "LIMIT"));
@@ -51,9 +52,10 @@ while ($row = mysqli_fetch_row($queryResult1)){
     $objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $i-1);
     $objPHPExcel->getActiveSheet()->setCellValue('B'.$i, $row[0]);
     $objPHPExcel->getActiveSheet()->setCellValue('C'.$i, $row[1]);
-    $objPHPExcel->getActiveSheet()->setCellValue('D'.$i, $row[7]);
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$i, $row[5]);
     $objPHPExcel->getActiveSheet()->setCellValue('E'.$i, $row[8]);
     $objPHPExcel->getActiveSheet()->setCellValue('F'.$i, $row[9]);
+    $objPHPExcel->getActiveSheet()->setCellValue('G'.$i, $row[10]);
     $i++;
 }
 // autosize the columns

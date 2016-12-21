@@ -44,6 +44,7 @@ if (isset($_POST['searchButton'])) {
             break;
     }
     $_SESSION['searchQuery'] = $searchQuery;
+    // Redirects user to target page based on the requesting page
     switch ($searchReq) {
         case "adminPage":
             header("Location: admin.php");
@@ -51,6 +52,8 @@ if (isset($_POST['searchButton'])) {
         case "admindetailsPage":
            header("Location: admindetails.php");
            break;
+        case "orderlistPage":
+            header("Location: orderlist.php");
     }    
 }
 ?>

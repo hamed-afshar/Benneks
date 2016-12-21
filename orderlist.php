@@ -15,14 +15,20 @@ date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID with pagination
 $limit = 10;
 $userID = $_SESSION['user'];
+// if search button submited then search query will be created
+if (isset($_SESSION['searchQuery'])) {
+    $searchQuery = "AND " . $_SESSION['searchQuery'];
+} else {
+    $searchQuery = "";
+}
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' ORDER BY orders.orderID desc LIMIT " . $startFrom . "," . $limit;
+    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
+    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
 };
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
@@ -140,11 +146,11 @@ $monthValue = mysqli_fetch_row($queryResult4);
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
-                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i></center>
+                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="orderlist.php"> <i class="fa fa-refresh fa-fw"></i></a></center> 
                             </div>
                         </div>
                         <div class="row"> 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" dir="rtl">
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" dir="rtl">
                                 <div class="panel panel-primary" dir="rtl">
                                     <div class="panel-heading">
                                         <i class="fa fa-exchange fa-fw"></i> خلاصه وضعیت:
@@ -165,6 +171,36 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" dir="rtl">
+                                <div class="panel panel-primary" dir="rtl">
+                                    <div class="panel-heading">
+                                        <form role = "form" action="search.php" method="post" dir="rtl">
+                                            <i class="fa fa-filter fa-fw"></i> عبارت جستجو:
+                                            <div class="form-group">
+                                                <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" placeholder="search...">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="searchOption"> نوع فیلتر:</label>
+                                                <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption">
+                                                    <option value="code" selected> کد </option>
+                                                    <option value="done"> خریداری شده</option>
+                                                    <option value="cancel"> لغو شده</option>
+                                                    <option value="unknown"> نامشخص </option>
+                                                    <option value="cargo"> کارگو </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" name="searchReq" value="orderlistPage"/>
+                                            </div>
+                                            <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
+                                                <span>
+                                                    <i class="fa fa-search"> </i>
+                                                </span>
+                                            </button>
+                                        </form> 
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="panel-heading">
@@ -181,7 +217,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <th style="text-align: center"> سایز</th>
                                         <th style="text-align: center"> قیمت(تومان)</th>
                                         <th style="text-align: center"> تاریخ خرید</th>
-                                        <th style="text-align: center"> تاریخ ارسال</th>    
+                                        <th style="text-align: center"> تاریخ ارسال</th>
+                                        <th style="text-align: center"> کشور</th>
                                         <th style="text-align: center">وضعیت </th>
                                         <th style="text-align: center"> جزئیات </th>
                                         <th style="text-align: center"> کد کارگو</th>
@@ -205,6 +242,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
+                                        echo "<td>" . $row[10] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>
@@ -212,7 +250,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             </table>
                         </div>
                         <?php
+                        //Pagination and query to get data
                         $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID'";
+                        unset($_SESSION['searchQuery']);
                         $queryResult2 = $user->executeQuery($query2);
                         $records = mysqli_fetch_row($queryResult2);
                         $totalRecords = $records[0];

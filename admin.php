@@ -24,11 +24,11 @@ if (isset($_SESSION['searchQuery'])) {
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, orders.country, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.productSize ,orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 };
 unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query1)) {
@@ -259,6 +259,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <th style="text-align: center">عکس </th>
                                         <th style="text-align: center">سایز </th>
                                         <th style="text-align: center">تعداد </th>
+                                        <th style="text-align: center">کشور </th>
                                         <th style="text-align: center">وضعیت </th>
                                         <th style="text-align: center">جزئیات </th>
                                     </tr>
@@ -286,6 +287,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[9] . "</td>";
                                         echo "<td>" . $row[10] . "</td>";
                                         echo "<td>" . $row[11] . "</td>";
+                                        echo "<td>" . $row[12] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>
@@ -332,6 +334,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             <option value = "تمام شدن محصول">به اتمام رسیدن زمان</option>
                                             <option value = "موجود نبودن رنگ">موجود نبودن رنگ</option>
                                             <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
+                                            <option value = "اطلاعات ناقص">به درخواست کاربر </option>
                                         </select>
                                     </div>
 

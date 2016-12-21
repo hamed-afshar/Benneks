@@ -67,15 +67,17 @@ if (isset($_POST['submitOrderButton'])) {
     $productLink = $_POST['productLink'];
     $productPrice = $_POST['productPrice'];
     $benneksPrice = intval($_POST['benneksPrice']);
-    $rateTL = intval($_POST['rateTL']);
+    $country = $_POST['country'];
+    $currency = $_POST['currency'];
+    $rateTL = intval($_POST['rate']);
     $originalTomanPrice = intval($productPrice) * $rateTL;
     // user directory needs to be added before pic name
     $productPic = $targetDir . $image;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = 1;
-    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity) "
+    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
-            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity' )";
+            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity', '$country')";
     if (!$user->executeQuery($query3)) {
         $flag = false;
         echo mysqli_error($user->conn);
@@ -83,7 +85,7 @@ if (isset($_POST['submitOrderButton'])) {
     // once an order submited, we nedd to create three records in shipment, status and cost table for this order
     $query4 = "INSERT INTO benneks.shipment(orders_orderID) VALUES ('$orderID')";
     $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
-    $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice')";
+    $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice, currency) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice', '$currency')";
     if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
         $flag = true;
     } else {
@@ -198,8 +200,8 @@ if (isset($_POST['submitOrderButton'])) {
                                         <div class="form-group">
                                             <label for="country"> کشور </label>
                                             <select dir="rtl" class="form-control" id="country" name ="country">
-                                                <option value="Turkey" selected> ترکیه </option>
-                                                <option value="England"> انگلیس </option>
+                                                <option value="ترکیه" selected> ترکیه </option>
+                                                <option value="انگلیس"> انگلیس </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -451,10 +453,10 @@ if (isset($_POST['submitOrderButton'])) {
                                             <input type = "text" class = "form-control eng-format" dir="ltr" id = "benneksPrice" name = "benneksPrice" readonly="readonly" placeholder = "قیمت فروش سیستم ">
                                         </div>
                                         <div class="form-group">
-                                            <input type="hiden" id="currency" name="currency">
+                                            <input type="hidden" id="currency" name="currency">
                                         </div>
                                         <div class="form-group">
-                                            <input type="hiden" id="rate" name="rate" >
+                                            <input type="hidden" id="rate" name="rate" >
                                         </div>           
                                         <!-- javascript to pass variables to calculator() in script.js file -->
                                         <script>

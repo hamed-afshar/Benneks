@@ -111,11 +111,11 @@ function submitActivation() {
 //Function to return currency and its Rate based on the selected country
 var exchange = function(country) {
     switch (country) {
-        case "Turkey":
+        case "ترکیه":
             var currency = "TL";
             var rate = 1200;
             break;
-        case "England":
+        case "انگلیس":
             var currency = "UK-Pound";
             var rate = 6000;
             break;
@@ -129,12 +129,12 @@ var exchange = function(country) {
 //Function to automatically calculate the price for sellers in calculator.php
 function calculator(country, clothesType, productPrice) {
     switch (country) {
-        case "Turkey":
+        case "ترکیه":
             var currencyRate = 1200;
             var weightCost = 55000; //55000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 50000;
             break;
-        case "England":
+        case "انگلیس":
             var currencyRate = 6000;
             var weightCost = 70000; //70000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 65000;

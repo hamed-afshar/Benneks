@@ -108,17 +108,41 @@ function submitActivation() {
         return false;
     }
 }
-//Function to return TL Rate
-function currencyRate() {
-    var rateTL = 1200;
-    return rateTL;
+//Function to return currency and its Rate based on the selected country
+var exchange = function(country) {
+    switch (country) {
+        case "Turkey":
+            var currency = "TL";
+            var rate = 1200;
+            break;
+        case "England":
+            var currency = "UK-Pound";
+            var rate = 6000;
+            break;
+    }
+    return {
+        currency: currency,
+        rate: rate
+    }
 }
 
 //Function to automatically calculate the price for sellers in calculator.php
-function calculator(clothesType, productPrice) {
-    var rateTL = 1200;
-    var weightCost = 55000; //50000 per killo dor kargo + 5000 Peik Iran
-    var shippingCost = 0;
+function calculator(country, clothesType, productPrice) {
+    switch (country) {
+        case "Turkey":
+            var currencyRate = 1200;
+            var weightCost = 55000; //55000 per killo dor kargo + 5000 Peik Iran
+            var shippingCost = 50000;
+            break;
+        case "England":
+            var currencyRate = 6000;
+            var weightCost = 70000; //70000 per killo dor kargo + 5000 Peik Iran
+            var shippingCost = 65000;
+            break;
+    }
+    //var rateTL = 1200;
+    //var weightCost = 55000; //50000 per killo dor kargo + 5000 Peik Iran
+    //var shippingCost = 0;
     var benneksMargin = 0;
     var totalCost = 0;
     if (productPrice >= 0 && productPrice <= 100) {
@@ -132,15 +156,15 @@ function calculator(clothesType, productPrice) {
         //Man and Women bag
         case "women-bag":
         case "man-bag":
-            shippingCost = 50000;
-            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            //shippingCost = 50000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
             //Man and Women shoes
         case "women-shoes":
         case "man-shoes":
-            shippingCost = 50000;
-            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            //shippingCost = 50000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
             //Man and Women products around 200 gr
@@ -160,7 +184,7 @@ function calculator(clothesType, productPrice) {
         case "women-sleepwear":
         case "women-support":
             shippingCost = (weightCost * 200) / 1000;
-            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
             //Man and Women products around 450 gr
@@ -177,7 +201,7 @@ function calculator(clothesType, productPrice) {
         case "women-skirt":
         case "women-dress":
             shippingCost = (weightCost * 450) / 1000;
-            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
             //Man and Women products around 600 gr
@@ -188,7 +212,7 @@ function calculator(clothesType, productPrice) {
         case "women-manto":
         case "women-summerjacket":
             shippingCost = (weightCost * 600) / 1000;
-            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
             //Man and Women products around 800 gr
@@ -204,7 +228,7 @@ function calculator(clothesType, productPrice) {
         case "women-jircoat":
         case "women-palto":
             shippingCost = (weightCost * 800) / 1000;
-            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
             //Man and Women products more than 1 kg
@@ -215,7 +239,7 @@ function calculator(clothesType, productPrice) {
         case "man-suit":
         case "women-heavy":
             shippingCost = (weightCost * 1200) / 1000;
-            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
         case "wallet":
@@ -226,7 +250,7 @@ function calculator(clothesType, productPrice) {
         case "accessory":
         case "sucks":
             shippingCost = (weightCost * 120) / 1000;
-            totalCost = (productPrice * rateTL) + ((productPrice * rateTL) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
     }

@@ -183,98 +183,6 @@ if (isset($_POST['submitOrderButton'])) {
                 <div class="col-lg-12">
                     <h1 class="page-header" dir="rtl">پنل کاربری</h1>
                 </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-4">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9  text-right">
-                                        <div class="huge"> # </div>
-                                        <div> آخرین خرید های انجام شده </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"> </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> سفارشات رسیده به استانبول </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات</span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"> </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> آخرین ارسالی ها به تهران</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4">
-                        <div class="panel panel-red">
-                            <div class="panel-heading"> 
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-support fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge"> # </div>
-                                        <div> سفارشات کنسل شده </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left"> مشاهده جزئیات </span>
-                                    <span class="pull-right"> <i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
                 <!-- /.row -->
                 <div class="row" dir="rtl">
                     <div class="col-lg-6"></div>
@@ -285,9 +193,15 @@ if (isset($_POST['submitOrderButton'])) {
                             </div>
                             <!-- /.new-order-panel-heading -->
                             <div class="panel-body">
-
                                 <div class="col-lg-6 col-lg-push-6" >
                                     <form role = "form" method="post" name="orderForm" id="orderForm" onsubmit="return validateForm();" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label for="country"> کشور </label>
+                                            <select dir="rtl" class="form-control" id="country" name ="country">
+                                                <option value="Turkey" selected> ترکیه </option>
+                                                <option value="England"> انگلیس </option>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <input type="radio" name="productGender" id="productGender" value="female" checked> زنانه
                                             <input type="radio" name="productGender" id="productGender" value="male" > مردانه  
@@ -537,16 +451,21 @@ if (isset($_POST['submitOrderButton'])) {
                                             <input type = "text" class = "form-control eng-format" dir="ltr" id = "benneksPrice" name = "benneksPrice" readonly="readonly" placeholder = "قیمت فروش سیستم ">
                                         </div>
                                         <div class="form-group">
-                                            <input type="hidden" id="rateTL" name="rateTL" >
+                                            <input type="hiden" id="currency" name="currency">
                                         </div>
-
+                                        <div class="form-group">
+                                            <input type="hiden" id="rate" name="rate" >
+                                        </div>           
                                         <!-- javascript to pass variables to calculator() in script.js file -->
                                         <script>
                                             function showRealPrice() {
+                                                var country = document.getElementById("country").value;
                                                 var clothesType = document.getElementById("clothesType").value;
                                                 var productPrice = document.getElementById("productPrice").value;
-                                                 document.getElementById("benneksPrice").value = calculator(clothesType, productPrice);
-                                                 document.getElementById("rateTL").value = currencyRate();
+                                                document.getElementById("benneksPrice").value = calculator(country, clothesType, productPrice);
+                                                var exchangeVar = exchange(country);
+                                                document.getElementById("currency").value = exchangeVar.currency;
+                                                document.getElementById("rate").value = exchangeVar.rate;
                                             }
                                         </script>
 

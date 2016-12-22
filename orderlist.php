@@ -150,28 +150,28 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             </div>
                         </div>
                         <div class="row"> 
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" dir="rtl">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" dir="rtl">
                                 <div class="panel panel-primary" dir="rtl">
                                     <div class="panel-heading">
                                         <i class="fa fa-exchange fa-fw"></i> خلاصه وضعیت:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> مجموع تعداد سفارشات امروز شما:</label>
+                                                <label for="dayQuantity">  تعداد سفارشات امروز شما:</label>
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayQuantity[0]; ?>  </label> &nbsp &nbsp
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> مجموع تعداد سفارشات شما در این ماه(میلادی):</label>
+                                                <label for="yesterdayQuantuty">  تعداد سفارشات شما در این ماه(میلادی):</label>
                                                 <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> مجموع سفارشات شما در ماه میلادی(تومان):</label>
+                                                <label for="monthQuantity">  سفارشات شما در ماه میلادی(تومان):</label>
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label>  &nbsp &nbsp
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" dir="rtl">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" dir="rtl">
                                 <div class="panel panel-primary" dir="rtl">
                                     <div class="panel-heading">
                                         <form role = "form" action="search.php" method="post" dir="rtl">

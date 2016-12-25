@@ -117,7 +117,7 @@ var exchange = function(country) {
             break;
         case "انگلیس":
             var currency = "UK-Pound";
-            var rate = 6000;
+            var rate = 5200;
             break;
     }
     return {
@@ -130,21 +130,21 @@ var exchange = function(country) {
 function calculator(country, clothesType, productPrice) {
     switch (country) {
         case "ترکیه":
+            var country = "Turkey";
             var currencyRate = 1200;
             var weightCost = 55000; //55000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 50000;
             break;
         case "انگلیس":
-            var currencyRate = 6000;
+            var country = "UK";
+            var currencyRate = 5200;
             var weightCost = 70000; //70000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 65000;
             break;
     }
-    //var rateTL = 1200;
-    //var weightCost = 55000; //50000 per killo dor kargo + 5000 Peik Iran
-    //var shippingCost = 0;
     var benneksMargin = 0;
     var totalCost = 0;
+    // set benneksmargin based on product price
     if (productPrice >= 0 && productPrice <= 100) {
         benneksMargin = 0.2;
     } else if (productPrice > 100 && productPrice <= 200) {
@@ -152,18 +152,20 @@ function calculator(country, clothesType, productPrice) {
     } else {
         benneksMargin = 0.1;
     }
+    // if buying from uk then benneks margin should be 15% regardless of productPrice
+    if(country === "UK") {
+        benneksMargin = 0.15;
+    }
     switch (clothesType) {
         //Man and Women bag
         case "women-bag":
         case "man-bag":
-            //shippingCost = 50000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;
             //Man and Women shoes
         case "women-shoes":
         case "man-shoes":
-            //shippingCost = 50000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
             return totalCost;
             break;

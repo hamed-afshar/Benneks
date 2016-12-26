@@ -268,7 +268,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
-                                        echo "<td>" . $row[9] . "</td>";
+                                        echo "<td>" . $row[10] . "</td>";
                                         echo "</tr>";
                                         $i++;
                                     }

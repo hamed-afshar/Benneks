@@ -280,8 +280,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         //Pagination
                         // query to get data
                         $query5 = "select count(orders.orderID) FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
-                                "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery";
-                        unset($_SESSION['searchQuery']);
+                                "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery";    
                         $queryResult5 = $user->executeQuery($query5);
                         $records = mysqli_fetch_row($queryResult5);
                         $totalRecords = $records[0];

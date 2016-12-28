@@ -252,7 +252,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         <?php
                         //Pagination and query to get data
                         $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID'";
-                        unset($_SESSION['searchQuery']);
                         $queryResult2 = $user->executeQuery($query2);
                         $records = mysqli_fetch_row($queryResult2);
                         $totalRecords = $records[0];

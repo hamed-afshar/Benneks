@@ -3,7 +3,7 @@ ob_start();
 session_start();
 require 'src/benneks.php';
 // if Admin session is not set this will get access denied msg
-if ($_SESSION['userAccess'] !== '2' ) {
+if ($_SESSION['userAccess'] !== '2') {
     echo "اجازه دسترسی ندارید";
     exit();
 }
@@ -47,7 +47,6 @@ $yesterdayValue = mysqli_fetch_row($queryResult2);
 $query3 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = current_date()";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
-    
 }
 $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
@@ -296,7 +295,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         </div>
                         <?php
                         $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
-                        unset($_SESSION['searchQuery']);
                         $queryResult5 = $user->executeQuery($query5);
                         $records = mysqli_fetch_row($queryResult5);
                         $totalRecords = $records[0];
@@ -308,7 +306,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         }
                         echo "</ul>";
                         echo "</div>";
-                        mysqli_close($user->conn); 
+                        mysqli_close($user->conn);
                         ?>
                     </div>
                 </div>

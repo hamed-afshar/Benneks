@@ -457,20 +457,23 @@ if (isset($_POST['submitOrderButton'])) {
                                         </div>
                                         <div class="form-group">
                                             <input type="hidden" id="rate" name="rate" >
-                                        </div>           
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="userID" name="userID" value="<?php echo $_SESSION['user']; ?>" >
+                                        </div>
                                         <!-- javascript to pass variables to calculator() in script.js file -->
                                         <script>
                                             function showRealPrice() {
+                                                var userID = document.getElementById("userID").value;
                                                 var country = document.getElementById("country").value;
                                                 var clothesType = document.getElementById("clothesType").value;
                                                 var productPrice = document.getElementById("productPrice").value;
-                                                document.getElementById("benneksPrice").value = calculator(country, clothesType, productPrice);
+                                                document.getElementById("benneksPrice").value = calculator(userID, country, clothesType, productPrice);
                                                 var exchangeVar = exchange(country);
                                                 document.getElementById("currency").value = exchangeVar.currency;
                                                 document.getElementById("rate").value = exchangeVar.rate;
                                             }
                                         </script>
-
                                         <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" > ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>

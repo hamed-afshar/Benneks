@@ -6,7 +6,6 @@ var passFlag = false;
 var passAgainFlag = false;
 //Flags to keep making order submit button status home.php
 var priceFlag = false;
-
 //Function to check username existence on registeration
 function checkUserName() {
     var username = document.getElementsByName("username")[0].value;
@@ -42,7 +41,6 @@ function checkUserName() {
 //Function to check email exsitence on registration
 function checkEmail() {
     var email = document.getElementsByName("email")[1].value;
-
     $.getJSON("/phpscripts/registerCheck.php?input=email&value=" + email, function (data) {
         // if email is already exist in database, then shows proper icon and make the signup button disabled
         if (data.icon === "remove-icon" || email.length < 5) {
@@ -72,7 +70,7 @@ function checkPass() {
         passFlag = false;
         return passFlag;
     }
-    // //if password lenght is more than 6 character
+// //if password lenght is more than 6 character
     else {
         $('#passIcon').closest('.form-group').removeClass('has-error').addClass('has-success');
         $('#passIcon').removeClass('glyphicon-remove').addClass('glyphicon-ok');
@@ -92,7 +90,7 @@ function passAgain() {
         passAgainFlag = false;
         return passAgainFlag;
     }
-    // //if password-re is equal to pass
+// //if password-re is equal to pass
     else if (passwordRe === password) {
         $('#passReIcon').closest('.form-group').removeClass('has-error').addClass('has-success');
         $('#passReIcon').removeClass('glyphicon-remove').addClass('glyphicon-ok');
@@ -109,7 +107,7 @@ function submitActivation() {
     }
 }
 //Function to return currency and its Rate based on the selected country
-var exchange = function(country) {
+var exchange = function (country) {
     switch (country) {
         case "ترکیه":
             var currency = "TL";
@@ -127,7 +125,7 @@ var exchange = function(country) {
 }
 
 //Function to automatically calculate the price for sellers in calculator.php
-function calculator(country, clothesType, productPrice) {
+function calculator(userID, country, clothesType, productPrice) {
     switch (country) {
         case "ترکیه":
             var country = "Turkey";
@@ -142,6 +140,21 @@ function calculator(country, clothesType, productPrice) {
             var shippingCost = 65000;
             break;
     }
+//final price is calculated based on userID, userMargin variable keeps this value for adding up to users final price.
+    switch (userID) {
+        case "4":
+        case "8":
+        case "9":
+        case "21":
+        case "22":
+        case "23":
+            var userMargin = 0.1;
+            break;
+        default:
+            var userMargin = 0;
+            break;
+    }
+
     var benneksMargin = 0;
     var totalCost = 0;
     // set benneksmargin based on product price
@@ -152,21 +165,21 @@ function calculator(country, clothesType, productPrice) {
     } else {
         benneksMargin = 0.1;
     }
-    // if buying from uk then benneks margin should be 15% regardless of productPrice
-    if(country === "UK") {
+// if buying from uk then benneks margin should be 15% regardless of productPrice
+    if (country === "UK") {
         benneksMargin = 0.15;
     }
     switch (clothesType) {
-        //Man and Women bag
+//Man and Women bag
         case "women-bag":
         case "man-bag":
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women shoes
         case "women-shoes":
         case "man-shoes":
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products around 200 gr
@@ -186,7 +199,7 @@ function calculator(country, clothesType, productPrice) {
         case "women-sleepwear":
         case "women-support":
             shippingCost = (weightCost * 200) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products around 450 gr
@@ -203,7 +216,7 @@ function calculator(country, clothesType, productPrice) {
         case "women-skirt":
         case "women-dress":
             shippingCost = (weightCost * 450) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products around 600 gr
@@ -214,7 +227,7 @@ function calculator(country, clothesType, productPrice) {
         case "women-manto":
         case "women-summerjacket":
             shippingCost = (weightCost * 600) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products around 800 gr
@@ -230,7 +243,7 @@ function calculator(country, clothesType, productPrice) {
         case "women-jircoat":
         case "women-palto":
             shippingCost = (weightCost * 800) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products more than 1 kg
@@ -241,7 +254,7 @@ function calculator(country, clothesType, productPrice) {
         case "man-suit":
         case "women-heavy":
             shippingCost = (weightCost * 1200) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
         case "wallet":
@@ -252,7 +265,7 @@ function calculator(country, clothesType, productPrice) {
         case "accessory":
         case "sucks":
             shippingCost = (weightCost * 120) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
     }

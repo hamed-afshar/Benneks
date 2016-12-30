@@ -20,13 +20,12 @@ $user = new user();
 date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitButton'])) {
     $benneksDeliverDate = $_POST['benneksDeliverDate'];
-    $productsWeight = $_POST['productsWeight'];
     $cargoName = $_POST['cargoName'];
     $orderID = $_POST['rowID'];
 } else  {
     echo "error";
 }
-$query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET shipment.benneksDeliverDate = '$benneksDeliverDate', orders.productsWeight = '$productsWeight', shipment.cargoName = '$cargoName' WHERE orders.orderID = '$orderID'";
+$query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET shipment.benneksDeliverDate = '$benneksDeliverDate', shipment.cargoName = '$cargoName' WHERE orders.orderID = '$orderID'";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }

@@ -331,7 +331,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="cancelDetails"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
                                         <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
                                             <option value = "نبودن سایز">موجود نبودن سایز </option>
-                                            <option value = "تمام شدن محصول">به اتمام رسیدن زمان</option>
+                                            <option value = "تمام شدن محصول">موجود نبودن کالا</option>
                                             <option value = "موجود نبودن رنگ">موجود نبودن رنگ</option>
                                             <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
                                             <option value = "اطلاعات ناقص">به درخواست کاربر </option>
@@ -388,10 +388,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     <div class="form-group">
                                         <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ ارسال</label>
                                         <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate"> 
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="productsWeight"><span class="glyphicon glyphicon-scale"></span>  وزن کالا به گرم</label>
-                                        <input type="text" class="form-control" name="productsWeight" id="productsWeight" maxlength="4" onclick="return false;"> 
                                     </div>
                                     <div class="form-group">
                                         <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 

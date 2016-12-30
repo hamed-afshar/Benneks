@@ -213,83 +213,83 @@ if (isset($_POST['submitOrderButton'])) {
                                             <select dir = "rtl" class="form-control" id = "clothesType" name="clothesType" onchange="showRealPrice()">
                                                 <option value="" disabled selected style="color: red">انواع لباس زنانه:</option>
                                                 \\Women bag and shoes
-                                                <option value = "women-bag"> انواع کیف زنانه </option>
-                                                <option value = "women-shoes"> انواع کفش و بوت ودمپایی زنانه</option>
+                                                <option value = "کیف زنانه"> انواع کیف زنانه </option>
+                                                <option value = "کفش زنانه"> انواع کفش و بوت ودمپایی زنانه</option>
                                                 \\unisex products around 120 gr                         
-                                                <option value = "wallet"> کیف پول مردانه یا زنانه </option> 
-                                                <option value = "belt"> کمربند مردانه یا زنانه </option>
-                                                <option value = "sunglass"> عینک  مردانه یا زنانه</option>
-                                                <option value = "perfium"> عطر مردانه یا زنانه </option>
-                                                <option value = "watch"> ساعت  مردانه یا زنانه</option>
-                                                <option value = "accessory"> اکسسوری مردانه یا زنانه </option>
-                                                <option value = "sucks"> جوراب زنانه یا مردانه </option>
+                                                <option value = "کیف پول"> کیف پول مردانه یا زنانه </option> 
+                                                <option value = "کمربند"> کمربند مردانه یا زنانه </option>
+                                                <option value = "عینک"> عینک  مردانه یا زنانه</option>
+                                                <option value = "عطر"> عطر مردانه یا زنانه </option>
+                                                <option value = "ساعت"> ساعت  مردانه یا زنانه</option>
+                                                <option value = "زیورآلات"> اکسسوری مردانه یا زنانه </option>
+                                                <option value = "جوراب"> جوراب زنانه یا مردانه </option>
                                                 \\Women products around 200 gr
-                                                <option value = "women-short"> شلوارک  زنانه</option> 
-                                                <option value = "women-top"> تاپ زنانه </option> 
-                                                <option value = "women-shirt"> پیراهن زنانه </option> 
-                                                <option value = "women-lingerie"> لباس زیر  زنانه</option> 
-                                                <option value = "women-tshirt"> تی شرت زنانه </option> 
-                                                <option value = "women-scarf"> انواع شال، کلاه، روسری و دستکش </option> 
-                                                <option value = "women-bikini"> مایو زنانه </option> 
-                                                <option value = "women-swimsuit">  رو مایو زنانه </option> 
-                                                <option value = "women-sleepwear"> لباس خواب  زنانه</option> 
-                                                <option value = "women-support"> ساپورت  زنانه</option> 
+                                                <option value = "شلوارک زنانه"> شلوارک  زنانه</option> 
+                                                <option value = "تاپ زنانه"> تاپ زنانه </option> 
+                                                <option value = "پیراهن زنانه"> پیراهن زنانه </option> 
+                                                <option value = "لباس زیر زنانه"> لباس زیر  زنانه</option> 
+                                                <option value = "تی شرت زنانه"> تی شرت زنانه </option> 
+                                                <option value = "کلاه، شال، روسری، دستکش"> انواع شال، کلاه، روسری و دستکش </option> 
+                                                <option value = "بیکینی"> مایو زنانه </option> 
+                                                <option value = "رو مایو زنانه">  رو مایو زنانه </option> 
+                                                <option value = "لباس خواب زنانه"> لباس خواب  زنانه</option> 
+                                                <option value = "ساپورت زنانه"> ساپورت  زنانه</option> 
                                                 \\Women products around 450 gr
-                                                <option value = "women-cardigan"> کاردیگان زنانه</option>
-                                                <option value = "women-jean"> شلوار جین زنانه </option>
-                                                <option value = "women-dress"> پیراهن بلند زنانه </option> 
-                                                <option value = "women-shomiz"> شمیز و سرهمی  زنانه</option> 
-                                                <option value = "women-sweater">  پلیورهای نازک زنانه</option> 
-                                                <option value = "women-pancho">  پانچو  زنانه</option> 
-                                                <option value = "women-pant"> شلوار معمولی  زنانه</option> 
-                                                <option value = "women-skirt"> دامن زنانه </option>
-                                                <option value = "women-blouse"> بلوز زنانه </option> 
+                                                <option value = "کاردیگان زنانه"> کاردیگان زنانه</option>
+                                                <option value = "جین زنانه"> شلوار جین زنانه </option>
+                                                <option value = "پیراهن بلند زنانه"> پیراهن بلند زنانه </option> 
+                                                <option value = "شومیز زنانه"> شمیز و سرهمی  زنانه</option> 
+                                                <option value = "پلیورهای نازک زنانه">  پلیورهای نازک زنانه</option> 
+                                                <option value = "پانچو">  پانچو  زنانه</option> 
+                                                <option value = "شلوار معمولی زنانه"> شلوار معمولی  زنانه</option> 
+                                                <option value = "دامن زنانه"> دامن زنانه </option>
+                                                <option value = "بلوز زنانه"> بلوز زنانه </option> 
                                                 \\Women products around 600 gr
-                                                <option value = "women-manto"> مانتو  زنانه</option>
-                                                <option value = "women-rainingcoat"> بارونی  زنانه</option>
-                                                <option value = "women-summerjacket"> انواع کت های تابستانی زنانه </option>
-                                                <option value = "women-wintercoat"> کت زمستانی زنانه</option>
-                                                <option value = "women-jacket"> کاپشن سبک  زنانه</option>
+                                                <option value = "مانتو زنانه"> مانتو  زنانه</option>
+                                                <option value = "بارونی زنانه"> بارونی  زنانه</option>
+                                                <option value = "کت تابستانی زنانه"> انواع کت های تابستانی زنانه </option>
+                                                <option value = "کت زمستانی زنانه"> کت زمستانی زنانه</option>
+                                                <option value = "کاپشن سبک زنانه"> کاپشن سبک  زنانه</option>
                                                 \\Women products 800 gr
-                                                <option value = "women-jircoat"> کت جیر زنانه</option>
-                                                <option value = "women-palto"> پالتو سبک  زنانه</option>
-                                                <option value = "women-sportwear"> گرمکن زنانه</option>
-                                                <option value = "women-jeancoat"> کت جین  زنانه</option>
-                                                <option value = "women-leathercoat"> کت چرم  زنانه</option>
-                                                <option value = "women-winterjacket"> کاپشن سنگین  زنانه</option>
-                                                <option value = "women-heavysweater"> پلیورهای سنگین زنانه</option>
+                                                <option value = "کت جیر زنانه"> کت جیر زنانه</option>
+                                                <option value = "پالتو زنانه"> پالتو سبک  زنانه</option>
+                                                <option value = "گرمکن زنانه"> گرمکن زنانه</option>
+                                                <option value = "کت جین زنانه"> کت جین  زنانه</option>
+                                                <option value = "کت چرم زنانه"> کت چرم  زنانه</option>
+                                                <option value = "کاپشن سنگین زنانه"> کاپشن سنگین  زنانه</option>
+                                                <option value = "پلیور سنگین زنانه"> پلیورهای سنگین زنانه</option>
                                                 \\ Women products more than 1 kg
-                                                <option value = "women-heavy"> کاپشن و کت و پالتو های سنگین و ضخیم  زنانه</option>
-                                                <option value = "women-heavy">انواع کت دامن زنانه</option>
-                                                <option value = "women-heavy"> انواع کت شلوار زنانه</option>
+                                                <option value = "سنگین زنانه"> کاپشن و کت و پالتو های سنگین و ضخیم  زنانه</option>
+                                                <option value = "سنگین زنانه">انواع کت دامن زنانه</option>
+                                                <option value = "سنگین زنانه"> انواع کت شلوار زنانه</option>
                                                 \\\\\Man Products
                                                 <option value="" disabled style="color:red">انواع لباس مردانه:</option>
                                                 \\ Man bag & shoes
-                                                <option value = "man-shoes"> انواع کفش و بوت ودمپایی مردانه </option>
-                                                <option value = "man-bag"> کیف دستی مردانه </option>
+                                                <option value = "کفش مردانه"> انواع کفش و بوت ودمپایی مردانه </option>
+                                                <option value = "کیف مردانه"> کیف دستی مردانه </option>
                                                 \\ Man products around 200 gr
-                                                <option value = "man-shirt"> پیراهن مردانه </option>
-                                                <option value = "man-tshirt"> تی شرت مردانه </option>
-                                                <option value = "man-underwear"> لباس زیر مردانه </option>
-                                                <option value = "man-short"> شلوارک مردانه </option>
-                                                <option value = "man-overcoat"> مایو مردانه</option>
+                                                <option value = "پیراهن مردانه"> پیراهن مردانه </option>
+                                                <option value = "تی شرت مردانه"> تی شرت مردانه </option>
+                                                <option value = "لباس زیر مردانه"> لباس زیر مردانه </option>
+                                                <option value = "شلوارک مردانه"> شلوارک مردانه </option>
+                                                <option value = "مایو مردانه"> مایو مردانه</option>
                                                 \\ Man products around 450 gr
-                                                <option value = "man-pant"> شلوار معمولی مردانه </option>
-                                                <option value = "man-jean"> شلوار جین مردانه </option>     
-                                                <option value = "man-sweater"> پلیور مردانه سبک </option>
+                                                <option value = "شلوار معمولی مردانه"> شلوار معمولی مردانه </option>
+                                                <option value = "شلوار جین مردانه"> شلوار جین مردانه </option>     
+                                                <option value = "پلیور مردانه سبک"> پلیور مردانه سبک </option>
                                                 \\Man products around 600 gr
-                                                <option value = "man-coat"> کت معمولی مردانه</option>
+                                                <option value = "کت معمولی مردانه"> کت معمولی مردانه</option>
                                                 \\Man products around 800 gr
-                                                <option value = "man-sportwear"> گرمکن مردانه</option>
-                                                <option value = "man-jean-coat"> کت جین مردانه</option>
-                                                <option value = "man-heavy-sweater"> پلیور مردانه سنگین </option>
-                                                <option value = "man-jacket"> کاپشن سبک مردانه </option>
+                                                <option value = "گرمکن مردانه"> گرمکن مردانه</option>
+                                                <option value = "کت جین مردانه"> کت جین مردانه</option>
+                                                <option value = "پلیور مردانه سنگین"> پلیور مردانه سنگین </option>
+                                                <option value = "کاپشن سبک مردانه"> کاپشن سبک مردانه </option>
                                                 \\Man product more than 1 kg
-                                                <option value = "man-heavy-jacket"> کاپشن سنگین مردانه</option>
-                                                <option value = "man-leather-coat"> کت چرم مردانه</option>
-                                                <option value = "man-palto"> پالتو مردانه</option>
-                                                <option value = "man-overcoat"> اورکت مردانه</option>
-                                                <option value = "man-suit"> کت شلوار مردانه</option>
+                                                <option value = "کاپشن سنگین مردانه"> کاپشن سنگین مردانه</option>
+                                                <option value = "کت چرم مردانه"> کت چرم مردانه</option>
+                                                <option value = "پالتو مردانه"> پالتو مردانه</option>
+                                                <option value = "اورکت مردانه"> اورکت مردانه</option>
+                                                <option value = "کت شلوار مردانه"> کت شلوار مردانه</option>
                                             </select>
                                         </div>
                                         <div class="form-group">

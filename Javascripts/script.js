@@ -171,99 +171,99 @@ function calculator(userID, country, clothesType, productPrice) {
     }
     switch (clothesType) {
 //Man and Women bag
-        case "women-bag":
-        case "man-bag":
+        case "کیف زنانه":
+        case "کیف مردانه":
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women shoes
-        case "women-shoes":
-        case "man-shoes":
+        case "کفش زنانه":
+        case "کفش مردانه":
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products around 200 gr
-        case "man-shirt":
-        case "man-tshirt":
-        case "man-underwear":
-        case "man-short":
-        case "man-overcoat":
-        case "women-short":
-        case "women-top":
-        case "women-shirt":
-        case "women-lingerie":
-        case "women-tshirt":
-        case "women-scarf":
-        case "women-bikini":
-        case "women-swimsuit":
-        case "women-sleepwear":
-        case "women-support":
+        case "پیراهن مردانه":
+        case "تی شرت مردانه":
+        case "لباس زیر مردانه":
+        case "شلوارک مردانه":
+        case "مایو مردانه":
+        case "شلوارک زنانه":
+        case "تاپ زنانه":
+        case "پیراهن زنانه":
+        case "لباس زیر زنانه":
+        case "تی شرت زنانه":
+        case "کلاه، شال، روسری، دستکش":
+        case "بیکینی":
+        case "رو مایو زنانه":
+        case "لباس خواب زنانه":
+        case "ساپورت زنانه":
             shippingCost = (weightCost * 200) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products around 450 gr
-        case "man-pant":
-        case "man-jean":
-        case "man-sweater":
-        case "women-cardigan":
-        case "women-sweater":
-        case "women-jean":
-        case "women-pant":
-        case "women-pancho":
-        case "women-shomiz":
-        case "women-blouse":
-        case "women-skirt":
-        case "women-dress":
+        case "شلوار معمولی مردانه":
+        case "شلوار جین مردانه":
+        case "پلیور مردانه سبک":
+        case "کاردیگان زنانه":
+        case "پلیورهای نازک زنانه":
+        case "جین زنانه":
+        case "شلوار معمولی زنانه":
+        case "پانچو":
+        case "شومیز زنانه":
+        case "بلوز زنانه":
+        case "دامن زنانه":
+        case "پیراهن بلند زنانه":
             shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products around 600 gr
-        case "man-coat":
-        case "women-wintercoat":
-        case "women-jacket":
-        case "women-rainingcoat":
-        case "women-manto":
-        case "women-summerjacket":
+        case "کت معمولی مردانه":
+        case "کت زمستانی زنانه":
+        case "کاپشن سبک زنانه":
+        case "بارونی زنانه":
+        case "مانتو زنانه":
+        case "کت تابستانی زنانه":
             shippingCost = (weightCost * 600) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products around 800 gr
-        case "man-sportwear":
-        case "man-jean-coat":
-        case "man-heavy-sweater":
-        case "man-jacket":
-        case "women-sportwear":
-        case "women-jeancoat":
-        case "women-leathercoat":
-        case "women-winterjacket":
-        case "women-heavysweater":
-        case "women-jircoat":
-        case "women-palto":
+        case "گرمکن مردانه":
+        case "کت جین مردانه":
+        case "پلیور مردانه سنگین":
+        case "کاپشن سبک مردانه":
+        case "گرمکن زنانه":
+        case "کت جین زنانه":
+        case "کت چرم زنانه":
+        case "کاپشن سنگین زنانه":
+        case "پلیور سنگین زنانه":
+        case "کت جیر زنانه":
+        case "پالتو زنانه":
             shippingCost = (weightCost * 800) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
             //Man and Women products more than 1 kg
-        case "man-heavy-jacket":
-        case "man-leather-coat":
-        case "man-palto":
-        case "man-overcoat":
-        case "man-suit":
-        case "women-heavy":
+        case "کاپشن سنگین مردانه":
+        case "کت چرم مردانه":
+        case "پالتو مردانه":
+        case "اورکت مردانه":
+        case "کت شلوار مردانه":
+        case "سنگین زنانه":
             shippingCost = (weightCost * 1200) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;
             break;
-        case "wallet":
-        case "belt":
-        case "sunglass":
-        case "perfium":
-        case "watch":
-        case "accessory":
-        case "sucks":
+        case "کیف پول":
+        case "کمربند":
+        case "عینک":
+        case "عطر":
+        case "ساعت":
+        case "زیورآلات":
+        case "جوراب":
             shippingCost = (weightCost * 120) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
             return totalCost;

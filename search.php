@@ -30,6 +30,12 @@ if (isset($_POST['searchButton'])) {
         case "done":
             $searchQuery = "stat.orderStatus = " . "'انجام شده'";
             break;
+        case "turkey":
+            $searchQuery = "orders.country = " . "'ترکیه'";
+            break;
+         case "uk":
+            $searchQuery = "orders.country = " . "'انگلیس'";
+            break;
         case "cancel":
             $searchQuery = "stat.orderStatus = " . "'لغو'";
             break;

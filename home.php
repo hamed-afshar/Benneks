@@ -424,20 +424,20 @@ if (isset($_POST['submitOrderButton'])) {
                                             <label for="productColor">  رنگ:</label>
                                             <select dir = "rtl"  class="form-control" id = "productColor" name = "productColor">
                                                 <option value="" disabled selected>  انتخاب رنگ</option>
-                                                <option value="White">  سفید</option>
-                                                <option value="Black">  مشکی</option>
-                                                <option value="Green">  سبز</option>
-                                                <option value="Blue">  آبی</option>
-                                                <option value="Red">  قرمز</option>
-                                                <option value="Yellow">  زرد</option>
-                                                <option value="Brown">  قهوای</option>
-                                                <option value="Grey">  طوسی</option>
-                                                <option value="Dark Blue">  سرمه ای</option>
-                                                <option value="Purple">  بنفش</option>
-                                                <option value="Light-Grey">  نقره ای</option>
-                                                <option value="Crimson">  زرشکی</option>
-                                                <option value="Bisque">  کرم</option>
-                                                <option value="Pink">  صورتی</option>
+                                                <option value="سفید">  سفید</option>
+                                                <option value="مشکی">  مشکی</option>
+                                                <option value="سبز">  سبز</option>
+                                                <option value="آبی">  آبی</option>
+                                                <option value="قرمز">  قرمز</option>
+                                                <option value="زرد">  زرد</option>
+                                                <option value="قهوه ای">  قهوه ای</option>
+                                                <option value="طوسی">  طوسی</option>
+                                                <option value="سرمه ای">  سرمه ای</option>
+                                                <option value="بنفش">  بنفش</option>
+                                                <option value="نقره ای">  نقره ای</option>
+                                                <option value="زرشکی">  زرشکی</option>
+                                                <option value="کرم">  کرم</option>
+                                                <option value="صورتی">  صورتی</option>
                                             </select>
                                         </div>
                                         <div class="form-group">

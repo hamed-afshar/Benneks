@@ -43,21 +43,30 @@ if (!$user->executeQuery($query1)) {
 }
 $queryResult1 = $user->executeQuery($query1);
 //Get totall value(TL) and numbers for yesterday orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
-$query2 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE stat.orderStatus = 'انجام شده' AND orders.orderDate = subdate(current_date(), 1)";
+$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM "
+        . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'ترکیه' AND stat.orderStatus = 'انجام شده' AND orders.orderDate = subdate(current_date(), 1)) as FirstSet "
+        . "INNER JOIN"
+        . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'انگلیس' AND stat.orderStatus = 'انجام شده' AND orders.orderDate = subdate(current_date(), 1)) as SecondSet";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult2 = $user->executeQuery($query2);
 $yesterdayValue = mysqli_fetch_row($queryResult2);
 //Get totall value(TL) and numbers for Today orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
-$query3 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE stat.orderStatus = 'انجام شده' AND orders.orderDate = current_date()";
+$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM "
+        . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'ترکیه' AND stat.orderStatus = 'انجام شده' AND orders.orderDate = current_date()) as FirstSet "
+        . "INNER JOIN"
+        . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'انگلیس' AND stat.orderStatus = 'انجام شده' AND orders.orderDate = current_date()) as SecondSet";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
 //Get totall value(TL) and numbers for month orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
-$query4 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE stat.orderStatus = 'انجام شده' AND MONTH(orders.orderDate) = month(current_date());";
+$query4 = $query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM "
+        . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'ترکیه' AND stat.orderStatus = 'انجام شده' AND MONTH(orders.orderDate) = MONTH(current_date())) as FirstSet "
+        . "INNER JOIN"
+        . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'انگلیس' AND stat.orderStatus = 'انجام شده' AND MONTH(orders.orderDate) = MONTH(current_date())) as SecondSet";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
@@ -156,23 +165,30 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <i class="fa fa-exchange fa-fw"></i> حجم مالی:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز:</label>
+                                                <label for="dayQuantity"> امروز لیر:</label>
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته:</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[0]; ?> </label>  
+                                                <label for="yesterdayQuantuty"> روز گذشته لیر :</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['0']; ?> </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه:</label>
+                                                <label for="monthQuantity"> ماه لیر:</label>
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
                                             </div>
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> امروز پوند:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[2]; ?>  </label>  
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> روز گذشته پوند :</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['2']; ?> </label>  
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> ماه پوند:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[2]; ?> </label> 
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="panel-body">
-                                        <i class="fa fa-circle fa-fw"></i> گزارشات:
-                                        <a href='excelcreator.php'> <i class='fa fa-file-excel-o fa-fw'> </i> </a>
-
                                     </div>
                                 </div>
                             </div>
@@ -182,16 +198,28 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <i class="fa fa-bullhorn fa-fw"></i> تعداد سفارشات:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label for="dayQuantity"> امروز ترکیه:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته:</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label for="yesterdayQuantuty"> روز گذشته ترکیه:</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label for="monthQuantity"> ماه ترکیه:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> امروز پوند:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[3]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> روز گذشته پوند:</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[3]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> ماه انگلیس:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[3]; ?> </label> 
                                             </div>
                                         </div>
                                     </div>
@@ -200,34 +228,30 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-pull-8 col-md-pull-8 col-sm-pull-8" dir="rtl">
                                 <div class="panel panel-primary" dir="rtl">
                                     <div class="panel-heading">
-                                        <form role = "form" action="search.php" method="post" dir="rtl">
+                                        <form role = "form" method="post" name="searchForm" id="searchForm"  action="search.php">
                                             <i class="fa fa-filter fa-fw"></i> عبارت جستجو:
+                                            <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" placeholder="search...">
+                                            <label for="searchOption"></span>  نوع فیلتر:</label>
                                             <div class="form-group">
-                                                <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" placeholder="search...">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="searchOption"> نوع فیلتر:</label>
                                                 <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption">
-                                                    <option value="code" selected> کد </option>
+                                                    <option value="code"> کد </option>
                                                     <option value="name"> نام </option>
                                                     <option value="done"> خریداری شده</option>
                                                     <option value="turkey"> ترکیه</option>
                                                     <option value="uk"> انگلیس</option>
                                                     <option value="cancel"> لغو شده</option>
                                                     <option value="unknown"> نامشخص </option>
-                                                    <option value="cargo"> کارگو </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <!-- To determine which page request for search -->
-                                                <input type="hidden" name="searchReq" value="admindetailsPage"/>
+                                                <input type="hidden" name="searchReq" value="adminPage"/>
                                             </div>
                                             <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
                                                 <span>
                                                     <i class="fa fa-search"> </i>
                                                 </span>
                                             </button>
-                                        </form> 
+                                        </form>                                    
                                     </div>
                                 </div>
                             </div>
@@ -282,7 +306,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         //Pagination
                         // query to get data
                         $query5 = "select count(orders.orderID) FROM benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.cost ON orders.orderID = cost.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
-                                "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery";    
+                                "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery";
                         $queryResult5 = $user->executeQuery($query5);
                         $records = mysqli_fetch_row($queryResult5);
                         $totalRecords = $records[0];

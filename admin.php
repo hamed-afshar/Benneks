@@ -37,21 +37,31 @@ if (!$user->executeQuery($query1)) {
 }
 $queryResult1 = $user->executeQuery($query1);
 //Get totall value(TL) and numbers for yesterday orders
-$query2 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1)";
+$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM ". 
+	"(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'ترکیه') as FirstSet ".
+        "INNER JOIN ".
+	"(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'انگلیس') as SecondSet";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult2 = $user->executeQuery($query2);
-$yesterdayValue = mysqli_fetch_row($queryResult2);
+$yesterdayValue = mysqli_fetch_row($queryResult2); 
+
 //Get totall value(TL) and numbers for Today orders
-$query3 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE orders.orderDate = current_date()";
+$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM ". 
+	"(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'ترکیه') as FirstSet ".
+        "INNER JOIN ".
+	"(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'انگلیس') as SecondSet";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
 //Get totall value(TL) and numbers for month orders
-$query4 = "SELECT SUM(CAST(orders.productPrice AS decimal(5,2))), count(orders.orderID) FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date())";
+$query4 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM ". 
+	"(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date()) AND orders.country = 'ترکیه') as FirstSet ".
+        "INNER JOIN ".
+	"(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(current_date()) AND orders.country = 'انگلیس') as SecondSet";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
@@ -176,16 +186,28 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <i class="fa fa-exchange fa-fw"></i> حجم مالی:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز:</label>
+                                                <label for="dayQuantity"> امروز لیر:</label>
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته:</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[0]; ?> </label>  
+                                                <label for="yesterdayQuantuty"> روز گذشته لیر :</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['0']; ?> </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه:</label>
+                                                <label for="monthQuantity"> ماه لیر:</label>
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> امروز پوند:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[2]; ?>  </label>  
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> روز گذشته پوند :</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['2']; ?> </label>  
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> ماه پوند:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[2]; ?> </label> 
                                             </div>
                                         </div>
                                     </div>
@@ -197,16 +219,28 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <i class="fa fa-bullhorn fa-fw"></i> تعداد سفارشات:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label for="dayQuantity"> امروز ترکیه:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته:</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label for="yesterdayQuantuty"> روز گذشته ترکیه:</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp &nbsp
+                                                <label for="monthQuantity"> ماه ترکیه:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="dayQuantity"> امروز پوند:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[3]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> روز گذشته پوند:</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[3]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="monthQuantity"> ماه انگلیس:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[3]; ?> </label> 
                                             </div>
                                         </div>
                                     </div>

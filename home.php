@@ -335,6 +335,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Victoria Secret"> Victoria Secret </option>
                                                 <option value="Instagram"> Instagram </option>
                                                 <option value="Others"> Others </option>
+                                                <option value="UkSites"> UK Sites </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -364,24 +365,45 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Women-42"> 42</option>
                                                 <option value="Women-44"> 44</option>
                                                 <option value="Women-46"> 46</option>
+                                                <option value="" disabled style="color: red">  سایزهای انگلیس</option>
+                                                <option value="UK-4"> UK-4</option>
+                                                <option value="UK-4.5"> UK-4.5</option>
+                                                <option value="UK-6"> UK-6</option>
+                                                <option value="UK-6.5"> UK-6.5</option>
+                                                <option value="UK-8"> UK-8</option>
+                                                <option value="UK-8.5"> UK-8.5</option>
+                                                <option value="UK-10"> UK-10</option>
+                                                <option value="UK-10.5"> UK-10.5</option>
+                                                <option value="UK-12"> UK-12</option>
+                                                <option value="UK-12.5"> UK-12.5</option>
+                                                <option value="UK-14"> UK-14</option>
+                                                <option value="UK-14.5"> UK-14.5</option>
+                                                <option value="UK-16"> UK-16</option>
+                                                <option value="UK-16.5"> UK-16.5</option>
+                                                <option value="UK-18"> UK-18</option>
+                                                <option value="UK-18.5"> UK-18.5</option>
+                                                <option value="UK-20"> UK-20</option>
+                                                <option value="UK-20.5"> UK-20.5</option>
+                                                <option value="UK-22"> UK-22</option>
+                                                <option value="UK-22.5"> UK-22.5</option>
                                                 <option value="Women-Free-Size"> فری سایز زنانه </option>
                                                 <option value="" disabled style="color: red">  سایزهای کفش زنانه</option>
-                                                <option value="Shoes-35"> Shoes(EU=35, UK=2.5) </option>
-                                                <option value="Shoes-35.5"> Shoes(EU=35.5, UK=3) </option>
-                                                <option value="Shoes-36"> Shoes(EU=36, UK=3.5) </option>
-                                                <option value="Shoes-36.5"> Shoes(EU=36.5, UK=4) </option>
-                                                <option value="Shoes-37"> Shoes(EU=37, UK=4.5) </option>
-                                                <option value="Shoes-37.5"> Shoes(EU=37.5, UK=5) </option>
-                                                <option value="Shoes-38"> Shoes(EU=38, UK=5.5) </option>
-                                                <option value="Shoes-37"> Shoes(EU=38.5, UK=6) </option>
-                                                <option value="Shoes-39"> Shoes(EU=39, UK=6.5) </option>
-                                                <option value="Shoes-39"> Shoes(EU=39.5, UK=7) </option>
-                                                <option value="Shoes-40"> Shoes(EU=40, UK=7.5) </option>
-                                                <option value="Shoes-40.5"> Shoes(EU=40.5, UK=8) </option>
-                                                <option value="Shoes-41"> Shoes(EU=41, UK=8.5)</option>
-                                                <option value="Shoes-41.5"> Shoes(EU=41.5, UK=9)</option>
-                                                <option value="Shoes-42"> Shoes(EU=42, UK=9.5)</option>
-                                                <option value="Shoes-42.5"> Shoes(EU=42.5, UK=10)</option>
+                                                <option value="Shoes-35"> Shoes(EU=35) </option>
+                                                <option value="Shoes-35.5"> Shoes(EU=35.5) </option>
+                                                <option value="Shoes-36"> Shoes(EU=36) </option>
+                                                <option value="Shoes-36.5"> Shoes(EU=36.5) </option>
+                                                <option value="Shoes-37"> Shoes(EU=37) </option>
+                                                <option value="Shoes-37.5"> Shoes(EU=37.5) </option>
+                                                <option value="Shoes-38"> Shoes(EU=38) </option>
+                                                <option value="Shoes-37"> Shoes(EU=38.5) </option>
+                                                <option value="Shoes-39"> Shoes(EU=39) </option>
+                                                <option value="Shoes-39"> Shoes(EU=39.5) </option>
+                                                <option value="Shoes-40"> Shoes(EU=40) </option>
+                                                <option value="Shoes-40.5"> Shoes(EU=40.5) </option>
+                                                <option value="Shoes-41"> Shoes(EU=41)</option>
+                                                <option value="Shoes-41.5"> Shoes(EU=41.5)</option>
+                                                <option value="Shoes-42"> Shoes(EU=42)</option>
+                                                <option value="Shoes-42.5"> Shoes(EU=42.5)</option>
                                                 <option value="" disabled style="color: red">سایزهای مردانه</option>
                                                 <option value="Men-XXSmall"> XX-Small</option>
                                                 <option value="Men-XSmall"> X-Small</option>
@@ -404,20 +426,20 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Men-56"> 56</option>
                                                 <option value="Men-Free-Size"> فری سایز مردانه </option>
                                                 <option value="" disabled style="color: red">  سایزهای کفش مردانه</option>
-                                                <option value="Shoes-38"> Shoes(EU=38, UK=5) </option>
-                                                <option value="Shoes-39"> Shoes(EU=39, UK=6) </option>
-                                                <option value="Shoes-40"> Shoes(EU=40, UK=6.5) </option>
-                                                <option value="Shoes-40.5"> Shoes(EU=40.5, UK=7) </option>
-                                                <option value="Shoes-41"> Shoes(EU=41, UK=7.5,) </option>
-                                                <option value="Shoes-41.5"> Shoes(EU=41.5, UK=8) </option>
-                                                <option value="Shoes-42"> Shoes(EU=42, UK=8.5)</option>
-                                                <option value="Shoes-42.5"> Shoes(EU=42.5, UK=9)</option>
-                                                <option value="Shoes-43"> Shoes(EU=43, UK=9.5)</option>
-                                                <option value="Shoes-43.5"> Shoes(EU=43.5, UK=10)</option>
-                                                <option value="Shoes-44"> Shoes(EU=44, UK=10.5)</option>
-                                                <option value="Shoes-44.5"> Shoes(EU=44.5, UK=11)</option>
-                                                <option value="Shoes-45"> Shoes(EU=45, UK=11.5)</option>
-                                                <option value="Shoes-46"> Shoes(EU=46, UK=12.5)</option>
+                                                <option value="Shoes-38"> Shoes(EU=38) </option>
+                                                <option value="Shoes-39"> Shoes(EU=39) </option>
+                                                <option value="Shoes-40"> Shoes(EU=40) </option>
+                                                <option value="Shoes-40.5"> Shoes(EU=40.5) </option>
+                                                <option value="Shoes-41"> Shoes(EU=41) </option>
+                                                <option value="Shoes-41.5"> Shoes(EU=41.5) </option>
+                                                <option value="Shoes-42"> Shoes(EU=42)</option>
+                                                <option value="Shoes-42.5"> Shoes(EU=42.5)</option>
+                                                <option value="Shoes-43"> Shoes(EU=43)</option>
+                                                <option value="Shoes-43.5"> Shoes(EU=43.5)</option>
+                                                <option value="Shoes-44"> Shoes(EU=44)</option>
+                                                <option value="Shoes-44.5"> Shoes(EU=44.5)</option>
+                                                <option value="Shoes-45"> Shoes(EU=45)</option>
+                                                <option value="Shoes-46"> Shoes(EU=46)</option>
                                             </select>
                                         </div>
                                         <div class="form-group">

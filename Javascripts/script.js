@@ -111,7 +111,7 @@ var exchange = function (country) {
     switch (country) {
         case "ترکیه":
             var currency = "TL";
-            var rate = 1200;
+            var rate = 1230;
             break;
         case "انگلیس":
             var currency = "UK-Pound";
@@ -129,7 +129,7 @@ function calculator(userID, country, clothesType, productPrice) {
     switch (country) {
         case "ترکیه":
             var country = "Turkey";
-            var currencyRate = 1200;
+            var currencyRate = 1230;
             var weightCost = 55000; //55000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 50000;
             break;
@@ -148,7 +148,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "21":
         case "22":
         case "23":
-            var userMargin = 0.1;
+            var userMargin = 0;
             break;
         default:
             var userMargin = 0;

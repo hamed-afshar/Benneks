@@ -258,6 +258,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                     <option value="code"> کد </option>
                                                     <option value="name"> نام </option>
                                                     <option value="done"> خریداری شده</option>
+                                                    <option value="cargo"> کارگو</option>
                                                     <option value="turkey"> ترکیه</option>
                                                     <option value="uk"> انگلیس</option>
                                                     <option value="cancel"> لغو شده</option>

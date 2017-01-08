@@ -245,7 +245,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <input type="hidden" name="searchReq" value="adminPage"/>
+                                                <input type="hidden" name="searchReq" value="admindetailsPage"/>
                                             </div>
                                             <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
                                                 <span>

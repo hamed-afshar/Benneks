@@ -190,6 +190,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="panel-body">
+                                        <i class="fa fa-circle fa-fw"></i> گزارشات:
+                                        <a href='excelcreator.php'> <i class='fa fa-file-excel-o fa-fw'> </i> </a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-push-4 col-md-push-4 col-sm-push-4" dir="rtl">

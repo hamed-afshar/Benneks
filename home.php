@@ -366,6 +366,8 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Women-44"> 44</option>
                                                 <option value="Women-46"> 46</option>
                                                 <option value="" disabled style="color: red">  سایزهای انگلیس</option>
+                                                <option value="UK-3"> UK-3</option>
+                                                <option value="UK-3.5"> UK-3.5</option>
                                                 <option value="UK-4"> UK-4</option>
                                                 <option value="UK-4.5"> UK-4.5</option>
                                                 <option value="UK-6"> UK-6</option>

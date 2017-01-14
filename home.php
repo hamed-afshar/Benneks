@@ -423,12 +423,6 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Men-XLarge"> X-Large</option>
                                                 <option value="Men-XXLarge"> XX-Large</option>
                                                 <option value="Men-XXXLarge"> XXX-Large</option>
-                                                <option value="Men-30"> 30</option>
-                                                <option value="Men-31"> 31</option>
-                                                <option value="Men-32"> 32</option>
-                                                <option value="Men-33"> 33</option>
-                                                <option value="Men-34"> 34</option>
-                                                <option value="Men-35"> 35</option>
                                                 <option value="Men-36"> 36</option>
                                                 <option value="Men-38"> 38</option>
                                                 <option value="Men-40"> 40</option>
@@ -440,6 +434,34 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Men-52"> 52</option>
                                                 <option value="Men-54"> 54</option>
                                                 <option value="Men-56"> 56</option>
+                                                <option value="" disabled style="color: red">  سایزهای شلوار مردانه</option>
+                                                <option value="Men-Trouser-W30"> 30</option>
+                                                <option value="Men-Trouser-W31"> 31</option>
+                                                <option value="Men-Trouser-W32"> 32</option>
+                                                <option value="Men-Trouser-W33"> 33</option>
+                                                <option value="Men-Trouser-W34"> 34</option>
+                                                <option value="Men-Trouser-W35"> 35</option>
+                                                <option value="Men-Trouser-W26:L30"> W:26 L:30</option>
+                                                <option value="Men-Trouser-W26:L32"> W:26 L:32</option>
+                                                <option value="Men-Trouser-W26:L34"> W:26 L:34</option>
+                                                <option value="Men-Trouser-W28:L30"> W:28 L:30</option>
+                                                <option value="Men-Trouser-W28:L32"> W:28 L:32</option>
+                                                <option value="Men-Trouser-W28:L34"> W:28 L:34</option>
+                                                <option value="Men-Trouser-W30:L30"> W:30 L:30</option>
+                                                <option value="Men-Trouser-W30:L32"> W:30 L:32</option>
+                                                <option value="Men-Trouser-W30:L34"> W:30 L:34</option>
+                                                <option value="Men-Trouser-W32:L30"> W:32 L:30</option>
+                                                <option value="Men-Trouser-W32:L32"> W:32 L:32</option>
+                                                <option value="Men-Trouser-W32:L34"> W:32 L:34</option>
+                                                <option value="Men-Trouser-W34:L30"> W:34 L:30</option>
+                                                <option value="Men-Trouser-W34:L32"> W:34 L:32</option>
+                                                <option value="Men-Trouser-W34:L34"> W:34 L:34</option>
+                                                <option value="Men-Trouser-W36:L30"> W:36 L:30</option>
+                                                <option value="Men-Trouser-W36:L32"> W:36 L:32</option>
+                                                <option value="Men-Trouser-W36:L34"> W:36 L:34</option>
+                                                <option value="Men-Trouser-W38:L30"> W:38 L:30</option>
+                                                <option value="Men-Trouser-W38:L32"> W:38 L:32</option>
+                                                <option value="Men-Trouser-W38:L34"> W:38 L:34</option>
                                                 <option value="Men-Free-Size"> فری سایز مردانه </option>
                                                 <option value="" disabled style="color: red">  سایزهای کفش مردانه</option>
                                                 <option value="Shoes-38"> Shoes(EU=38) </option>

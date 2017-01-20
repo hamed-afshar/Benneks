@@ -372,7 +372,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             <option value = "تمام شدن محصول">موجود نبودن کالا</option>
                                             <option value = "موجود نبودن رنگ">موجود نبودن رنگ</option>
                                             <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
-                                            <option value = "اطلاعات ناقص">به درخواست کاربر </option>
+                                            <option value = "به درخواست کاربر">به درخواست کاربر </option>
                                         </select>
                                     </div>
 

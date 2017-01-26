@@ -115,7 +115,7 @@ var exchange = function (country) {
             break;
         case "انگلیس":
             var currency = "UK-Pound";
-            var rate = 5200;
+            var rate = 5300;
             break;
     }
     return {
@@ -167,7 +167,7 @@ function calculator(userID, country, clothesType, productPrice) {
     }
 // if buying from uk then benneks margin should be 15% regardless of productPrice
     if (country === "UK") {
-        benneksMargin = 0.15;
+        benneksMargin = 0.17;
     }
     switch (clothesType) {
 //Man and Women bag

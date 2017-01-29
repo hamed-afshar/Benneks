@@ -135,7 +135,7 @@ function calculator(userID, country, clothesType, productPrice) {
             break;
         case "انگلیس":
             var country = "UK";
-            var currencyRate = 5200;
+            var currencyRate = 5300;
             var weightCost = 70000; //70000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 65000;
             break;

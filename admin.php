@@ -21,30 +21,21 @@ if (isset($_SESSION['searchQuery'])) {
 } else {
     $searchQuery = "";
 }
-$query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc ";
-$paginator = new paginator($query1);
-$limit = 30;
-$page = (isset($_GET['page']) ) ? $_GET['page'] : 1;
-//$links = (isset($_GET['links']) ) ? $_GET['links'] : 30;
-$queryResult1 = $paginator->getData($page, $limit);
-
-//echo $paginator->createLinks('pagination pagination-sm');
-/* if (isset($_GET["page"])) {
-  $page = $_GET["page"];
-  $startFrom = ($page - 1) * $limit;
-  $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
-  } else {
-  $page = 1;
-  $startFrom = ($page - 1) * $limit;
-  $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
-  }; */
-
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
+    $startFrom = ($page - 1) * $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+} else {
+    $page = 1;
+    $startFrom = ($page - 1) * $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+};
 unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query1)) {
     //echo mysqli_error($user->conn);
     echo "خطا! در نحوه تمایش اطلاعات.";
 }
-//$queryResult1 = $user->executeQuery($query1);
+$queryResult1 = $user->executeQuery($query1);
 //Get totall value(TL) and numbers for yesterday orders
 $query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'ترکیه') as FirstSet " .
@@ -343,19 +334,19 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             </table>
                         </div>
                         <?php
-                        /* $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
-                          $queryResult5 = $user->executeQuery($query5);
-                          $records = mysqli_fetch_row($queryResult5);
-                          $totalRecords = $records[0];
-                          $totalPages = ceil($totalRecords / $limit);
-                          echo "<div class='container'>";
-                          echo "<ul class='pagination'>";
-                          for ($i = 1; $i <= $totalPages; $i++) {
-                          echo "<li><a href='admin.php?page=" . $i . "'>" . $i . "</a></li>";
-                          }
-                          echo "</ul>";
-                          echo "</div>";
-                          mysqli_close($user->conn); */
+                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
+                        $queryResult5 = $user->executeQuery($query5);
+                        $records = mysqli_fetch_row($queryResult5);
+                        $totalRecords = $records[0];
+                        $totalPages = ceil($totalRecords / $limit);
+                        echo "<div class='container'>";
+                        echo "<ul class='pagination'>";
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            echo "<li><a href='admin.php?page=" . $i . "'>" . $i . "</a></li>";
+                        }
+                        echo "</ul>";
+                        echo "</div>";
+                        mysqli_close($user->conn);
                         ?>
                     </div>
                 </div>

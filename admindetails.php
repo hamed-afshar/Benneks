@@ -37,7 +37,6 @@ if (isset($_GET["page"])) {
             "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY users.username, orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 };
 // This session variable will be used in excel creator 
-unset($_SESSION['searchQuery']);
 $_SESSION['query1'] = $query1;
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);

@@ -17,7 +17,7 @@ $limit = 10;
 $userID = $_SESSION['user'];
 // if search button submited then search query will be created
 if (isset($_SESSION['searchQuery'])) {
-    $searchQuery = "AND ". $_SESSION['searchQuery'];
+    $searchQuery = "AND " . $_SESSION['searchQuery'];
 } else {
     $searchQuery = "";
 }
@@ -30,7 +30,6 @@ if (isset($_GET["page"])) {
     $startFrom = ($page - 1) * $limit;
     $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
 };
-unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -97,7 +96,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
 <title>Benneks Order System</title>
 </head>
 <body>
-    
     <div id ="wrapper">
         <!-- Navigation Bar -->
         <div class="navbar navbar-default navbar-static-top farsi" role = "navigation" style="margin-bottom: 0">
@@ -253,7 +251,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         </div>
                         <?php
                         //Pagination and query to get data
-                        $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN  benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' $searchQuery";
+                        $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID where orders.users_userID = '$userID'";
                         $queryResult2 = $user->executeQuery($query2);
                         $records = mysqli_fetch_row($queryResult2);
                         $totalRecords = $records[0];
@@ -265,7 +263,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         }
                         echo "</ul>";
                         echo "</div>";
-                        mysqli_close($user->conn); 
+                        mysqli_close($user->conn);
                         ?>
 
                     </div>

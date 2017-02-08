@@ -37,6 +37,7 @@ if (isset($_GET["page"])) {
             "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY users.username, orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 };
 // This session variable will be used in excel creator 
+unset($_SESSION['searchQuery']);
 $_SESSION['query1'] = $query1;
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
@@ -94,6 +95,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
 
 <!--Javascript src -->
 <script type="text/javascript" src="./Javascripts/script.js"></script>
+<!-- Pagination jquery plugin -->
+<script type="text/javascript" src="./Javascripts/jquery.simplePagination.js"></script>
 
 <!--Farsi Font-->
 <link rel="stylesheet" href="http://ifont.ir/apicode/33">
@@ -323,8 +326,21 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             echo "<li><a href='admindetails.php?page=" . $i . "'>" . $i . "</a></li>";
                         }
                         echo "</ul>";
-                        echo "</div>";
                         mysqli_close($user->conn);
+                        ?>
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $('.pagination').pagination({
+                                    items: <?php echo $totalRecords; ?>,
+                                    itemsOnPage: <?php echo $limit; ?>,
+                                    cssStyle: 'light-theme',
+                                    currentPage: <?php echo $page; ?>,
+                                    hrefTextPrefix: 'admindetails.php?page='
+                                });
+                            });
+                        </script>
+                        <?php
+                        echo "</div>";
                         ?>
                     </div>
                 </div>

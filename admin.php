@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID with pagination
-$limit = 50;
+$limit = 30;
 $userID = $_SESSION['user'];
 // if search button submited then search query will be created
 if (isset($_SESSION['searchQuery'])) {
@@ -30,10 +30,10 @@ if (isset($_GET["page"])) {
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 };
-//unset($_SESSION['searchQuery']);
+unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query1)) {
     //echo mysqli_error($user->conn);
-    echo "خطا! لطفا نوع فیلتر را صحیح وارد نمایید.";
+    echo "خطا! در نحوه نمایش اطلاعات.";
 }
 $queryResult1 = $user->executeQuery($query1);
 //Get totall value(TL) and numbers for yesterday orders
@@ -52,7 +52,7 @@ $query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, sec
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'انگلیس') as SecondSet";
-if (!$user->executeQuery($query2)) {
+if (!$user->executeQuery($query3)) {
     echo mysqli_error($user->conn);
 }
 $queryResult3 = $user->executeQuery($query3);
@@ -89,6 +89,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
 
 <!--Javascript src -->
 <script type="text/javascript" src="./Javascripts/script.js"></script>
+<!-- Pagination jquery plugin -->
+<script type="text/javascript" src="./Javascripts/jquery.simplePagination.js"></script>
 
 <!--Farsi Font-->
 <link rel="stylesheet" href="http://ifont.ir/apicode/33">
@@ -345,8 +347,21 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             echo "<li><a href='admin.php?page=" . $i . "'>" . $i . "</a></li>";
                         }
                         echo "</ul>";
-                        echo "</div>";
                         mysqli_close($user->conn);
+                        ?>
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $('.pagination').pagination({
+                                    items: <?php echo $totalRecords; ?>,
+                                    itemsOnPage: <?php echo $limit; ?>,
+                                    cssStyle: 'light-theme',
+                                    currentPage: <?php echo $page; ?>,
+                                    hrefTextPrefix: 'admin.php?page='
+                                });
+                            });
+                        </script>
+                        <?php
+                        echo "</div>";
                         ?>
                     </div>
                 </div>

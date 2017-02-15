@@ -290,7 +290,7 @@ function checkPrice() {
     }
 
 }
-
+// function for order submition validation
 function validateForm() {
     var clothesType = document.forms["orderForm"]["clothesType"].value;
     var productBrand = document.forms["orderForm"]["productBrand"].value;
@@ -305,6 +305,17 @@ function validateForm() {
     }
 }
 
+//function for iran deliver modal 
+function iranDeliverFunc() {
+    var orderID = document.getElementById("rowID").value;
+    var benneksDeliverDate = document.getElementById("benneksDeliverDate").value;
+    var cargoName = document.getElementById("cargoName").value;
+    //document.getElementById("msg").innerHTML=orderID;
+    $.getJSON("./irandeliver.php?orderID="+orderID+"&benneksDeliverDate="+benneksDeliverDate+"&cargoName="+cargoName, function (data) {
+        // if cargo code has already been assigned to this order then show a suitable message
+        document.getElementById("msg").innerHTML=data.msg;
+    });
+}
 
 
 

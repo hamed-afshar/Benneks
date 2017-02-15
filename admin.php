@@ -157,7 +157,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <a href="admindetails.php"> <i class="fa fa-area-chart fa-fw"> </i> گزارش مفصل </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-money fa-fw" > </i> گزارش مالی</a>
+                            <a href="#"> <i class="fa fa-money fa-fw" > </i> انتقال وجه</a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
@@ -430,13 +430,13 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> خرید محصول </h4>
+                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> ارسال به ایران </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="iranDeliver.php" method="post" dir="rtl">
+                                <form role="form"  method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID" onclick="return false;">
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly onclick="return false;">
                                     </div>
                                     <div class="form-group">
                                         <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ ارسال</label>
@@ -446,7 +446,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
                                         <input type="text" class="form-control" name="cargoName" id="cargoName" onclick="return false;">
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="iranDeliverFunc();"> ثبت </button>
+                                    <p id="msg">  </p>
                                 </form>
                             </div>
                         </div>

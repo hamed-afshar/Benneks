@@ -167,7 +167,7 @@ function calculator(userID, country, clothesType, productPrice) {
     }
 // if buying from uk then benneks margin should be 15% regardless of productPrice
     if (country === "UK") {
-        benneksMargin = 0.20;
+        benneksMargin = 0.23;
     }
     switch (clothesType) {
 //Man and Women bag

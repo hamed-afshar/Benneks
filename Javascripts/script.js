@@ -305,17 +305,55 @@ function validateForm() {
     }
 }
 
-//function for iran deliver modal 
-function iranDeliverFunc() {
+//function for iran deliver modal to show result from database
+
+function iranDeliverFunc(action) {
     var orderID = document.getElementById("rowID").value;
     var benneksDeliverDate = document.getElementById("benneksDeliverDate").value;
     var cargoName = document.getElementById("cargoName").value;
-    //document.getElementById("msg").innerHTML=orderID;
-    $.getJSON("./irandeliver.php?orderID="+orderID+"&benneksDeliverDate="+benneksDeliverDate+"&cargoName="+cargoName, function (data) {
-        // if cargo code has already been assigned to this order then show a suitable message
-        document.getElementById("msg").innerHTML=data.msg;
-    });
+    switch (action) {
+        case "submit":
+            $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&benneksDeliverDate=" + benneksDeliverDate + "&cargoName=" + cargoName, function (data) {
+                // if cargo code has already been assigned to this order then show a suitable message
+                var result = data.result;
+                var msg = data.msg;
+                if (result === "exsist") {
+                    document.getElementById("msg").innerHTML = msg;
+                    $("#submitButton").prop('hidden', true);
+                    $("#resetButton").hide("slow");
+                    $("#changeCargoButton").show("slow");
+                    $("#Not-changeCargoButton").show("slow");
+                } else {
+                    document.getElementById("msg").innerHTML = msg;
+                }
+            });
+            break;
+        case "change":
+            $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&benneksDeliverDate=" + benneksDeliverDate + "&cargoName=" + cargoName, function (data) {
+                // if cargo code has already been assigned to this order then show a suitable message
+                var result = data.result;
+                var msg = data.msg;
+                if (result === "exsist") {
+                    document.getElementById("msg").innerHTML = msg;
+                } else {
+                    document.getElementById("msg").innerHTML = msg;
+                    $("#changeCargoButton").hide("slow");
+                    $("#Not-changeCargoButton").hide("slow");
+                }
+            });
+            break;
+        case "reset":
+            $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&benneksDeliverDate=" + benneksDeliverDate + "&cargoName=" + cargoName, function (data) {
+                // if cargo code has already been assigned to this order then show a suitable message
+                var result = data.result;
+                var msg = data.msg;
+                    document.getElementById("msg").innerHTML = msg;
+            });
+            break;
+
+    }
 }
+
 
 
 

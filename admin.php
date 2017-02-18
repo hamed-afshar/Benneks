@@ -433,7 +433,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <h4><span class = "glyphicon glyphicon-briefcase"> </span> ارسال به ایران </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form"  method="post" dir="rtl">
+                                <form role="form"  method="post" action="irandeliver.php" dir="rtl">
                                     <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID" readonly onclick="return false;">
@@ -446,8 +446,13 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
                                         <input type="text" class="form-control" name="cargoName" id="cargoName" onclick="return false;">
                                     </div>
-                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="iranDeliverFunc();"> ثبت </button>
-                                    <p id="msg">  </p>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="iranDeliverFunc('submit');"> ثبت </button>
+                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="iranDeliverFunc('reset');"> حذف کد کارگو </button>
+                                    <div class="form-group">
+                                        <center> <p id="msg">  </p> </center>
+                                    </div>
+                                    <button type="button" class="btn btn-info btn-block" id="changeCargoButton" style="display: none" onclick="iranDeliverFunc('change');"> تغییر کد کارگو </button>
+                                    <button type="button" class="btn btn-danger btn-block" id="Not-changeCargoButton" style="display: none" onclick="$('#iranDeliverModal').modal('hide');"> انصراف </button>   
                                 </form>
                             </div>
                         </div>

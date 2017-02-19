@@ -450,6 +450,9 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Men-Trouser-W30:L30"> W:30 L:30</option>
                                                 <option value="Men-Trouser-W30:L32"> W:30 L:32</option>
                                                 <option value="Men-Trouser-W30:L34"> W:30 L:34</option>
+                                                <option value="Men-Trouser-W31:L30"> W:31 L:30</option>
+                                                <option value="Men-Trouser-W31:L32"> W:31 L:32</option>
+                                                <option value="Men-Trouser-W31:L34"> W:31 L:34</option>
                                                 <option value="Men-Trouser-W32:L30"> W:32 L:30</option>
                                                 <option value="Men-Trouser-W32:L32"> W:32 L:32</option>
                                                 <option value="Men-Trouser-W32:L34"> W:32 L:34</option>
@@ -498,6 +501,15 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="زرشکی">  زرشکی</option>
                                                 <option value="کرم">  کرم</option>
                                                 <option value="صورتی">  صورتی</option>
+                                                <option value="طلایی">  طلایی</option>
+                                                <option value="نارنجی">  نارنجی</option>
+                                                <option value="بژ">  بژ</option>
+                                                <option value="صدفی">  صدفی</option>
+                                                <option value="سرخ آبی">  سرخ آبی</option>
+                                                <option value="گل بهی">  گل بهی</option>
+                                                <option value="یشمی">  یشمی</option>
+                                                <option value="لیمویی">  لیمویی</option>
+                                                <option value="چند رنگ">  چند رنگ</option>
                                             </select>
                                         </div>
                                         <div class="form-group">

@@ -347,13 +347,12 @@ function iranDeliverFunc(action) {
                 // if cargo code has already been assigned to this order then show a suitable message
                 var result = data.result;
                 var msg = data.msg;
-                    document.getElementById("msg").innerHTML = msg;
+                document.getElementById("msg").innerHTML = msg;
             });
             break;
 
     }
 }
-
 
 
 

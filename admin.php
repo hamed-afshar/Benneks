@@ -15,6 +15,8 @@ date_default_timezone_set("Asia/Tehran");
 // fetch order table for a user that owns curent session ID with pagination
 $limit = 30;
 $userID = $_SESSION['user'];
+
+
 // if search button submited then search query will be created
 if (isset($_SESSION['searchQuery'])) {
     $searchQuery = "WHERE " . $_SESSION['searchQuery'];
@@ -30,9 +32,8 @@ if (isset($_GET["page"])) {
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 };
-unset($_SESSION['searchQuery']);
+//unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query1)) {
-    //echo mysqli_error($user->conn);
     echo "خطا! در نحوه نمایش اطلاعات.";
 }
 $queryResult1 = $user->executeQuery($query1);
@@ -269,11 +270,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             <div class="form-group">
                                                 <input type="hidden" name="searchReq" value="adminPage"/>
                                             </div>
-                                            <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
-                                                <span>
-                                                    <i class="fa fa-search"> </i>
-                                                </span>
-                                            </button>
+                                            <div class="form-group">
+                                                <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
+                                                    <span>
+                                                        <i class="fa fa-search"> </i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="form-control btn btn-group btn-danger" id="cancelSearchButton" name="cancelSearchButton" > لغو جستجو
+                                                    <span>
+                                                        <i class="fa fa-ban"> </i>
+                                                    </span>
+                                                </button>
+                                            </div>
                                         </form>                                    
                                     </div>
                                 </div>

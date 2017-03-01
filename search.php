@@ -22,7 +22,7 @@ if (isset($_POST['searchButton'])) {
     $searchquery = "";
     switch ($searchOption) {
         case "code":
-            $searchQuery = "orders.orderID = " . $searchValue . "";  
+            $searchQuery = "orders.orderID = " . $searchValue . "";
             break;
         case "name":
             $searchQuery = "users.userName = " . "'" . $searchValue . "'" . "";
@@ -33,7 +33,7 @@ if (isset($_POST['searchButton'])) {
         case "turkey":
             $searchQuery = "orders.country = " . "'ترکیه'";
             break;
-         case "uk":
+        case "uk":
             $searchQuery = "orders.country = " . "'انگلیس'";
             break;
         case "cancel":
@@ -56,10 +56,25 @@ if (isset($_POST['searchButton'])) {
             header("Location: admin.php");
             break;
         case "admindetailsPage":
-           header("Location: admindetails.php");
-           break;
+            header("Location: admindetails.php");
+            break;
         case "orderlistPage":
             header("Location: orderlist.php");
-    }    
+    }
+}
+
+if (isset($_POST['cancelSearchButton'])) {
+    $searchReq = $_POST['searchReq'];
+    unset($_SESSION['searchQuery']);
+    switch ($searchReq) {
+        case "adminPage":
+            header("Location: admin.php");
+            break;
+        case "admindetailsPage":
+            header("Location: admindetails.php");
+            break;
+        case "orderlistPage":
+            header("Location: orderlist.php");
+    }
 }
 ?>

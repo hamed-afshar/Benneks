@@ -19,11 +19,16 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 
-//If change cargo button submited then means orderID dose not exist in database so dont need to use ajax, otherwise it exsist and ajax must show a proper msg.
+
 $orderID = $_GET['orderID'];
 $benneksDeliverDate = $_GET['benneksDeliverDate'];
 $cargoName = $_GET['cargoName'];
 $action = $_GET['action'];
+/*apply relevant action based on the action got from deliver modal.
+ * submit = to add cargo details into database.
+ * change = means orderId has already assgined with a cargoname and should be changed to new one
+ * reset: means all information about an orderID should be deleted and set to null
+ */
 switch ($action) {
     case "submit" :
         $checkQuery = "SELECT shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID WHERE orders.orderID = '$orderID'";

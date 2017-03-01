@@ -37,7 +37,6 @@ if (isset($_GET["page"])) {
             "inner JOIN benneks.users ON orders.users_userID = users.userID where users.userID IN (SELECT users.userID FROM benneks.users) $searchQuery  ORDER BY users.username, orders.orderDate desc, orders.orderID desc LIMIT " . $startFrom . "," . $limit;
 };
 // This session variable will be used in excel creator 
-unset($_SESSION['searchQuery']);
 $_SESSION['query1'] = $query1;
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
@@ -254,11 +253,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             <div class="form-group">
                                                 <input type="hidden" name="searchReq" value="admindetailsPage"/>
                                             </div>
-                                            <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
-                                                <span>
-                                                    <i class="fa fa-search"> </i>
-                                                </span>
-                                            </button>
+                                            <div class="form-group">
+                                                <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
+                                                    <span>
+                                                        <i class="fa fa-search"> </i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="form-control btn btn-group btn-danger" id="cancelSearchButton" name="cancelSearchButton" > لغو جستجو
+                                                    <span>
+                                                        <i class="fa fa-ban"> </i>
+                                                    </span>
+                                                </button>
+                                            </div>
                                         </form>                                    
                                     </div>
                                 </div>

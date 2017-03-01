@@ -30,7 +30,6 @@ if (isset($_GET["page"])) {
     $startFrom = ($page - 1) * $limit;
     $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
 };
-unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -194,11 +193,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             <div class="form-group">
                                                 <input type="hidden" name="searchReq" value="orderlistPage"/>
                                             </div>
-                                            <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
-                                                <span>
-                                                    <i class="fa fa-search"> </i>
-                                                </span>
-                                            </button>
+                                            <div class="form-group">
+                                                <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
+                                                    <span>
+                                                        <i class="fa fa-search"> </i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="form-control btn btn-group btn-danger" id="cancelSearchButton" name="cancelSearchButton" > لغو جستجو
+                                                    <span>
+                                                        <i class="fa fa-ban"> </i>
+                                                    </span>
+                                                </button>
+                                            </div>
                                         </form> 
                                     </div>
                                 </div>

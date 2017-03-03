@@ -94,14 +94,12 @@ if (isset($_POST['submitOrderButton'])) {
     }
 // if all queries executed properly then comit the changes in to database otherwise roll back all changes
     if ($flag) {
-        mysqli_commit($user->conn);
-        echo '<script language="javascript">';
-        echo 'alert("سفارش شما با موفقیت در سیستم ثبت گردید")';
-        echo '</script>';
-    } else {
-        mysqli_rollback($user->conn);
-        echo "سیستم دچار اختلال در ورود اطلاعات گردیده است لطفا با مدیر  تماس برقرار نمایید";
-    }
+      mysqli_commit($user->conn);
+      echo '<script type="text/javascript">'.'alert("'.$string.'"); </script>';
+      } else {
+      mysqli_rollback($user->conn);
+      echo "سیستم دچار اختلال در ورود اطلاعات گردیده است لطفا با مدیر  تماس برقرار نمایید";
+      } 
     mysqli_close($user->conn);
 }
 ?>
@@ -135,6 +133,7 @@ if (isset($_POST['submitOrderButton'])) {
 
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+
 
 <title>Benneks Order System</title>
 </head>
@@ -514,7 +513,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="productPrice"> قیمت :</label>
-                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice();showRealPrice();" id="productPrice" name = "productPrice">
+                                            <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); showRealPrice();" id="productPrice" name = "productPrice">
                                         </div>
                                         <div class="form-group">
                                             <span style="color:red" id="priceAlert">

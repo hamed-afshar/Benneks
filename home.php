@@ -95,6 +95,7 @@ if (isset($_POST['submitOrderButton'])) {
 // if all queries executed properly then comit the changes in to database otherwise roll back all changes
     if ($flag) {
       mysqli_commit($user->conn);
+      $string = "سفارش شما با کد "."$orderID"." در سیستم ثبت گردید.";
       echo '<script type="text/javascript">'.'alert("'.$string.'"); </script>';
       } else {
       mysqli_rollback($user->conn);

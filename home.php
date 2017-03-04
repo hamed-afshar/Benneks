@@ -40,11 +40,9 @@ if (isset($_POST['submitOrderButton'])) {
         mkdir('orderpics/' . $userDir);
         $targetDir = 'orderpics/' . $userDir . "/";
     }
-    $targetFile = $targetDir . basename($_FILES["productPic"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = pathinfo($targetFile);
-    move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetFile);
-    $image = basename($_FILES["productPic"]["name"]);
+    $fileName = time() . rand(11, 99) . basename($_FILES['productPic']['name']);
+    $targetPath = $targetDir . $fileName;
+    move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetPath);
 // Insert customer information into database
     $customerID = $lastID + 1;
     $query2 = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
@@ -72,7 +70,7 @@ if (isset($_POST['submitOrderButton'])) {
     $rateTL = intval($_POST['rate']);
     $originalTomanPrice = intval($productPrice) * $rateTL;
     // user directory needs to be added before pic name
-    $productPic = $targetDir . $image;
+    $productPic = $targetPath;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = 1;
     $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country) "

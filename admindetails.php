@@ -43,7 +43,7 @@ if (!$user->executeQuery($query1)) {
 }
 $queryResult1 = $user->executeQuery($query1);
 //Get totall value(TL) and numbers for yesterday orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
-$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM "
+$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM "
         . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'ترکیه' AND stat.orderStatus = 'انجام شده' AND orders.orderDate = subdate(current_date(), 1)) as FirstSet "
         . "INNER JOIN"
         . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'انگلیس' AND stat.orderStatus = 'انجام شده' AND orders.orderDate = subdate(current_date(), 1)) as SecondSet";
@@ -53,7 +53,7 @@ if (!$user->executeQuery($query2)) {
 $queryResult2 = $user->executeQuery($query2);
 $yesterdayValue = mysqli_fetch_row($queryResult2);
 //Get totall value(TL) and numbers for Today orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
-$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM "
+$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM "
         . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'ترکیه' AND stat.orderStatus = 'انجام شده' AND orders.orderDate = current_date()) as FirstSet "
         . "INNER JOIN"
         . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'انگلیس' AND stat.orderStatus = 'انجام شده' AND orders.orderDate = current_date()) as SecondSet";
@@ -63,7 +63,7 @@ if (!$user->executeQuery($query2)) {
 $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
 //Get totall value(TL) and numbers for month orders only for successfull orders. Cancelation and unknown status orders sustracted from this number.
-$query4 = $query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM "
+$query4 = $query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM "
         . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'ترکیه' AND stat.orderStatus = 'انجام شده' AND MONTH(orders.orderDate) = MONTH(current_date())) as FirstSet "
         . "INNER JOIN"
         . "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID WHERE orders.country = 'انگلیس' AND stat.orderStatus = 'انجام شده' AND MONTH(orders.orderDate) = MONTH(current_date())) as SecondSet";

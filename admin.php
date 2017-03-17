@@ -38,7 +38,7 @@ if (!$user->executeQuery($query1)) {
 }
 $queryResult1 = $user->executeQuery($query1);
 //Get totall value(TL) and numbers for yesterday orders
-$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM " .
+$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'انگلیس') as SecondSet";
@@ -49,7 +49,7 @@ $queryResult2 = $user->executeQuery($query2);
 $yesterdayValue = mysqli_fetch_row($queryResult2);
 
 //Get totall value(TL) and numbers for Today orders
-$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM " .
+$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'انگلیس') as SecondSet";
@@ -59,7 +59,7 @@ if (!$user->executeQuery($query3)) {
 $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
 //Get totall value(TL) and numbers for month orders
-$query4 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, secondSet.ukCount FROM " .
+$query4 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date()) AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(current_date()) AND orders.country = 'انگلیس') as SecondSet";

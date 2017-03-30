@@ -145,6 +145,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                 <a class="navbar-brand" href="home.php">Benneks Control Panel</a>
             </div>
 
+
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse collapse">
                     <ul class="nav in" id="side-menu">
@@ -159,6 +160,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-money fa-fw" > </i> انتقال وجه</a>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="fa fa-file-excel-o fa-fw"></span>
+                                    اکسل
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a href="orderlistmaker.php">سفارش ساز</a></li>
+                                    <li><a href="#"> گزارش کارگو</a></li>
+                                </ul>
+
+                            </div>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>

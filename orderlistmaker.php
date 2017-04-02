@@ -18,6 +18,11 @@ ini_set('display_startup_errors', TRUE);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 ini_set('memory_limit', '512M');
+if(isset($_POST['submitButton'])) {
+    $orderDate = $_POST['orderDate'];
+    $orderTime = $_POST['orderTime'];
+    $country = $_POST['country'];
+}
 
 /** Include PHPExcel */
 require_once dirname(__FILE__) . '/Excel-Classes/PHPExcel.php';
@@ -55,9 +60,10 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('K1', 'عکس')
         ->setCellValue('L1', 'لینک');
 //query to extract requiered data from db and insert it to excel
-$query1 = "SELECT users.userName, orders.orderDate, orders.clothesType, orders.productSize, orders.productPrice, orders.orderID, stat.orderStatus, shipment.cargoName, " .
-        "orders.productBrand, orders.productPic, orders.productLink FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
-        "INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID WHERE users.userID = '1';";
+$query1 = "SELECT users.userName, orders.orderDate, orders.clothesType, orders.productSize, orders.productPrice, orders.orderID, stat.orderStatus, shipment.cargoName, ". 
+        "orders.productBrand, orders.productPic, orders.productLink FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID ". 
+        "INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID ".
+        "INNER JOIN benneks.dateandtime ON orders.orderID = dateandtime.orderID where dateandtime.country = '$country' AND stat.orderStatus is null AND dateandtime.dtime >= str_to_date(concat('$orderDate','','$orderTime'),'%Y-%m-%d %H:%i:%s') order by dateandtime.dtime; ";
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }

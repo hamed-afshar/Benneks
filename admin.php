@@ -169,7 +169,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="orderlistmaker.php">سفارش ساز</a></li>
+                                    <li><a href='#orderListMakerModal' data-toggle='modal' data-target='#orderListMakerModal' class='open-addModal' >سفارش ساز</a></li>
                                     <li><a href="#"> گزارش کارگو</a></li>
                                 </ul>
 
@@ -478,6 +478,38 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </div>
                                     <button type="button" class="btn btn-info btn-block" id="changeCargoButton" style="display: none" onclick="iranDeliverFunc('change');"> تغییر کد کارگو </button>
                                     <button type="button" class="btn btn-danger btn-block" id="Not-changeCargoButton" style="display: none" onclick="$('#iranDeliverModal').modal('hide');"> انصراف </button>   
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--orderlist Maker Modal -->
+                <div class = "modal fade" id = "orderListMakerModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> ساخت لیست سفارشات </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="orderlistmaker.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="orderID"> شروع از تاریخ: </label>
+                                        <input type="date" class="form-control" name="orderDate" id="orderDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orderID"> شروع از ساعت: </label>
+                                        <input type="time" class="form-control" name="orderTime" id="orderTime">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="country"><span class="glyphicon glyphicon-flag"></span>  کشور:</label>
+                                        <select dir = "rtl" class = "form-control" id = "country" name="country"> 
+                                            <option value = "انگلیس">انگلیس</option>
+                                            <option value = "ترکیه">ترکیه</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ایجاد فایل اکسل </button>
                                 </form>
                             </div>
                         </div>

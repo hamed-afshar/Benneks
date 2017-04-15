@@ -126,9 +126,16 @@ $objSheet->getDefaultStyle()->applyFromArray($style);
 $objSheet->getStyle('A1:L1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF808080');
 
 // Save Excel 2007 file
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+/*$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="orderlist.xlsx"');
 header('Cache-Control: max-age=0');
 
+$objWriter->save('php://output');*/
+
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment;filename="orderlist.xls"');
+
 $objWriter->save('php://output');
+

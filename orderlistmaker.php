@@ -18,7 +18,7 @@ ini_set('display_startup_errors', TRUE);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 ini_set('memory_limit', '512M');
-if(isset($_POST['submitButton'])) {
+if (isset($_POST['submitButton'])) {
     $orderDate = $_POST['orderDate'];
     $orderTime = $_POST['orderTime'];
     $country = $_POST['country'];
@@ -60,10 +60,10 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('K1', 'عکس')
         ->setCellValue('L1', 'لینک');
 //query to extract requiered data from db and insert it to excel
-$query1 = "SELECT users.userName, orders.orderDate, orders.clothesType, orders.productSize, orders.productPrice, orders.orderID, stat.orderStatus, shipment.cargoName, ". 
-        "orders.productBrand, orders.productPic, orders.productLink FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID ". 
-        "INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID ".
-        "INNER JOIN benneks.dateandtime ON orders.orderID = dateandtime.orderID where dateandtime.country = '$country' AND stat.orderStatus is null AND dateandtime.dtime >= str_to_date(concat('$orderDate','','$orderTime'),'%Y-%m-%d %H:%i:%s') order by dateandtime.dtime; ";
+$query1 = "SELECT users.userName, orders.orderDate, orders.clothesType, orders.productSize, orders.productPrice, orders.orderID, stat.orderStatus, shipment.cargoName, " .
+        "orders.productBrand, orders.productPic, orders.productLink FROM benneks.orders INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID " .
+        "INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID " .
+        "INNER JOIN benneks.dateandtime ON orders.orderID = dateandtime.orderID where dateandtime.country = '$country' AND dateandtime.dtime >= str_to_date(concat('$orderDate','','$orderTime'),'%Y-%m-%d %H:%i:%s') order by dateandtime.dtime; ";
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
@@ -90,9 +90,41 @@ while ($row = mysqli_fetch_row($queryResult1)) {
         case '.jpg':
         case '.jpeg':
             $productImage = imagecreatefromjpeg($row[9]);
+            if (!$productImage) {
+                $emptyImage = imagecreate(50, 50);
+                $background = imagecolorallocate($emptyImage, 255, 255, 255);
+                $text_color = imagecolorallocate($emptyImage, 0, 0, 0);
+                $line_color = imagecolorallocate($emptyImage, 0, 0, 0);
+                imagestring($emptyImage, 20, 30, 45, "No Picture", $text_color);
+                imagesetthickness($emptyImage, 5);
+                imageline($emptyImage, 30, 45, 165, 45, $line_color);
+                header("Content-type: image/jpg");
+                imagepng($emptyImage);
+                imagecolordeallocate($line_color);
+                imagecolordeallocate($text_color);
+                imagecolordeallocate($background);
+                //imagedestroy($emptyImage);
+                $productImage = $emptyImage;
+            }
             break;
         case '.png':
             $productImage = imagecreatefrompng($row[9]);
+            if (!$productImage) {
+                $emptyImage = imagecreate(50, 50);
+                $background = imagecolorallocate($emptyImage, 255, 255, 255);
+                $text_color = imagecolorallocate($emptyImage, 0, 0, 0);
+                $line_color = imagecolorallocate($emptyImage, 0, 0, 0);
+                imagestring($emptyImage, 20, 30, 45, "No Picture", $text_color);
+                imagesetthickness($emptyImage, 5);
+                imageline($emptyImage, 30, 45, 165, 45, $line_color);
+                header("Content-type: png/jpg");
+                imagepng($emptyImage);
+                imagecolordeallocate($line_color);
+                imagecolordeallocate($text_color);
+                imagecolordeallocate($background);
+                //imagedestroy($emptyImage);
+                $productImage = $emptyImage;
+            }
             break;
     }
     $objDrawing->setImageResource($productImage);
@@ -124,18 +156,9 @@ $objPHPExcel->setActiveSheetIndex(0);
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
 $objSheet->getStyle('A1:L1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF808080');
-
-// Save Excel 2007 file
-/*$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="orderlist.xlsx"');
-header('Cache-Control: max-age=0');
-
-$objWriter->save('php://output');*/
-
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+/*$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="orderlist.xls"');
 
-$objWriter->save('php://output');
+$objWriter->save('php://output');*/
 

@@ -86,52 +86,27 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     //create new drawing object for images
     $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
     $extension = strtolower(strrchr($row[9], '.'));
+    $emptyPic = 'orderpics/no-pic.jpg';
     switch ($extension) {
         case '.jpg':
         case '.jpeg':
-            $productImage = imagecreatefromjpeg($row[9]);
+            $productImage = @imagecreatefromjpeg($row[9]);
             if (!$productImage) {
-                $emptyImage = imagecreate(50, 50);
-                $background = imagecolorallocate($emptyImage, 255, 255, 255);
-                $text_color = imagecolorallocate($emptyImage, 0, 0, 0);
-                $line_color = imagecolorallocate($emptyImage, 0, 0, 0);
-                imagestring($emptyImage, 20, 30, 45, "No Picture", $text_color);
-                imagesetthickness($emptyImage, 5);
-                imageline($emptyImage, 30, 45, 165, 45, $line_color);
-                header("Content-type: image/jpg");
-                imagepng($emptyImage);
-                imagecolordeallocate($line_color);
-                imagecolordeallocate($text_color);
-                imagecolordeallocate($background);
-                //imagedestroy($emptyImage);
-                $productImage = $emptyImage;
+                $productImage = imagecreatefromjpeg($emptyPic);
             }
             break;
         case '.png':
-            $productImage = imagecreatefrompng($row[9]);
+            $productImage = @imagecreatefrompng($row[9]);
             if (!$productImage) {
-                $emptyImage = imagecreate(50, 50);
-                $background = imagecolorallocate($emptyImage, 255, 255, 255);
-                $text_color = imagecolorallocate($emptyImage, 0, 0, 0);
-                $line_color = imagecolorallocate($emptyImage, 0, 0, 0);
-                imagestring($emptyImage, 20, 30, 45, "No Picture", $text_color);
-                imagesetthickness($emptyImage, 5);
-                imageline($emptyImage, 30, 45, 165, 45, $line_color);
-                header("Content-type: png/jpg");
-                imagepng($emptyImage);
-                imagecolordeallocate($line_color);
-                imagecolordeallocate($text_color);
-                imagecolordeallocate($background);
-                //imagedestroy($emptyImage);
-                $productImage = $emptyImage;
+               $productImage = imagecreatefromjpeg($emptyPic);
             }
             break;
     }
     $objDrawing->setImageResource($productImage);
     $objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
     $objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
-    $objDrawing->setHeight(100);
-    $objDrawing->setWidth(100);
+    $objDrawing->setHeight(80);
+    $objDrawing->setWidth(80);
     $objDrawing->setCoordinates('K' . $i);
     $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
     $objPHPExcel->getActiveSheet()->setCellValue('L' . $i, $row[10]);
@@ -149,16 +124,18 @@ $objSheet->getColumnDimension('H')->setAutoSize(true);
 $objSheet->getColumnDimension('I')->setAutoSize(true);
 $objSheet->getColumnDimension('J')->setAutoSize(true);
 $objSheet->getColumnDimension('K')->setWidth(14);
-$objSheet->getColumnDimension('L')->setAutoSize(true);
+$objSheet->getColumnDimension('L')->setWidth(150);
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle('A1:L1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF808080');
-/*$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+$objSheet->getStyle("A1:L1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:L1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:L1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="orderlist.xls"');
 
-$objWriter->save('php://output');*/
+$objWriter->save('php://output');
 

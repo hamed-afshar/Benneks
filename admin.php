@@ -129,6 +129,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
         });
     });
 </script>
+<!-- script for return modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-returnModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
 <title>Benneks Order System</title>
 </head>
 <body>
@@ -338,6 +347,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#iranDeliverModal' data-id='$row[0]' class='open-iranDeliverModal'> <i class='fa fa-plane fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#returnModal' data-toggle='modal' data-target='#returnModal' data-id='$row[0]' class='open-returnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
                                         . " </td>";
                                         echo "<td>" . $row[1] . "</td>";
                                         echo "<td>" . $row[2] . "</td>";
@@ -510,6 +520,42 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         </select>
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ایجاد فایل اکسل </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Return Modal -->
+                <div class = "modal fade" id = "returnModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-refresh"> </span> عودت محصول </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="return.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="rowID"> کد سفارش </label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="returnReason"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
+                                        <select dir = "rtl" class = "form-control" id = "returnReason" name="returnReason"> 
+                                            <option value = "اشتباه بودن محصول">اشتباه بودن محصول</option>
+                                            <option value = "خراب بودن محصول">خراب بودن محصول</option>
+                                            <option value = "تعویض با جنس دیگر">تعویض با جنس دیگر</option>
+                                            <option value = "دیر رسیدن کالا">دیر رسیدن کالا </option>
+                                            <option value = "به درخواست کاربر">به درخواست کاربر </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="returnDescription"><span class="glyphicon glyphicon-comment"></span>  توضیحات</label>
+                                        <input type="text" class="form-control" name="returnComment" id="returnComment"> 
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>
                             </div>
                         </div>

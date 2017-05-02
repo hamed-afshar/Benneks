@@ -573,7 +573,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <h4><span class = "glyphicon glyphicon-refresh"> </span> گزارش جامع </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="finalReport.php" method="post" dir="rtl">
+                                <form role="form" action="finalreport.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="startDate"> تاریخ شروع گزارش: </label>
                                         <input type="date" class="form-control" name="startDate" id="startDate">

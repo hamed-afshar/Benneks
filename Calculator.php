@@ -146,7 +146,7 @@ if (!isset($_SESSION['user'])) {
                                     var clothesType = document.getElementById("clothesType").value;
                                     var productPrice = document.getElementById("productPrice").value;
                                     var finalPrice = calculator(userID, country, clothesType, productPrice);
-                                    document.getElementById('finalPrice').value = finalPrice;
+                                    document.getElementById('finalPrice').value = finalPrice.totalCost;
                                 }
                             </script>
                             <div class = "form-group">

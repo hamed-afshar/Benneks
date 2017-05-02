@@ -138,6 +138,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
         });
     });
 </script>
+
 <title>Benneks Order System</title>
 </head>
 <body>
@@ -180,6 +181,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                     <li><a href='#orderListMakerModal' data-toggle='modal' data-target='#orderListMakerModal' class='open-addModal' >سفارش ساز</a></li>
                                     <li><a href="#"> گزارش کارگو</a></li>
+                                    <li><a href="#finalReportModal" data-toggle='modal' data-target='#finalReportModal' class='open-finalReportModal' > گزارش جامع</a></li>
                                 </ul>
 
                             </div>
@@ -554,8 +556,40 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="returnDescription"><span class="glyphicon glyphicon-comment"></span>  توضیحات</label>
                                         <input type="text" class="form-control" name="returnComment" id="returnComment"> 
                                     </div>
-                                    
+
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--finalReport Modal -->
+                <div class = "modal fade" id = "finalReportModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-refresh"> </span> گزارش جامع </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="finalReport.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="startDate"> تاریخ شروع گزارش: </label>
+                                        <input type="date" class="form-control" name="startDate" id="startDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="finishDate"> تاریخ پایان گزارش: </label>
+                                        <input type="date" class="form-control" name="finishDate" id="finishDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="countryReport"><span class="glyphicon glyphicon-hand-left"></span>  کشور</label>
+                                        <select dir = "rtl" class = "form-control" id = "countryReport" name="countryReport"> 
+                                            <option value = "ترکیه">ترکیه</option>
+                                            <option value = "انگلیس">انگلیس</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ساخت سفارش </button>
                                 </form>
                             </div>
                         </div>

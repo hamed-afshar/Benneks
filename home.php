@@ -69,13 +69,16 @@ if (isset($_POST['submitOrderButton'])) {
     $currency = $_POST['currency'];
     $rateTL = intval($_POST['rate']);
     $originalTomanPrice = intval($productPrice) * $rateTL;
+    $productWeight = $_POST['productWeight'];
+    $benneksMargin = $_POST['benneksMargin'];
+    $iranDeliverCost = $_POST['iranDeliverCost'];
     // user directory needs to be added before pic name
     $productPic = $targetPath;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = 1;
-    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country) "
+    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country, productsWeight) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
-            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity', '$country')";
+            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity', '$country', '$productWeight')";
     if (!$user->executeQuery($query3)) {
         $flag = false;
         echo mysqli_error($user->conn);
@@ -83,7 +86,7 @@ if (isset($_POST['submitOrderButton'])) {
     // once an order submited, we nedd to create three records in shipment, status and cost table for this order
     $query4 = "INSERT INTO benneks.shipment(orders_orderID) VALUES ('$orderID')";
     $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
-    $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice, currency) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice', '$currency')";
+    $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice, currency, benneksMargin, iranDeliverCost) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice', '$currency', '$benneksMargin', '$iranDeliverCost')";
     if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
         $flag = true;
     } else {
@@ -92,13 +95,13 @@ if (isset($_POST['submitOrderButton'])) {
     }
 // if all queries executed properly then comit the changes in to database otherwise roll back all changes
     if ($flag) {
-      mysqli_commit($user->conn);
-      $string = "سفارش شما با کد "."$orderID"." در سیستم ثبت گردید.";
-      echo '<script type="text/javascript">'.'alert("'.$string.'"); </script>';
-      } else {
-      mysqli_rollback($user->conn);
-      echo "سیستم دچار اختلال در ورود اطلاعات گردیده است لطفا با مدیر  تماس برقرار نمایید";
-      } 
+        mysqli_commit($user->conn);
+        $string = "سفارش شما با کد " . "$orderID" . " در سیستم ثبت گردید.";
+        echo '<script type="text/javascript">' . 'alert("' . $string . '"); </script>';
+    } else {
+        mysqli_rollback($user->conn);
+        echo "سیستم دچار اختلال در ورود اطلاعات گردیده است لطفا با مدیر  تماس برقرار نمایید";
+    }
     mysqli_close($user->conn);
 }
 ?>
@@ -514,8 +517,22 @@ if (isset($_POST['submitOrderButton'])) {
                                             <label for="productPrice"> قیمت :</label>
                                             <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); showRealPrice();" id="productPrice" name = "productPrice">
                                         </div>
+                                        <!-- check box for entering customer information based on user behalf-->
+                                        <div class="form-group">
+                                            <input type="hidden" id="customerInfoOption" name="customerInfoOption"> 
+                                        </div>
+                                        <div class = "form-group">
+                                            <input type = "hidden" class = "form-control eng-format" dir="ltr" id = "customerName" name = "customerName" placeholder = "نام مشتری ">
+                                        </div>
+                                        <div class = "form-group">
+                                            <input type = "hidden" class = "form-control eng-format" dir="ltr" id = "customerTel" name = "customerTel" maxlength="8" onkeyup="checkTel()" placeholder = "تلفن مشتری فقط  چهار رقم اول و آخر مثال: 09123474">
+                                        </div>
                                         <div class="form-group">
                                             <span style="color:red" id="priceAlert">
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
+                                            <span style="color:red" id="telAlert">
                                             </span>
                                         </div>
                                         <div class = "form-group">
@@ -529,6 +546,16 @@ if (isset($_POST['submitOrderButton'])) {
                                             <input type="hidden" id="rate" name="rate" >
                                         </div>
                                         <div class="form-group">
+                                            <input type="hidden" id="productWeight" name="productWeight" >
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="benneksMargin" name="benneksMargin" >
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="iranDeliverCost" name="iranDeliverCost" >
+                                        </div>
+                                        <!-- to get userID for different prices for different users based on js file -->
+                                        <div class="form-group">
                                             <input type="hidden" id="userID" name="userID" value="<?php echo $_SESSION['user']; ?>" >
                                         </div>
                                         <!-- javascript to pass variables to calculator() in script.js file -->
@@ -538,10 +565,15 @@ if (isset($_POST['submitOrderButton'])) {
                                                 var country = document.getElementById("country").value;
                                                 var clothesType = document.getElementById("clothesType").value;
                                                 var productPrice = document.getElementById("productPrice").value;
-                                                document.getElementById("benneksPrice").value = calculator(userID, country, clothesType, productPrice);
+                                                var orderDetailsVar = calculator(userID, country, clothesType, productPrice);
+                                                //document.getElementById("benneksPrice").value = calculator(userID, country, clothesType, productPrice);
                                                 var exchangeVar = exchange(country);
                                                 document.getElementById("currency").value = exchangeVar.currency;
                                                 document.getElementById("rate").value = exchangeVar.rate;
+                                                document.getElementById("benneksPrice").value = orderDetailsVar.totalCost;
+                                                document.getElementById("productWeight").value = orderDetailsVar.productWeight;
+                                                document.getElementById("benneksMargin").value = orderDetailsVar.benneksMargin;
+                                                document.getElementById("iranDeliverCost").value = orderDetailsVar.iranDeliverCost;
                                             }
                                         </script>
                                         <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" > ثبت سفارش 

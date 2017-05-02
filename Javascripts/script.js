@@ -173,14 +173,28 @@ function calculator(userID, country, clothesType, productPrice) {
 //Man and Women bag
         case "کیف زنانه":
         case "کیف مردانه":
+            weight = 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            return totalCost;
+            //return totalCost
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                iranDeliverCost: shippingCost
+            }
             break;
             //Man and Women shoes
         case "کفش زنانه":
         case "کفش مردانه":
+            weight = 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            return totalCost;
+            //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                iranDeliverCost: shippingCost
+            }
             break;
             //Man and Women products around 200 gr
         case "پیراهن مردانه":
@@ -198,9 +212,16 @@ function calculator(userID, country, clothesType, productPrice) {
         case "رو مایو زنانه":
         case "لباس خواب زنانه":
         case "ساپورت زنانه":
+            weight = 200;
             shippingCost = (weightCost * 200) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            return totalCost;
+            //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                iranDeliverCost: shippingCost
+            }
             break;
             //Man and Women products around 450 gr
         case "شلوار معمولی مردانه":
@@ -215,9 +236,16 @@ function calculator(userID, country, clothesType, productPrice) {
         case "بلوز زنانه":
         case "دامن زنانه":
         case "پیراهن بلند زنانه":
+            weight = 450;
             shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            return totalCost;
+            //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                iranDeliverCost: shippingCost
+            }
             break;
             //Man and Women products around 600 gr
         case "کت معمولی مردانه":
@@ -226,9 +254,16 @@ function calculator(userID, country, clothesType, productPrice) {
         case "بارونی زنانه":
         case "مانتو زنانه":
         case "کت تابستانی زنانه":
+            weight = 600;
             shippingCost = (weightCost * 600) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            return totalCost;
+            //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                iranDeliverCost: shippingCost
+            }
             break;
             //Man and Women products around 800 gr
         case "گرمکن مردانه":
@@ -242,9 +277,16 @@ function calculator(userID, country, clothesType, productPrice) {
         case "پلیور سنگین زنانه":
         case "کت جیر زنانه":
         case "پالتو زنانه":
+            weight = 800;
             shippingCost = (weightCost * 800) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            return totalCost;
+            //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                iranDeliverCost: shippingCost
+            }
             break;
             //Man and Women products more than 1 kg
         case "کاپشن سنگین مردانه":
@@ -253,9 +295,16 @@ function calculator(userID, country, clothesType, productPrice) {
         case "اورکت مردانه":
         case "کت شلوار مردانه":
         case "سنگین زنانه":
+            weight = 1200;
             shippingCost = (weightCost * 1200) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            return totalCost;
+            //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                iranDeliverCost: shippingCost
+            }
             break;
         case "کیف پول":
         case "کمربند":
@@ -264,11 +313,19 @@ function calculator(userID, country, clothesType, productPrice) {
         case "ساعت":
         case "زیورآلات":
         case "جوراب":
+            weight = 120;
             shippingCost = (weightCost * 120) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            return totalCost;
+            //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                iranDeliverCost: shippingCost
+            }
             break;
     }
+
 }
 
 //Function to check numeric prices only in making order section in home.php
@@ -350,8 +407,27 @@ function iranDeliverFunc(action) {
                 document.getElementById("msg").innerHTML = msg;
             });
             break;
-
     }
+}
+
+//Function to check numeric numbers only in customer Tel section in home.php
+function checkTel() {
+    var tel = document.getElementById("customerTel").value;
+    // check if price is all numeric
+    var illegalChar = /[^0-9.]/g;
+    if ((illegalChar.test(tel))) {
+        document.getElementById("telAlert").innerHTML = "برای تلفن مشتری تنها از اعداد استفاده نمایید";
+        $("#submitOrderButton").prop('disabled', true);
+        priceFlag = false;
+        return telFlag;
+    } else
+    {
+        document.getElementById("telAlert").innerHTML = "";
+        $("#submitOrderButton").prop('disabled', false);
+        priceFlag = true;
+        return telFlag;
+    }
+
 }
 
 

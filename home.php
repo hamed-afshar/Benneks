@@ -67,7 +67,7 @@ if (isset($_POST['submitOrderButton'])) {
     $benneksPrice = intval($_POST['benneksPrice']);
     $country = $_POST['country'];
     $currency = $_POST['currency'];
-    $rateTL = intval($_POST['rate']);
+    $rateTL = intval($_POST['currencyRate']);
     $originalTomanPrice = intval($productPrice) * $rateTL;
     $productWeight = $_POST['productWeight'];
     $benneksMargin = $_POST['benneksMargin'];
@@ -543,7 +543,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             <input type="hidden" id="currency" name="currency">
                                         </div>
                                         <div class="form-group">
-                                            <input type="hidden" id="rate" name="rate" >
+                                            <input type="hidden" id="currencyRate" name="currencyRate" >
                                         </div>
                                         <div class="form-group">
                                             <input type="hidden" id="productWeight" name="productWeight" >
@@ -566,10 +566,8 @@ if (isset($_POST['submitOrderButton'])) {
                                                 var clothesType = document.getElementById("clothesType").value;
                                                 var productPrice = document.getElementById("productPrice").value;
                                                 var orderDetailsVar = calculator(userID, country, clothesType, productPrice);
-                                                //document.getElementById("benneksPrice").value = calculator(userID, country, clothesType, productPrice);
-                                                var exchangeVar = exchange(country);
-                                                document.getElementById("currency").value = exchangeVar.currency;
-                                                document.getElementById("rate").value = exchangeVar.rate;
+                                                document.getElementById("currency").value = orderDetailsVar.currency;
+                                                document.getElementById("currencyRate").value = orderDetailsVar.currencyRate;
                                                 document.getElementById("benneksPrice").value = orderDetailsVar.totalCost;
                                                 document.getElementById("productWeight").value = orderDetailsVar.productWeight;
                                                 document.getElementById("benneksMargin").value = orderDetailsVar.benneksMargin;

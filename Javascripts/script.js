@@ -107,34 +107,36 @@ function submitActivation() {
     }
 }
 //Function to return currency and its Rate based on the selected country
-var exchange = function (country) {
+/*var exchange = function (country) {
     switch (country) {
         case "ترکیه":
             var currency = "TL";
-            var rate = 1230;
+            //var rate = 1230;
             break;
         case "انگلیس":
             var currency = "UK-Pound";
-            var rate = 5300;
+            //var rate = 5300;
             break;
     }
     return {
         currency: currency,
         rate: rate
     }
-}
+}*/
 
 //Function to automatically calculate the price for sellers in calculator.php
 function calculator(userID, country, clothesType, productPrice) {
     switch (country) {
         case "ترکیه":
             var country = "Turkey";
+            var currency = "TL";
             var currencyRate = 1120;
             var weightCost = 50000; //45000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 40000;
             break;
         case "انگلیس":
             var country = "UK";
+            var currency = "UK-Pound";
             var currencyRate = 5300;
             var weightCost = 80000; //70000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 80000;
@@ -180,6 +182,8 @@ function calculator(userID, country, clothesType, productPrice) {
                 totalCost: totalCost,
                 productWeight: weight,
                 benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
                 iranDeliverCost: shippingCost
             }
             break;
@@ -193,6 +197,8 @@ function calculator(userID, country, clothesType, productPrice) {
                 totalCost: totalCost,
                 productWeight: weight,
                 benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
                 iranDeliverCost: shippingCost
             }
             break;
@@ -220,6 +226,8 @@ function calculator(userID, country, clothesType, productPrice) {
                 totalCost: totalCost,
                 productWeight: weight,
                 benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
                 iranDeliverCost: shippingCost
             }
             break;
@@ -244,6 +252,8 @@ function calculator(userID, country, clothesType, productPrice) {
                 totalCost: totalCost,
                 productWeight: weight,
                 benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
                 iranDeliverCost: shippingCost
             }
             break;
@@ -262,6 +272,8 @@ function calculator(userID, country, clothesType, productPrice) {
                 totalCost: totalCost,
                 productWeight: weight,
                 benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
                 iranDeliverCost: shippingCost
             }
             break;
@@ -285,6 +297,8 @@ function calculator(userID, country, clothesType, productPrice) {
                 totalCost: totalCost,
                 productWeight: weight,
                 benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
                 iranDeliverCost: shippingCost
             }
             break;
@@ -303,6 +317,8 @@ function calculator(userID, country, clothesType, productPrice) {
                 totalCost: totalCost,
                 productWeight: weight,
                 benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
                 iranDeliverCost: shippingCost
             }
             break;
@@ -321,6 +337,8 @@ function calculator(userID, country, clothesType, productPrice) {
                 totalCost: totalCost,
                 productWeight: weight,
                 benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
                 iranDeliverCost: shippingCost
             }
             break;

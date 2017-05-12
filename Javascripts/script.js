@@ -106,23 +106,6 @@ function submitActivation() {
         return false;
     }
 }
-//Function to return currency and its Rate based on the selected country
-/*var exchange = function (country) {
-    switch (country) {
-        case "ترکیه":
-            var currency = "TL";
-            //var rate = 1230;
-            break;
-        case "انگلیس":
-            var currency = "UK-Pound";
-            //var rate = 5300;
-            break;
-    }
-    return {
-        currency: currency,
-        rate: rate
-    }
-}*/
 
 //Function to automatically calculate the price for sellers in calculator.php
 function calculator(userID, country, clothesType, productPrice) {

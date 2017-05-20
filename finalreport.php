@@ -47,21 +47,22 @@ $style = array(
 // Add header titles
 $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('A1', 'ردیف')
-        ->setCellValue('B1', 'تاریخ')
-        ->setCellValue('C1', 'فروشنده')
-        ->setCellValue('D1', 'کشور')
-        ->setCellValue('E1', 'نوع لباس')
-        ->setCellValue('F1', 'وزن')
-        ->setCellValue('G1', 'وضعیت')
-        ->setCellValue('H1', 'کارگو')
-        ->setCellValue('I1', 'قیمت اصلی')
-        ->setCellValue('J1', 'نرخ ارز')
-        ->setCellValue('K1', 'درصد سود بنکس')
-        ->setCellValue('L1', 'هزینه حمل تا ایران')
-        ->setCellValue('M1', 'قیمت محاسبه شده');
+        ->setCellValue('B1', 'کد')
+        ->setCellValue('C1', 'تاریخ')
+        ->setCellValue('D1', 'فروشنده')
+        ->setCellValue('E1', 'کشور')
+        ->setCellValue('F1', 'نوع لباس')
+        ->setCellValue('G1', 'وزن')
+        ->setCellValue('H1', 'وضعیت')
+        ->setCellValue('I1', 'کارگو')
+        ->setCellValue('J1', 'قیمت اصلی')
+        ->setCellValue('K1', 'نرخ ارز')
+        ->setCellValue('L1', 'درصد سود بنکس')
+        ->setCellValue('M1', 'هزینه حمل تا ایران')
+        ->setCellValue('N1', 'قیمت محاسبه شده');
 
 //query to extract requiered data from db and insert it to excel
-$query1 = "select orders.orderDate, users.userName, orders.country, orders.clothesType, orders.productsWeight, stat.orderStatus, shipment.cargoName, orders.productPrice, " .
+$query1 = "select orders.orderID, orders.orderDate, users.userName, orders.country, orders.clothesType, orders.productsWeight, stat.orderStatus, shipment.cargoName, orders.productPrice, " .
         "cost.rateTL, cost.benneksMargin, cost.iranDeliverCost, cost.benneksPrice " .
         "FROM benneks.orders inner join benneks.users on orders.users_userID = users.userID inner join benneks.stat on orders.orderID = stat.orders_orderID inner join " .
         "benneks.shipment on orders.orderID = shipment.orders_orderID inner join benneks.cost on cost.orders_orderID = orders.orderID WHERE orders.country = '$country' AND " .
@@ -86,6 +87,7 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, $row[9]);
     $objPHPExcel->getActiveSheet()->setCellValue('L' . $i, $row[10]);
     $objPHPExcel->getActiveSheet()->setCellValue('M' . $i, $row[11]);
+    $objPHPExcel->getActiveSheet()->setCellValue('N' . $i, $row[11]);
     $i++;
 }
 
@@ -102,15 +104,16 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objSheet->getColumnDimension('J')->setAutoSize(true);
     $objSheet->getColumnDimension('K')->setAutoSize(true);
     $objSheet->getColumnDimension('M')->setAutoSize(true);
+    $objSheet->getColumnDimension('N')->setAutoSize(true);
 
     // Set active sheet index to the first sheet, so Excel opens this as the first sheet
     $objPHPExcel->setActiveSheetIndex(0);
 
     // define sytle for table
     $objSheet->getDefaultStyle()->applyFromArray($style);
-    $objSheet->getStyle("A1:M1")->getFont()->setBold(TRUE);
-    $objSheet->getStyle("A1:M1")->getFont()->setSize(14);
-    $objSheet->getStyle('A1:M1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+    $objSheet->getStyle("A1:N1")->getFont()->setBold(TRUE);
+    $objSheet->getStyle("A1:N1")->getFont()->setSize(14);
+    $objSheet->getStyle('A1:N1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
     header('Content-Type: application/vnd.ms-excel');
     header('Content-Disposition: attachment;filename="orderlist.xls"');

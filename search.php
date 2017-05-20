@@ -45,6 +45,9 @@ if (isset($_POST['searchButton'])) {
         case "cargo":
             $searchQuery = "shipment.cargoName = " . "'" . $searchValue . "'" . "";
             break;
+        case "return":
+            $searchQuery = "stat.orderStatus = " . "'عودت'";
+            break;
         default :
             $searchQuery = "";
             break;

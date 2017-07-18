@@ -87,7 +87,7 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, $row[9]);
     $objPHPExcel->getActiveSheet()->setCellValue('L' . $i, $row[10]);
     $objPHPExcel->getActiveSheet()->setCellValue('M' . $i, $row[11]);
-    $objPHPExcel->getActiveSheet()->setCellValue('N' . $i, $row[11]);
+    $objPHPExcel->getActiveSheet()->setCellValue('N' . $i, $row[12]);
     $i++;
 }
 

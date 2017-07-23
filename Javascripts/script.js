@@ -168,6 +168,7 @@ function calculator(userID, country, clothesType, productPrice) {
 //Man and Women bag
         case "کیف زنانه":
         case "کیف مردانه":
+        case "کیف بچه گانه":
             weight = 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost
@@ -183,6 +184,7 @@ function calculator(userID, country, clothesType, productPrice) {
             //Man and Women shoes
         case "کفش زنانه":
         case "کفش مردانه":
+        case "کفش بچه گانه":
             weight = 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             return {
@@ -210,6 +212,15 @@ function calculator(userID, country, clothesType, productPrice) {
         case "رو مایو زنانه":
         case "لباس خواب زنانه":
         case "ساپورت زنانه":
+        case "بلوز شلوار ست بچه گانه":
+        case "تی شرت بچه گانه":
+        case "سرهمی بچه گانه":
+        case "لباس خواب بچه گانه":
+        case "شلوارک جین بچه گانه":
+        case "مایو بچه گانه":
+        case "پلیور بچه گانه":
+        case "پیراهن بچه گانه":
+        case "دامن بچه گانه":
             weight = 200;
             shippingCost = (weightCost * 200) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
@@ -236,6 +247,8 @@ function calculator(userID, country, clothesType, productPrice) {
         case "بلوز زنانه":
         case "دامن زنانه":
         case "پیراهن بلند زنانه":
+        case "کاپشن بچه گانه":
+        case "گرمکن بچه گانه":
             weight = 450;
             shippingCost = (weightCost * 450) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
@@ -321,6 +334,10 @@ function calculator(userID, country, clothesType, productPrice) {
         case "ساعت":
         case "زیورآلات":
         case "جوراب":
+        case "انواع کلاه بچه گانه":
+        case "جوراب و لباس زیر بچه گانه":
+        case "اسباب بازی بچه گانه":
+        case "تمامی لباس های نوزادی":
             weight = 120;
             shippingCost = (weightCost * 120) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;

@@ -291,6 +291,29 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value = "پالتو مردانه"> پالتو مردانه</option>
                                                 <option value = "اورکت مردانه"> اورکت مردانه</option>
                                                 <option value = "کت شلوار مردانه"> کت شلوار مردانه</option>
+                                                \\KIDS Shoes and bags
+                                                <option value = "کفش بچه گانه"> کفش و دمپایی و صندل بچه گانه</option>
+                                                <option value = "کیف بچه گانه"> انواع کیف بچه گانه</option>
+                                                \\KIDS Accessories 120 gr
+                                                <option value = "انواع کلاه بچه گانه"> انواع کلاه بچه گانه</option>
+                                                <option value = "جوراب و لباس زیر بچه گانه"> جوراب و لباس زیر بچه گانه</option>
+                                                <option value = "اسباب بازی بچه گانه"> اسباب بازی بچه گانه</option>
+                                                \\KIDS products equal to 200 gram
+                                                <option value = "بلوز شلوار ست بچه گانه"> بلوز شلوار ست بچه گانه</option>
+                                                <option value = "تی شرت بچه گانه"> تی شرت بچه گانه</option>
+                                                <option value = "سرهمی بچه گانه"> سرهمی بچه گانه</option>
+                                                <option value = "لباس خواب بچه گانه"> لباس خواب بچه گانه</option>
+                                                <option value = "شلوارک جین بچه گانه"> شلوارک جین بچه گانه</option>
+                                                <option value = "مایو بچه گانه"> مایو بچه گانه</option>
+                                                <option value = "پلیور بچه گانه"> پلیور بچه گانه</option>
+                                                <option value = "پیراهن بچه گانه"> پیراهن بچه گانه</option>
+                                                <option value = "دامن بچه گانه"> دامن بچه گانه</option>
+                                                \\KIDS products equal to 450 gram  
+                                                <option value = "کاپشن بچه گانه"> کاپشن بچه گانه</option>
+                                                <option value = "گرمکن بچه گانه"> گرمکن بچه گانه</option>
+                                                \\Baby clothes all 120 gram
+                                                <option value = "تمامی لباس های نوزادی"> تمامی لباس های نوزادی</option>
+
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -482,6 +505,17 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="Shoes-44.5"> Shoes(EU=44.5)</option>
                                                 <option value="Shoes-45"> Shoes(EU=45)</option>
                                                 <option value="Shoes-46"> Shoes(EU=46)</option>
+                                                <option value="" disabled style="color: red">  سایزاهای بچه گانه</option>
+                                                <option value="just-born"> نوزادی</option>
+                                                <option value="0-3 months"> 0-3 Months </option>
+                                                <option value="3-6 months"> 3-6 months </option>
+                                                <option value="6-7 months"> 6-7 months </option>
+                                                <option value="8 months"> 8 months </option>
+                                                <option value="9 months"> 9 months </option>
+                                                <option value="10-11-12 months"> 10-11-12 months </option>
+                                                <option value="1-12 years"> 1-12 years </option>
+                                                <option value="Kids-xxs"> Kids-xxs </option>
+                                                <option value="Kids-xs"> Kids-xs </option>
                                             </select>
                                         </div>
                                         <div class="form-group">

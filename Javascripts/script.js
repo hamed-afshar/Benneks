@@ -204,7 +204,6 @@ function calculator(userID, country, clothesType, productPrice) {
         case "مایو مردانه":
         case "شلوارک زنانه":
         case "تاپ زنانه":
-        case "پیراهن زنانه":
         case "لباس زیر زنانه":
         case "تی شرت زنانه":
         case "کلاه، شال، روسری، دستکش":
@@ -212,6 +211,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "رو مایو زنانه":
         case "لباس خواب زنانه":
         case "ساپورت زنانه":
+        case "بلوز زنانه":
         case "بلوز شلوار ست بچه گانه":
         case "تی شرت بچه گانه":
         case "سرهمی بچه گانه":
@@ -243,10 +243,9 @@ function calculator(userID, country, clothesType, productPrice) {
         case "جین زنانه":
         case "شلوار معمولی زنانه":
         case "پانچو":
-        case "شومیز زنانه":
-        case "بلوز زنانه":
+        case "سرهمی زنانه":
         case "دامن زنانه":
-        case "پیراهن بلند زنانه":
+        case "پیراهن زنانه":
         case "کاپشن بچه گانه":
         case "گرمکن بچه گانه":
             weight = 450;

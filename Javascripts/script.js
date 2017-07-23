@@ -127,17 +127,27 @@ function calculator(userID, country, clothesType, productPrice) {
     }
 //final price is calculated based on userID, userMargin variable keeps this value for adding up to users final price.
     switch (userID) {
-        case "4":
+        case "1":
+        case "3":
+        case "5":
+        case "6":
+        case "7":
         case "8":
         case "9":
-        case "21":
         case "22":
-        case "23":
+        case "25":
+        case "32":
+            var discount = 8000;
             var userMargin = 0;
             break;
         default:
+            var discount = 0;
             var userMargin = 0;
             break;
+    }
+    // if uk selected as a country then discount is zero
+    if (country === "UK") {
+        var discount = 0;
     }
 
     var benneksMargin = 0;
@@ -159,7 +169,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "کیف زنانه":
         case "کیف مردانه":
             weight = 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost
             return {
                 totalCost: totalCost,
@@ -174,8 +184,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "کفش زنانه":
         case "کفش مردانه":
             weight = 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
-            //return totalCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -203,7 +212,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "ساپورت زنانه":
             weight = 200;
             shippingCost = (weightCost * 200) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost;
             return {
                 totalCost: totalCost,
@@ -229,7 +238,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "پیراهن بلند زنانه":
             weight = 450;
             shippingCost = (weightCost * 450) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost;
             return {
                 totalCost: totalCost,
@@ -249,7 +258,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "کت تابستانی زنانه":
             weight = 600;
             shippingCost = (weightCost * 600) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost;
             return {
                 totalCost: totalCost,
@@ -274,7 +283,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "پالتو زنانه":
             weight = 800;
             shippingCost = (weightCost * 800) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost;
             return {
                 totalCost: totalCost,
@@ -294,7 +303,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "سنگین زنانه":
             weight = 1200;
             shippingCost = (weightCost * 1200) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost;
             return {
                 totalCost: totalCost,
@@ -314,7 +323,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "جوراب":
             weight = 120;
             shippingCost = (weightCost * 120) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin);
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost;
             return {
                 totalCost: totalCost,

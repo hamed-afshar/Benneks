@@ -212,6 +212,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "لباس خواب زنانه":
         case "ساپورت زنانه":
         case "بلوز زنانه":
+        case "پیراهن زنانه":
         case "بلوز شلوار ست بچه گانه":
         case "تی شرت بچه گانه":
         case "سرهمی بچه گانه":
@@ -245,7 +246,6 @@ function calculator(userID, country, clothesType, productPrice) {
         case "پانچو":
         case "سرهمی زنانه":
         case "دامن زنانه":
-        case "پیراهن زنانه":
         case "کاپشن بچه گانه":
         case "گرمکن بچه گانه":
             weight = 450;

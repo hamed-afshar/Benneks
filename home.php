@@ -235,10 +235,10 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value = "لباس خواب زنانه"> لباس خواب  زنانه</option> 
                                                 <option value = "ساپورت زنانه"> ساپورت  زنانه</option> 
                                                 <option value = "بلوز زنانه"> بلوز زنانه </option>
+                                                <option value = "پیراهن زنانه"> پیراهن زنانه </option>
                                                 \\Women products around 450 gr
                                                 <option value = "کاردیگان زنانه"> کاردیگان زنانه</option>
                                                 <option value = "جین زنانه"> شلوار جین زنانه </option>
-                                                <option value = "پیراهن زنانه"> پیراهن زنانه </option> 
                                                 <option value = "سرهمی زنانه"> سرهمی  زنانه</option> 
                                                 <option value = "پلیورهای نازک زنانه">  پلیورهای نازک زنانه</option> 
                                                 <option value = "پانچو">  پانچو  زنانه</option> 

@@ -590,7 +590,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             <option value = "انگلیس">انگلیس</option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ساخت سفارش </button>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ساخت گزارش </button>
                                 </form>
                             </div>
                         </div>

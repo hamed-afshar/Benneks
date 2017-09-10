@@ -57,9 +57,12 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('I1', 'کارگو')
         ->setCellValue('J1', 'قیمت اصلی')
         ->setCellValue('K1', 'نرخ ارز')
-        ->setCellValue('L1', 'درصد سود بنکس')
-        ->setCellValue('M1', 'هزینه حمل تا ایران')
-        ->setCellValue('N1', 'قیمت محاسبه شده');
+        ->setCellValue('L1', 'قیمت اصلی تومان')
+        ->setCellValue('M1', 'درصد سود بنکس')
+        ->setCellValue('N1', 'هزینه حمل تا ایران')
+        ->setCellValue('O1', 'قیمت محاسبه شده')
+        ->setCellValue('P1', 'هزینه اصل جنس و حمل')
+        ->setCellValue('Q1', 'سود');
 
 //query to extract requiered data from db and insert it to excel
 $query1 = "select orders.orderID, orders.orderDate, users.userName, orders.country, orders.clothesType, orders.productsWeight, stat.orderStatus, shipment.cargoName, orders.productPrice, " .
@@ -85,38 +88,44 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $row[7]);
     $objPHPExcel->getActiveSheet()->setCellValue('J' . $i, $row[8]);
     $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, $row[9]);
-    $objPHPExcel->getActiveSheet()->setCellValue('L' . $i, $row[10]);
-    $objPHPExcel->getActiveSheet()->setCellValue('M' . $i, $row[11]);
-    $objPHPExcel->getActiveSheet()->setCellValue('N' . $i, $row[12]);
+    $objPHPExcel->getActiveSheet()->setCellValue('L' . $i, '=J' . $i . '*K' . $i);
+    $objPHPExcel->getActiveSheet()->setCellValue('M' . $i, $row[10]);
+    $objPHPExcel->getActiveSheet()->setCellValue('N' . $i, $row[11]);
+    $objPHPExcel->getActiveSheet()->setCellValue('O' . $i, $row[12]);
+    $objPHPExcel->getActiveSheet()->setCellValue('P' . $i, '=L' . $i . '+N' . $i);
+    $objPHPExcel->getActiveSheet()->setCellValue('Q' . $i, '=O' . $i . '-(J' . $i . '*K' . $i . ')-N' . $i);
     $i++;
 }
 
 // autosize the columns
-    $objSheet->getColumnDimension('A')->setAutoSize(true);
-    $objSheet->getColumnDimension('B')->setAutoSize(true);
-    $objSheet->getColumnDimension('C')->setAutoSize(true);
-    $objSheet->getColumnDimension('D')->setAutoSize(true);
-    $objSheet->getColumnDimension('E')->setAutoSize(true);
-    $objSheet->getColumnDimension('F')->setAutoSize(true);
-    $objSheet->getColumnDimension('G')->setAutoSize(true);
-    $objSheet->getColumnDimension('H')->setAutoSize(true);
-    $objSheet->getColumnDimension('I')->setAutoSize(true);
-    $objSheet->getColumnDimension('J')->setAutoSize(true);
-    $objSheet->getColumnDimension('K')->setAutoSize(true);
-    $objSheet->getColumnDimension('M')->setAutoSize(true);
-    $objSheet->getColumnDimension('N')->setAutoSize(true);
+$objSheet->getColumnDimension('A')->setAutoSize(true);
+$objSheet->getColumnDimension('B')->setAutoSize(true);
+$objSheet->getColumnDimension('C')->setAutoSize(true);
+$objSheet->getColumnDimension('D')->setAutoSize(true);
+$objSheet->getColumnDimension('E')->setAutoSize(true);
+$objSheet->getColumnDimension('F')->setAutoSize(true);
+$objSheet->getColumnDimension('G')->setAutoSize(true);
+$objSheet->getColumnDimension('H')->setAutoSize(true);
+$objSheet->getColumnDimension('I')->setAutoSize(true);
+$objSheet->getColumnDimension('J')->setAutoSize(true);
+$objSheet->getColumnDimension('K')->setAutoSize(true);
+$objSheet->getColumnDimension('M')->setAutoSize(true);
+$objSheet->getColumnDimension('N')->setAutoSize(true);
+$objSheet->getColumnDimension('O')->setAutoSize(true);
+$objSheet->getColumnDimension('P')->setAutoSize(true);
+$objSheet->getColumnDimension('Q')->setAutoSize(true);
 
-    // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-    $objPHPExcel->setActiveSheetIndex(0);
+// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+$objPHPExcel->setActiveSheetIndex(0);
 
-    // define sytle for table
-    $objSheet->getDefaultStyle()->applyFromArray($style);
-    $objSheet->getStyle("A1:N1")->getFont()->setBold(TRUE);
-    $objSheet->getStyle("A1:N1")->getFont()->setSize(14);
-    $objSheet->getStyle('A1:N1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-    header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment;filename="orderlist.xls"');
+// define sytle for table
+$objSheet->getDefaultStyle()->applyFromArray($style);
+$objSheet->getStyle("A1:Q1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:Q1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:Q1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment;filename="orderlist.xls"');
 
-    $objWriter->save('php://output');
+$objWriter->save('php://output');
 ?>

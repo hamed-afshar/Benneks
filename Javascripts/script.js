@@ -212,7 +212,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "لباس خواب زنانه":
         case "ساپورت زنانه":
         case "بلوز زنانه":
-        case "پیراهن زنانه":
+        case "دامن زنانه":
         case "بلوز شلوار ست بچه گانه":
         case "تی شرت بچه گانه":
         case "سرهمی بچه گانه":
@@ -235,21 +235,28 @@ function calculator(userID, country, clothesType, productPrice) {
                 iranDeliverCost: shippingCost
             }
             break;
-            //Man and Women products around 450 gr
+            //Man and Women products around 300 gr
+        case "کاردیگان سبک زنانه":
+        case "پلیورهای نازک زنانه":
+        case "شلوار معمولی زنانه":
+        case "پانچو":
+        case "سرهمی زنانه":
+        case "مانتو زنانه":
+        case "سوئیت شرت زنانه":
+        //Man and Women products around 400 gr
         case "شلوار معمولی مردانه":
         case "شلوار جین مردانه":
         case "پلیور مردانه سبک":
         case "کاردیگان زنانه":
-        case "پلیورهای نازک زنانه":
         case "جین زنانه":
-        case "شلوار معمولی زنانه":
-        case "پانچو":
-        case "سرهمی زنانه":
-        case "دامن زنانه":
+        case "کاردیگان سنگین زنانه":
+        case "بارونی زنانه":
+        case "کت تابستانی زنانه":
+        case "پیراهن زنانه":
         case "کاپشن بچه گانه":
         case "گرمکن بچه گانه":
-            weight = 450;
-            shippingCost = (weightCost * 450) / 1000;
+            weight = 400;
+            shippingCost = (weightCost * 400) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost;
             return {
@@ -265,9 +272,10 @@ function calculator(userID, country, clothesType, productPrice) {
         case "کت معمولی مردانه":
         case "کت زمستانی زنانه":
         case "کاپشن سبک زنانه":
-        case "بارونی زنانه":
-        case "مانتو زنانه":
-        case "کت تابستانی زنانه":
+        case "کت جین زنانه":
+        case "کت چرم زنانه":
+        case "پلیور سنگین زنانه":
+        case "پالتو زنانه سبک":
             weight = 600;
             shippingCost = (weightCost * 600) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
@@ -287,12 +295,9 @@ function calculator(userID, country, clothesType, productPrice) {
         case "پلیور مردانه سنگین":
         case "کاپشن سبک مردانه":
         case "گرمکن زنانه":
-        case "کت جین زنانه":
-        case "کت چرم زنانه":
         case "کاپشن سنگین زنانه":
-        case "پلیور سنگین زنانه":
         case "کت جیر زنانه":
-        case "پالتو زنانه":
+        case "پالتو زنانه سنگین":
             weight = 800;
             shippingCost = (weightCost * 800) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;

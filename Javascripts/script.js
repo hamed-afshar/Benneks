@@ -243,7 +243,20 @@ function calculator(userID, country, clothesType, productPrice) {
         case "سرهمی زنانه":
         case "مانتو زنانه":
         case "سوئیت شرت زنانه":
-        //Man and Women products around 400 gr
+            weight = 300;
+            shippingCost = (weightCost * 300) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+            //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
+            //Man and Women products around 400 gr
         case "شلوار معمولی مردانه":
         case "شلوار جین مردانه":
         case "پلیور مردانه سبک":

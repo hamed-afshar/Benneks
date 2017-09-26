@@ -41,6 +41,7 @@ if (!isset($_SESSION['user'])) {
                                     <select dir="rtl" class="form-control" id="country" name ="country">
                                         <option value="ترکیه" selected> ترکیه </option>
                                         <option value="انگلیس"> انگلیس </option>
+                                        <option value="فرانسه"> فرانسه </option>
                                     </select>
                                 </div>
                             </div>

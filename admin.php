@@ -227,15 +227,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز پوند:</label>
+                                                <label for="dayQuantity"> امروز یورو:</label>
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[2]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته پوند :</label>
+                                                <label for="yesterdayQuantuty"> روز گذشته یورو :</label>
                                                 <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['2']; ?> </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه پوند:</label>
+                                                <label for="monthQuantity"> ماه یورو:</label>
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[2]; ?> </label> 
                                             </div>
                                         </div>
@@ -260,15 +260,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز پوند:</label>
+                                                <label for="dayQuantity"> امروز یورو:</label>
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[3]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته پوند:</label>
+                                                <label for="yesterdayQuantuty"> روز گذشته یورو:</label>
                                                 <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[3]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه انگلیس:</label>
+                                                <label for="monthQuantity"> ماه یورو:</label>
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[3]; ?> </label> 
                                             </div>
                                         </div>
@@ -289,6 +289,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                     <option value="done"> خریداری شده</option>
                                                     <option value="turkey"> ترکیه</option>
                                                     <option value="uk"> انگلیس</option>
+                                                    <option value="fr"> فرانسه</option>
                                                     <option value="cancel"> لغو شده</option>
                                                     <option value="return"> عودت</option>
                                                     <option value="unknown"> نامشخص </option>
@@ -520,6 +521,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <select dir = "rtl" class = "form-control" id = "country" name="country"> 
                                             <option value = "انگلیس">انگلیس</option>
                                             <option value = "ترکیه">ترکیه</option>
+                                            <option value = "ترکیه">فرانسه</option>
                                         </select>
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ایجاد فایل اکسل </button>
@@ -588,6 +590,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <select dir = "rtl" class = "form-control" id = "countryReport" name="countryReport"> 
                                             <option value = "ترکیه">ترکیه</option>
                                             <option value = "انگلیس">انگلیس</option>
+                                            <option value = "فرانسه">فرانسه</option>
                                         </select>
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ساخت گزارش </button>

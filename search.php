@@ -33,6 +33,9 @@ if (isset($_POST['searchButton'])) {
         case "turkey":
             $searchQuery = "orders.country = " . "'ترکیه'";
             break;
+        case "fr":
+            $searchQuery = "orders.country = " . "'فرانسه'";
+            break;
         case "uk":
             $searchQuery = "orders.country = " . "'انگلیس'";
             break;

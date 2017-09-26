@@ -130,6 +130,7 @@ function calculator(userID, country, clothesType, productPrice) {
             var currencyRate = 4900;
             var weightCost = 80000; //70000 per killo dor kargo + 5000 Peik Iran
             var shippingCost = 80000;
+            break;
     }
 //final price is calculated based on userID, userMargin variable keeps this value for adding up to users final price.
     switch (userID) {
@@ -152,7 +153,7 @@ function calculator(userID, country, clothesType, productPrice) {
             break;
     }
     // if uk selected as a country then discount is zero
-    if (country === "UK") {
+    if (country === "UK" || country ==="FR") {
         var discount = 0;
     }
 
@@ -167,7 +168,7 @@ function calculator(userID, country, clothesType, productPrice) {
         benneksMargin = 0.1;
     }
 // if buying from uk then benneks margin should be 15% regardless of productPrice
-    if (country === "UK") {
+    if (country === "UK" || country === "FR") {
         benneksMargin = 0.23;
     }
     switch (clothesType) {

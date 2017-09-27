@@ -37,32 +37,32 @@ if (!$user->executeQuery($query1)) {
     echo "خطا! در نحوه نمایش اطلاعات.";
 }
 $queryResult1 = $user->executeQuery($query1);
-//Get totall value(TL) and numbers for yesterday orders
-$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM " .
+//Get totall value and numbers for yesterday orders
+$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.frSUM, SecondSet.frCount FROM " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'انگلیس') as SecondSet";
+        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'فرانسه') as SecondSet";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult2 = $user->executeQuery($query2);
 $yesterdayValue = mysqli_fetch_row($queryResult2);
 
-//Get totall value(TL) and numbers for Today orders
-$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM " .
+//Get totall value and numbers for Today orders
+$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.frSUM, SecondSet.frCount FROM " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'انگلیس') as SecondSet";
+        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'فرانسه') as SecondSet";
 if (!$user->executeQuery($query3)) {
     echo mysqli_error($user->conn);
 }
 $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
-//Get totall value(TL) and numbers for month orders
-$query4 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.ukSUM, SecondSet.ukCount FROM " .
+//Get totall value and numbers for month orders
+$query4 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.frSUM, SecondSet.frCount FROM " .
         "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date()) AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS ukSUM, count(orders.orderID) AS ukCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(current_date()) AND orders.country = 'انگلیس') as SecondSet";
+        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(current_date()) AND orders.country = 'فرانسه') as SecondSet";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
@@ -215,11 +215,11 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <i class="fa fa-exchange fa-fw"></i> حجم مالی:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز لیر:</label>
+                                                <label for="dayQuantity"> سفارشات امروز لیر:</label>
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته لیر :</label>
+                                                <label for="yesterdayQuantuty"> سفارشات روز گذشته لیر :</label>
                                                 <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['0']; ?> </label>  
                                             </div>
                                             <div class="form-group">
@@ -227,7 +227,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز یورو:</label>
+                                                <label for="dayQuantity"> امروز یورو:<br></label>
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[2]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
@@ -252,7 +252,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته ترکیه:</label>
+                                                <label for="yesterdayQuantuty"> سفارشات روز گذشته ترکیه:</label>
                                                 <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
@@ -260,15 +260,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز یورو:</label>
+                                                <label for="dayQuantity"> امروز فرانسه:</label>
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[3]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته یورو:</label>
+                                                <label for="yesterdayQuantuty"> روز گذشته فرانسه:</label>
                                                 <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[3]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه یورو:</label>
+                                                <label for="monthQuantity"> ماه فرانسه:</label>
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[3]; ?> </label> 
                                             </div>
                                         </div>

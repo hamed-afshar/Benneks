@@ -521,7 +521,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <select dir = "rtl" class = "form-control" id = "country" name="country"> 
                                             <option value = "انگلیس">انگلیس</option>
                                             <option value = "ترکیه">ترکیه</option>
-                                            <option value = "ترکیه">فرانسه</option>
+                                            <option value = "فرانسه">فرانسه</option>
                                         </select>
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ایجاد فایل اکسل </button>

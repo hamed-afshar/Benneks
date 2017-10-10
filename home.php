@@ -518,9 +518,19 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <option value="8 months"> 8 months </option>
                                                 <option value="9 months"> 9 months </option>
                                                 <option value="10-11-12 months"> 10-11-12 months </option>
-                                                <option value="1-12 years"> 1-12 years </option>
+                                                <option value="1-2 years"> 1-2 years </option>
+                                                <option value="2-4 years"> 2-4 years </option>
+                                                <option value="4-6 years"> 4-6 years </option>
+                                                <option value="6-8 years"> 6-8 years </option>
+                                                <option value="8-10 years"> 8-10 years </option>
+                                                <option value="10-12 years"> 10-12 years </option>
+                                                <option value="12-14 years"> 12-14 years </option>
+                                                <option value="14-16 years"> 14-16 years </option>
                                                 <option value="Kids-xxs"> Kids-xxs </option>
                                                 <option value="Kids-xs"> Kids-xs </option>
+                                                <option value="Kids-s"> Kids-s </option>
+                                                <option value="Kids-m"> Kids-m </option>
+                                                <option value="Kids-l"> Kids-l </option>
                                             </select>
                                         </div>
                                         <div class="form-group">

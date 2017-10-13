@@ -1,4 +1,6 @@
 {
     "name": "hamed/benneks",
-    "require": {}
+    "require": {
+        "longman/telegram-bot": "^0.49.0"
+    }
 }

@@ -1,6 +1,6 @@
 {
     "name": "hamed/benneks",
     "require": {
-        "irazasyed/telegram-bot-sdk": "^2.2"
+        "longman/telegram-bot": "^0.49.0"
     }
 }

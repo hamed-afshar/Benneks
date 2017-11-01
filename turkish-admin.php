@@ -1,6 +1,5 @@
 <?php
-
-/* 
+/*
  * Admin panel for Turkish admin user
  */
 ob_start();
@@ -267,9 +266,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                     <option value="code"> kod </option>
                                                     <option value="name"> نام </option>
                                                     <option value="done"> خریداری شده</option>
-                                                    <option value="turkey"> ترکیه</option>
-                                                    <option value="uk"> انگلیس</option>
-                                                    <option value="fr"> فرانسه</option>
                                                     <option value="cancel"> لغو شده</option>
                                                     <option value="return"> عودت</option>
                                                     <option value="unknown"> نامشخص </option>
@@ -279,14 +275,14 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <input type="hidden" name="searchReq" value="adminPage"/>
                                             </div>
                                             <div class="form-group">
-                                                <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
+                                                <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > arama
                                                     <span>
                                                         <i class="fa fa-search"> </i>
                                                     </span>
                                                 </button>
                                             </div>
                                             <div class="form-group">
-                                                <button class="form-control btn btn-group btn-danger" id="cancelSearchButton" name="cancelSearchButton" > لغو جستجو
+                                                <button class="form-control btn btn-group btn-danger" id="cancelSearchButton" name="cancelSearchButton" > aramayı iptal et
                                                     <span>
                                                         <i class="fa fa-ban"> </i>
                                                     </span>
@@ -307,16 +303,16 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <th style="text-align: center"> kod</th>
                                         <th style="text-align: center"> kullanıcı adı</th>
                                         <th style="text-align: center"> Sipariş Tarihi</th>
-                                        
+
                                         <th style="text-align: center"> Fiyat</th>
                                         <th style="text-align: center"> Marka</th>    
                                         <th style="text-align: center">Link </th>
                                         <th style="text-align: center">Resim </th>
-                                        
+
                                         <th style="text-align: center">Beden</th>
                                         <th style="text-align: center">Renk </th>
-                                        
-                                        
+
+
                                         <th style="text-align: center">Durum </th>
                                         <th style="text-align: center">Ayrıntılar </th>
                                     </tr>
@@ -331,21 +327,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#iranDeliverModal' data-id='$row[0]' class='open-iranDeliverModal'> <i class='fa fa-plane fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#returnModal' data-toggle='modal' data-target='#returnModal' data-id='$row[0]' class='open-returnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
                                         . " </td>";
                                         echo "<td>" . $row[1] . "</td>";
                                         echo "<td>" . $row[2] . "</td>";
-                                        
+
                                         echo "<td>" . $row[4] . "</td>";
                                         echo "<td>" . $row[5] . "</td>";
                                         echo "<td> <a href= " . $row[6] . ">لینک محصول" . "</a> </td>";
                                         $picURL = str_replace(' ', '%20', $row[7]);
                                         echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
-                                        
+
                                         echo "<td>" . $row[9] . "</td>";
                                         echo "<td>" . $row[10] . "</td>";
-                                        
-                                        
+
+
                                         echo "<td>" . $row[13] . "</td>";
                                         echo "<td>" . $row[14] . "</td>";
                                         echo "</tr>";
@@ -409,7 +404,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             <option value = "به درخواست کاربر">به درخواست کاربر </option>
                                         </select>
                                     </div>
-
                                     <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> لغو سفارش  </button>
                                 </form>
                             </div>
@@ -472,108 +466,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </div>
                                     <button type="button" class="btn btn-info btn-block" id="changeCargoButton" style="display: none" onclick="iranDeliverFunc('change');"> تغییر کد کارگو </button>
                                     <button type="button" class="btn btn-danger btn-block" id="Not-changeCargoButton" style="display: none" onclick="$('#iranDeliverModal').modal('hide');"> انصراف </button>   
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--orderlist Maker Modal -->
-                <div class = "modal fade" id = "orderListMakerModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> ساخت لیست سفارشات </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="orderlistmaker.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="orderID"> شروع از تاریخ: </label>
-                                        <input type="date" class="form-control" name="orderDate" id="orderDate">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="orderID"> شروع از ساعت: </label>
-                                        <input type="time" class="form-control" name="orderTime" id="orderTime">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="country"><span class="glyphicon glyphicon-flag"></span>  کشور:</label>
-                                        <select dir = "rtl" class = "form-control" id = "country" name="country"> 
-                                            <option value = "انگلیس">انگلیس</option>
-                                            <option value = "ترکیه">ترکیه</option>
-                                            <option value = "فرانسه">فرانسه</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ایجاد فایل اکسل </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Return Modal -->
-                <div class = "modal fade" id = "returnModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-refresh"> </span> عودت محصول </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="return.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="rowID"> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="returnReason"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
-                                        <select dir = "rtl" class = "form-control" id = "returnReason" name="returnReason"> 
-                                            <option value = "اشتباه بودن محصول">اشتباه بودن محصول</option>
-                                            <option value = "خراب بودن محصول">خراب بودن محصول</option>
-                                            <option value = "تعویض با جنس دیگر">تعویض با جنس دیگر</option>
-                                            <option value = "دیر رسیدن کالا">دیر رسیدن کالا </option>
-                                            <option value = "به درخواست کاربر">به درخواست کاربر </option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="returnDescription"><span class="glyphicon glyphicon-comment"></span>  توضیحات</label>
-                                        <input type="text" class="form-control" name="returnComment" id="returnComment"> 
-                                    </div>
-
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--finalReport Modal -->
-                <div class = "modal fade" id = "finalReportModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-refresh"> </span> گزارش جامع </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="finalreport.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="startDate"> تاریخ شروع گزارش: </label>
-                                        <input type="date" class="form-control" name="startDate" id="startDate">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="finishDate"> تاریخ پایان گزارش: </label>
-                                        <input type="date" class="form-control" name="finishDate" id="finishDate">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="countryReport"><span class="glyphicon glyphicon-hand-left"></span>  کشور</label>
-                                        <select dir = "rtl" class = "form-control" id = "countryReport" name="countryReport"> 
-                                            <option value = "ترکیه">ترکیه</option>
-                                            <option value = "انگلیس">انگلیس</option>
-                                            <option value = "فرانسه">فرانسه</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ساخت گزارش </button>
                                 </form>
                             </div>
                         </div>

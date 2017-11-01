@@ -546,7 +546,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
                                     <div class="form-group">
-                                        <label for="returnReason"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
+                                        <label for="returnReason"><span class="glyphicon glyphicon-hand-left"></span>  دلیل عودت سفارش</label>
                                         <select dir = "rtl" class = "form-control" id = "returnReason" name="returnReason"> 
                                             <option value = "اشتباه بودن محصول">اشتباه بودن محصول</option>
                                             <option value = "خراب بودن محصول">خراب بودن محصول</option>

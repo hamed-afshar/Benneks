@@ -163,7 +163,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <a href="admin-turkish.php"> <i class="fa fa-th-list fa-fw"> </i> Sipariş Liste </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-truck fa-fw" > </i> Kargo</a>
+                            <a href="#"> <i class="fa fa-truck fa-fw" > </i> Kargo Liste Yapmak</a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> profil</a>
@@ -178,51 +178,13 @@ $monthValue = mysqli_fetch_row($queryResult4);
         <div id ="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header" dir="ltr">پنل کاربری</h1>
+                    <center> <h1 class="page-header" dir="ltr">Türk Admin Paneli <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i> </a></h1> </center>
                 </div>
                 <div class="panel panel-success" dir="ltr" >
                     <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
-                                <center> <i class="fa fa-shopping-bag fa-fw"></i> لیست سفارشات  <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i> </a></center>
-                            </div>
-                        </div>
                         <div class="row"> 
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-push-4 col-md-push-4 col-sm-push-4" dir="rtl">
-                                <div class="panel panel-primary" dir="rtl">
-                                    <div class="panel-heading">
-                                        <i class="fa fa-exchange fa-fw"></i> حجم مالی:
-                                        <div class="form-inline">
-                                            <div class="form-group">
-                                                <label for="dayQuantity"> سفارشات امروز لیر:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="yesterdayQuantuty"> سفارشات روز گذشته لیر :</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['0']; ?> </label>  
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="monthQuantity"> ماه لیر:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="dayQuantity"> امروز یورو:<br></label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[2]; ?>  </label>  
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته یورو :</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['2']; ?> </label>  
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="monthQuantity"> ماه یورو:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[2]; ?> </label> 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-push-4 col-md-push-4 col-sm-push-4" dir="rtl">
-                                <div class="panel panel-primary" dir="rtl">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">
                                         <i class="fa fa-bullhorn fa-fw"></i> تعداد سفارشات:
                                         <div class="form-inline">
@@ -254,21 +216,19 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-pull-8 col-md-pull-8 col-sm-pull-8" dir="rtl">
-                                <div class="panel panel-primary" dir="rtl">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-lg col-md col-sm">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">
                                         <form role = "form" method="post" name="searchForm" id="searchForm"  action="search.php">
-                                            <i class="fa fa-filter fa-fw"></i> عبارت جستجو:
+                                            <i class="fa fa-star fa-fw"></i> Arama Kodu:
                                             <input type="search" class = "form-control" dir="ltr" id="searchInput" name="searchInput" placeholder="search...">
-                                            <label for="searchOption"></span>  نوع فیلتر:</label>
+                                            <label for="searchOption"> <i class="fa fa-filter fa-fw"></i> Arama Filtresi Türü:</label>
                                             <div class="form-group">
-                                                <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption">
+                                                <select class = "form-control" id = "searchOption" name="searchOption">
                                                     <option value="code"> kod </option>
-                                                    <option value="name"> نام </option>
-                                                    <option value="done"> خریداری شده</option>
-                                                    <option value="cancel"> لغو شده</option>
-                                                    <option value="return"> عودت</option>
-                                                    <option value="unknown"> نامشخص </option>
+                                                    <option value="done"> satın almış siparişleri</option>
+                                                    <option value="cancel"> iptal edilmiştir</option>
+                                                    <option value="unknown"> bilinmeyen </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -300,8 +260,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <table class="table table-bordered table-hover table-striped" id="orderDataTable" style="text-align:center; overflow-x: scroll">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: center"> kod</th>
-                                        <th style="text-align: center"> kullanıcı adı</th>
+                                        <th style="text-align: center"> Kod</th>
+                                        <th style="text-align: center"> Kullanıcı adı</th>
                                         <th style="text-align: center"> Sipariş Tarihi</th>
 
                                         <th style="text-align: center"> Fiyat</th>
@@ -326,7 +286,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         "<hr> "
                                         . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#iranDeliverModal' data-id='$row[0]' class='open-iranDeliverModal'> <i class='fa fa-plane fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#iranDeliverModal' data-toggle='modal' data-target='#iranDeliverModal' data-id='$row[0]' class='open-iranDeliverModal'> <i class='fa fa-plane fa-fw fa-lg'></i> </a>"
                                         . " </td>";
                                         echo "<td>" . $row[1] . "</td>";
                                         echo "<td>" . $row[2] . "</td>";
@@ -389,14 +349,14 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <h4><span class = "glyphicon glyphicon-briefcase"> </span> لغو سفارش </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="cancelOrder.php" method="post" dir="rtl">
+                                <form role="form" action="cancelOrder.php" method="post">
                                     <div class="form-group">
                                         <label for="rowID"> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
                                     <div class="form-group">
                                         <label for="cancelDetails"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
-                                        <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
+                                        <select class = "form-control" id = "cancelDetails" name="cancelDetails"> 
                                             <option value = "نبودن سایز">موجود نبودن سایز </option>
                                             <option value = "تمام شدن محصول">موجود نبودن کالا</option>
                                             <option value = "موجود نبودن رنگ">موجود نبودن رنگ</option>
@@ -420,7 +380,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <h4><span class = "glyphicon glyphicon-briefcase"> </span> خرید محصول </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="addorder.php" method="post" dir="rtl">
+                                <form role="form" action="addorder.php" method="post">
                                     <div class="form-group">
                                         <label for="rowID"> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
@@ -443,24 +403,24 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> ارسال به ایران </h4>
+                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> Irana Göndermek </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form"  method="post" action="irandeliver.php" dir="rtl">
+                                <form role="form"  method="post" action="irandeliver.php">
                                     <div class="form-group">
-                                        <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
+                                        <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Sipariş Kodu</label>
                                         <input type="text" class="form-control" name="rowID" id="rowID" readonly onclick="return false;">
                                     </div>
                                     <div class="form-group">
-                                        <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ ارسال</label>
+                                        <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  Gönderme Zaman</label>
                                         <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate"> 
                                     </div>
                                     <div class="form-group">
-                                        <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
+                                        <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> Kargo Kodu </label> 
                                         <input type="text" class="form-control" name="cargoName" id="cargoName" onclick="return false;">
                                     </div>
-                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="iranDeliverFunc('submit');"> ثبت </button>
-                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="iranDeliverFunc('reset');"> حذف کد کارگو </button>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="iranDeliverFunc('submit');"> Kayıt Etmek</button>
+                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="iranDeliverFunc('reset');"> Kargo Kodu Silmek </button>
                                     <div class="form-group">
                                         <center> <p id="msg">  </p> </center>
                                     </div>

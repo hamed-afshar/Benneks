@@ -129,10 +129,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
         });
     });
 </script>
-<!-- script for return modal -->
+<!-- script for turkey return modal -->
 <script>
     $(document).ready(function () {
-        $(document).on("click", ".open-returnModal", function () {
+        $(document).on("click", ".open-turkeyReturnModal", function () {
             var orderID = $(this).data('id');
             $(".modal-body #rowID").val(orderID);
         });
@@ -178,7 +178,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
         <div id ="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <center> <h1 class="page-header" dir="ltr">Türk Admin Paneli <a href="admin.php"> <i class="fa fa-refresh fa-fw"></i> </a></h1> </center>
+                    <center> <h1 class="page-header" dir="ltr">Türk Admin Paneli <a href="turkish-admin.php"> <i class="fa fa-refresh fa-fw"></i> </a></h1> </center>
                 </div>
                 <div class="panel panel-success" dir="ltr" >
                     <div class="panel-heading">
@@ -287,6 +287,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
                                         . "<a href='#officeDeliveryModal' data-toggle='modal' data-target='#officeDeliveryModal' data-id='$row[0]' class='open-officeDeliveryModal'> <i class='fa fa-home fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#turkeyReturnModal' data-toggle='modal' data-target='#turkeyReturnModal' data-id='$row[0]' class='open-turkeyReturnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
                                         . " </td>";
                                         echo "<td>" . $row[1] . "</td>";
                                         echo "<td>" . $row[2] . "</td>";
@@ -351,20 +352,24 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form" action="cancelOrder.php" method="post">
                                     <div class="form-group">
+                                        <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Kod </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
                                     <div class="form-group">
                                         <label for="cancelDetails"><span class="glyphicon glyphicon-hand-right"></span>  İptal Sebebi</label>
                                         <select class = "form-control" id = "cancelDetails" name="cancelDetails"> 
-                                            <option value = "نبودن سایز-bednı bıtmış">نبودن سایز(bednı bıtmış) </option>
-                                            <option value = "تمام شدن محصول-tukendı">تمام شدن محصول(tukendı)</option>
-                                            <option value = "موجود نبودن رنگ-renkleri bitmiş">موجود نبودن رنگ(renkleri bitmiş)</option>
-                                            <option value = "اطلاعات ناقص-bilgileri tamamlanmamiş">اطلاعات ناقص(bilgileri tamamlanmamiş)</option>
-                                            <option value = "به درخواست کاربر-muşteri istedin için">به درخواست کاربر(muşteri istedin için)</option>
+                                            <option value = "نبودن سایز-bednı bıtmış">bednı bıtmış</option>
+                                            <option value = "تمام شدن محصول-tukendı">tukendı</option>
+                                            <option value = "موجود نبودن رنگ-renkleri bitmiş">renkleri bitmiş</option>
+                                            <option value = "اطلاعات ناقص-bilgileri tamamlanmamiş">bilgileri tamamlanmamiş</option>
+                                            <option value = "به درخواست کاربر-muşteri istedin için">muşteri istedin için</option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> İptal </button>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> İptal </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
                                 </form>
                             </div>
                         </div>
@@ -382,6 +387,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form" action="addorder.php" method="post">
                                     <div class="form-group">
+                                        <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Kod </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
@@ -389,8 +397,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  Satin Almak Tarihi</label>
                                         <input type="date" class="form-control" name="shoppingDate" id="shoppingDate"> 
                                     </div>
-
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayit </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
                                 </form>
                             </div>
                         </div>
@@ -415,13 +423,46 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="officeArrivalDate"><span class="glyphicon glyphicon-calendar"></span>  Gönderme Tarihi</label>
                                         <input type="date" class="form-control" name="officeArrivalDate" id="officeArrivalDate"> 
                                     </div>
-                                 
                                     <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="officeArrivalFunc('submit');"> Kayıt</button>
-                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="officeArrivalFunc('reset');"> Office Galmamiş </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
                                     <div class="form-group">
                                         <center> <p id="msg">  </p> </center>
+                                    </div> 
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Turkey Return Modal --> 
+                <div class = "modal fade" id = "turkeyReturnModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-transfer"> </span> İade </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="" method="post" dir="ltr">
+                                    <div class="form-group">
+                                        <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Sipariş Kodu</label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
-                                    <button type="button" class="btn btn-danger btn-block" id="Not-changeCargoButton" style="display: none" onclick="$('#officeArrivalModal').modal('hide');"> kapat </button>   
+                                    <div class="form-group">
+                                        <label for="returnReason"><span class="glyphicon glyphicon-hand-right"></span>  Neden</label>
+                                        <select dir = "ltr" class = "form-control" id = "returnReason" name="returnReason"> 
+                                            <option value = "اشتباه بودن سفارش-yanlış sipariş">yanlış sipariş</option>
+                                            <option value = "خراب بودن محصول-bozuk sipariş">bozuk sipariş </option>
+                                            <option value = "به درخواست کاربر-muşteri istedin için">muşteri istedin için</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="returnDescription"><span class="glyphicon glyphicon-comment"></span>  açıklama</label>
+                                        <input type="text" class="form-control" name="returnComment" id="returnComment"> 
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayıt </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
                                 </form>
                             </div>
                         </div>

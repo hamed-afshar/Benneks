@@ -411,26 +411,30 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> لغو سفارش </h4>
+                                <h4><span class = "glyphicon glyphicon-remove"> </span> لغو سفارش </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form" action="cancelOrder.php" method="post" dir="rtl">
+                                     <div class="form-group">
+                                        <input type="hidden" id="incomingPage" name="incomingPage" value="farsi-Admin">
+                                    </div>
                                     <div class="form-group">
-                                        <label for="rowID"> کد سفارش </label>
+                                        <label for="rowID"><span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
                                     <div class="form-group">
                                         <label for="cancelDetails"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
                                         <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
-                                            <option value = "نبودن سایز">موجود نبودن سایز </option>
-                                            <option value = "تمام شدن محصول">موجود نبودن کالا</option>
-                                            <option value = "موجود نبودن رنگ">موجود نبودن رنگ</option>
-                                            <option value = "اطلاعات ناقص">ناقص بودن اطلاعات ورودی </option>
-                                            <option value = "به درخواست کاربر">به درخواست کاربر </option>
+                                            <option value = "نبودن سایز-bednı bıtmış">موجود نبودن سایز </option>
+                                            <option value = "تمام شدن محصول-tukendı">موجود نبودن کالا</option>
+                                            <option value = "موجود نبودن رنگ-renkleri bitmiş">موجود نبودن رنگ</option>
+                                            <option value = "اطلاعات ناقص-bilgileri tamamlanmamiş">ناقص بودن اطلاعات ورودی </option>
+                                            <option value = "به درخواست کاربر-muşteri istedin için">به درخواست کاربر </option>
                                         </select>
                                     </div>
 
-                                    <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> لغو سفارش  </button>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> لغو سفارش  </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> پاک کردن </button>
                                 </form>
                             </div>
                         </div>
@@ -448,6 +452,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form" action="addorder.php" method="post" dir="rtl">
                                     <div class="form-group">
+                                        <input type="hidden" id="incomingPage" name="incomingPage" value="farsi-Admin">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="rowID"> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
                                     </div>
@@ -455,8 +462,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
                                         <input type="date" class="form-control" name="shoppingDate" id="shoppingDate"> 
                                     </div>
-
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> پاک کردن </button>
                                 </form>
                             </div>
                         </div>

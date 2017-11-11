@@ -18,16 +18,28 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitButton'])) {
-    $status = "لغو";
+    $incomingPage = $_POST['incomingPage'];
+    $status = "لغو-İptal";
     $statusDescription = $_POST['cancelDetails'];
     $orderID = $_POST['rowID'];
-} else  {
-    echo "error";
+    $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET stat.orderStatus = '$status', stat.orderStatusDescription='$statusDescription', shipment.benneksShoppingDate = null WHERE orders.orderID = '$orderID'";
+} elseif (isset($_POST['resetButton'])) {
+    $incomingPage = $_POST['incomingPage'];
+    $orderID = $_POST['rowID'];
+    $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID inner join benneks.shipment ON shipment.orders_orderID = orders.orderID SET"
+            . " stat.orderStatus = NULL, stat.orderStatusDescription = NULL, shipment.benneksShoppingDate = NULL WHERE orders.orderID = '$orderID'";
 }
-$query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET stat.orderStatus = '$status', stat.orderStatusDescription='$statusDescription', shipment.benneksShoppingDate = null, shipment.benneksDeliverDate = null WHERE orders.orderID = '$orderID'";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
 mysqli_close($user->conn);
-header("Location: admin.php");
+
+switch ($incomingPage) {
+    case "turkish-Admin":
+        header("Location: turkish-admin.php");
+        break;
+    case "farsi-Admin":
+        header("Location: admin.php");
+        break;
+}
 ?>

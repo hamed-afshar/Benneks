@@ -414,7 +414,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <h4><span class = "glyphicon glyphicon-home"> </span> Office Galmış </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form"  method="post" action="">
+                                <form role="form"  method="post" action="officeArrival.php">
+                                    <div class="form-group">
+                                        <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
+                                    </div>
                                     <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Sipariş Kodu</label>
                                         <input type="text" class="form-control" name="rowID" id="rowID" readonly onclick="return false;">
@@ -423,11 +426,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="officeArrivalDate"><span class="glyphicon glyphicon-calendar"></span>  Gönderme Tarihi</label>
                                         <input type="date" class="form-control" name="officeArrivalDate" id="officeArrivalDate"> 
                                     </div>
-                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="officeArrivalFunc('submit');"> Kayıt</button>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayıt</button>
+                                    <button type="submit" class="btn btn-info btn-block" name="printButton" id="printButton"> Print </button>
                                     <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
-                                    <div class="form-group">
-                                        <center> <p id="msg">  </p> </center>
-                                    </div> 
                                 </form>
                             </div>
                         </div>

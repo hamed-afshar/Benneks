@@ -95,7 +95,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
 <script type="text/javascript" src="./Javascripts/script.js"></script>
 <!-- Pagination jquery plugin -->
 <script type="text/javascript" src="./Javascripts/jquery.simplePagination.js"></script>
-
+<!-- printer jquery plugin -->
+<script type="text/JavaScript" src="./Javascripts/jquery.print.js" /></script>
 <!--CSS Style-->
 <link rel="stylesheet" type="text/css" href="style.css" />
 
@@ -105,10 +106,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
 <!-- script for add modal -->
 <script>
     $(document).ready(function () {
-        $(document).on("click", ".open-addModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
-        });
+    $(document).on("click", ".open-addModal", function () {
+    var orderID = $(this).data('id');
+    $(".modal-body #rowID").val(orderID);
+    });
     });
 </script>
 <!-- script for cancel modal -->
@@ -163,7 +164,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <a href="admin-turkish.php"> <i class="fa fa-th-list fa-fw"> </i> Sipariş Liste </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-truck fa-fw" > </i> Kargo Liste Yapmak</a>
+                            <a href="kargoMaker.php"> <i class="fa fa-truck fa-fw" > </i> Kargo Liste Yapmak</a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> profil</a>
@@ -426,8 +427,19 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="officeArrivalDate"><span class="glyphicon glyphicon-calendar"></span>  Gönderme Tarihi</label>
                                         <input type="date" class="form-control" name="officeArrivalDate" id="officeArrivalDate"> 
                                     </div>
+                                    <!-- javascript to pass print variable to js file which is supouse to print the code -->
+                                    <script>
+                                        function printCodeFunc() {
+                                           $("#rowID").print({
+                                               mediaPrint: false,
+                                               iframe: false,
+                                               title: null
+                                           });
+                                        }
+                                    </script>
+
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayıt</button>
-                                    <button type="submit" class="btn btn-info btn-block" name="printButton" id="printButton"> Print </button>
+                                    <button type="button" class="btn btn-info btn-block" name="printButton" id="printButton" onclick="printCodeFunc();"> Print </button>
                                     <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
                                 </form>
                             </div>
@@ -444,10 +456,13 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <h4><span class = "glyphicon glyphicon-transfer"> </span> İade </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="" method="post" dir="ltr">
+                                <form role="form" action="return.php" method="post" dir="ltr">
+                                    <div class="form-group">
+                                        <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
+                                    </div>
                                     <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Sipariş Kodu</label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="returnReason"><span class="glyphicon glyphicon-hand-right"></span>  Neden</label>

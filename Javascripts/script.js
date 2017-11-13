@@ -482,7 +482,8 @@ function checkTel() {
 }
 
 //Function to print code on label
-function printCodeFunc() {
+function printCodeFunc(printCode) {
+    var printContent = printCode;
     window.print();
 }
 

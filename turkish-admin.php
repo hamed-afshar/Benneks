@@ -40,37 +40,46 @@ if (!$user->executeQuery($query1)) {
     echo "خطا! در نحوه نمایش اطلاعات.";
 }
 $queryResult1 = $user->executeQuery($query1);
-//Get totall value and numbers for yesterday orders
-$query2 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.frSUM, SecondSet.frCount FROM " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'ترکیه') as FirstSet " .
-        "INNER JOIN " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE orders.orderDate = subdate(current_date(), 1) AND orders.country = 'فرانسه') as SecondSet";
+
+//Get the totall number of orders from begining
+$query2 = "select count(orders.orderID) from benneks.orders WHERE orders.country = 'ترکیه' and MONTH(orders.orderDate) = MONTH(current_date());";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult2 = $user->executeQuery($query2);
-$yesterdayValue = mysqli_fetch_row($queryResult2);
+$totallMonthValue = mysqli_fetch_row($queryResult2);
 
-//Get totall value and numbers for Today orders
-$query3 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.frSUM, SecondSet.frCount FROM " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'ترکیه') as FirstSet " .
-        "INNER JOIN " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE orders.orderDate = current_date() AND orders.country = 'فرانسه') as SecondSet";
+//Get the totall number of purchased orders for current month
+$query3 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where orders.country = 'ترکیه' and stat.orderStatus = 'انجام شده-tamam' or stat.orderStatus = 'انجام شده'  and MONTH(orders.orderDate) = MONTH(current_date());";
 if (!$user->executeQuery($query3)) {
     echo mysqli_error($user->conn);
 }
 $queryResult3 = $user->executeQuery($query3);
-$todayValue = mysqli_fetch_row($queryResult3);
-//Get totall value and numbers for month orders
-$query4 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.frSUM, SecondSet.frCount FROM " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date()) AND orders.country = 'ترکیه') as FirstSet " .
-        "INNER JOIN " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(current_date()) AND orders.country = 'فرانسه') as SecondSet";
+$totallDoneMonthValue = mysqli_fetch_row($queryResult3);
+
+//Get the totall number of canceled orders for current month
+$query4 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus = 'لغو-İptal' or stat.orderStatus = 'لغو' and MONTH(orders.orderDate) = MONTH(current_date()) and orders.country = 'ترکیه';";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
 $queryResult4 = $user->executeQuery($query4);
-$monthValue = mysqli_fetch_row($queryResult4);
+$totallCanceledMonthValue = mysqli_fetch_row($queryResult4);
+
+//Get the tottal number of unknown orders for current month
+$query5 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus is null and MONTH(orders.orderDate) = MONTH(current_date()) and orders.country = 'ترکیه'";
+if (!$user->executeQuery($query5)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult5 = $user->executeQuery($query5);
+$totallNullMonthValue = mysqli_fetch_row($queryResult5);
+
+//Get the current kargo Number
+$query6 = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}+$';";
+if (!$user->executeQuery($query6)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult6 = $user->executeQuery($query6);
+$currentKargo = mysqli_fetch_row($queryResult6);
 ?>
 <html>
     <head>
@@ -161,7 +170,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                 <div class="sidebar-nav navbar-collapse collapse">
                     <ul class="nav in" id="side-menu">
                         <li>
-                            <a href="admin-turkish.php"> <i class="fa fa-th-list fa-fw"> </i> Sipariş Liste </a>
+                            <a href="turkish-admin.php"> <i class="fa fa-th-list fa-fw"> </i> Sipariş Liste </a>
                         </li>
                         <li>
                             <a href="kargoMaker.php"> <i class="fa fa-truck fa-fw" > </i> Kargo Liste Yapmak</a>
@@ -184,40 +193,41 @@ $monthValue = mysqli_fetch_row($queryResult4);
                 <div class="panel panel-success" dir="ltr" >
                     <div class="panel-heading">
                         <div class="row"> 
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
-                                        <i class="fa fa-bullhorn fa-fw"></i> تعداد سفارشات:
+                                        <i class="fa fa-bullhorn fa-fw"></i> Bu ayki Raporu:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز ترکیه:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[1]; ?> </label> 
+                                                <label for="dayQuantity">şimdilik ay bütun siparişleri: </label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $totallMonthValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> سفارشات روز گذشته ترکیه:</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[1]; ?> </label> 
+                                                <label for="yesterdayQuantuty">şimdilik satin almak siparişleri:  </label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $totallDoneMonthValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه ترکیه:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> 
+                                                <label for="monthQuantity"> şimdilik ay iptalli siparişleri: </label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $totallCanceledMonthValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز فرانسه:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[3]; ?> </label> 
+                                                <label for="dayQuantity"> şimdilik ay yeni siparişleri: </label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $totallNullMonthValue[0]; ?> </label> 
+                                            </div>
+                                            <br>
+                                            <div class="form-group">
+                                                <label for="yesterdayQuantuty"> en son irana yolamiş kargo numarasi</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $currentKargo[0] ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته فرانسه:</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[3]; ?> </label> 
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="monthQuantity"> ماه فرانسه:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[3]; ?> </label> 
+                                                <label for="monthQuantity"> sonraki kargo numarasi:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $currentKargo[0] + 1 ?> </label> 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-lg col-md col-sm">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg col-md col-sm">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
                                         <form role = "form" method="post" name="searchForm" id="searchForm"  action="search.php">

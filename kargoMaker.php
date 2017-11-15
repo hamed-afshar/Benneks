@@ -45,26 +45,35 @@ ini_set('display_startup_errors', TRUE);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 ini_set('memory_limit', '512M');
-// Query to extract the last kargo code from database
-$lastKargoQuery = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}+$';";
 
-if (!$user->executeQuery($lastKargoQuery)) {
-    echo mysqli_error($user->conn);
-}
-$lastKargoQueryResult = $user->executeQuery($lastKargoQuery);
+if (isset($_POST['printButton'])) {
+    $kargoCode = $_POST['kargoID'];
+    $kargoLabel = $kargoCode;
+    $kargoMakerQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID where shipment.cargoName = '$kargoCode' order by orders.orderDate;";
+} else {
+    // Query to extract the last kargo code from database
+    $lastKargoQuery = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}+$';";
+    if (!$user->executeQuery($lastKargoQuery)) {
+        echo mysqli_error($user->conn);
+    }
+    $lastKargoQueryResult = $user->executeQuery($lastKargoQuery);
 
-$row = mysqli_fetch_array($lastKargoQueryResult);
-$nextKargo = $row[0] + 1;
-
+    $row = mysqli_fetch_array($lastKargoQueryResult);
+    $nextKargo = $row[0] + 1;
+    $kargoLabel = $nextKargo;
 //query to prepare a kargo list based on the office arrival date
-$kargoMakerQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID where shipment.officeArrivalDate is not null order by orders.orderDate asc limit 100;";
+    $kargoMakerQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID where shipment.officeArrivalDate is not null order by orders.orderDate asc limit 100;";
+}
+
+
+
 if (!$user->executeQuery($kargoMakerQuery)) {
     echo mysqli_error($user->conn);
 }
 $kargoMakerQueryResult = $user->executeQuery($kargoMakerQuery);
 $i = 2;
 $objSheet = $objPHPExcel->getActiveSheet();
-while($row = mysqli_fetch_row($kargoMakerQueryResult)) {
+while ($row = mysqli_fetch_row($kargoMakerQueryResult)) {
     $objPHPExcel->getActiveSheet()->setCellValue('A' . $i, $i - 1);
     $objPHPExcel->getActiveSheet()->setCellValue('B' . $i, $row[0]);
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
@@ -86,7 +95,7 @@ $objSheet->getStyle("A1:C1")->getFont()->setSize(14);
 $objSheet->getStyle('A1:C1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="Kargo-'.$nextKargo.'.xls"');
+header('Content-Disposition: attachment;filename="Kargo-' . $kargoLabel . '.xls"');
 
 $objWriter->save('php://output');
 ?>

@@ -42,7 +42,7 @@ if (!$user->executeQuery($query1)) {
 $queryResult1 = $user->executeQuery($query1);
 
 //Get the totall number of orders from begining
-$query2 = "select count(orders.orderID) from benneks.orders WHERE orders.country = 'ترکیه' and MONTH(orders.orderDate) = MONTH(current_date());";
+$query2 = "select count(orders.orderID) from benneks.orders WHERE orders.country = 'ترکیه' and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW());";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
@@ -50,7 +50,7 @@ $queryResult2 = $user->executeQuery($query2);
 $totallMonthValue = mysqli_fetch_row($queryResult2);
 
 //Get the totall number of purchased orders for current month
-$query3 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where orders.country = 'ترکیه' and stat.orderStatus = 'انجام شده-tamam' or stat.orderStatus = 'انجام شده'  and MONTH(orders.orderDate) = MONTH(current_date());";
+$query3 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where orders.country = 'ترکیه' and stat.orderStatus = 'انجام شده-tamam' or stat.orderStatus = 'انجام شده'  and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW());";
 if (!$user->executeQuery($query3)) {
     echo mysqli_error($user->conn);
 }
@@ -58,7 +58,7 @@ $queryResult3 = $user->executeQuery($query3);
 $totallDoneMonthValue = mysqli_fetch_row($queryResult3);
 
 //Get the totall number of canceled orders for current month
-$query4 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus = 'لغو-İptal' or stat.orderStatus = 'لغو' and MONTH(orders.orderDate) = MONTH(current_date()) and orders.country = 'ترکیه';";
+$query4 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus = 'لغو-İptal' or stat.orderStatus = 'لغو' and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW()) and orders.country = 'ترکیه';";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
@@ -66,7 +66,7 @@ $queryResult4 = $user->executeQuery($query4);
 $totallCanceledMonthValue = mysqli_fetch_row($queryResult4);
 
 //Get the tottal number of unknown orders for current month
-$query5 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus is null and MONTH(orders.orderDate) = MONTH(current_date()) and orders.country = 'ترکیه'";
+$query5 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus is null and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW()) and orders.country = 'ترکیه'";
 if (!$user->executeQuery($query5)) {
     echo mysqli_error($user->conn);
 }
@@ -80,6 +80,38 @@ if (!$user->executeQuery($query6)) {
 }
 $queryResult6 = $user->executeQuery($query6);
 $currentKargo = mysqli_fetch_row($queryResult6);
+
+//Get the totall number of available purchased items in office
+$query7 = "select count(*) from benneks.shipment where shipment.officeArrivalDate is not null and shipment.cargoName is Null;";
+if (!$user->executeQuery($query7)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult7 = $user->executeQuery($query7);
+$totallAvailableOffice = mysqli_fetch_row($queryResult7);
+
+//Get the totall number of orders on the way to office
+$query8 = "select count(*) from benneks.shipment where benneksShoppingDate is not null and officeArrivalDate is null;";
+if (!$user->executeQuery($query8)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult8 = $user->executeQuery($query8);
+$ordersWayOffice = mysqli_fetch_row($queryResult8);
+
+//Get the totall number of unknown orders 
+$query9 = "select count(*) from benneks.stat where stat.orderStatus is Null;";
+if (!$user->executeQuery($query9)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult9 = $user->executeQuery($query9);
+$unknownOrders = mysqli_fetch_row($queryResult9);
+
+//Get the totall number of returning item available in the office
+$query10 = "select count(*) from benneks.stat where stat.orderStatus = 'عودت-İade';";
+if (!$user->executeQuery($query10)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult10 = $user->executeQuery($query10);
+$totallReturnOffice = mysqli_fetch_row($queryResult10);
 ?>
 <html>
     <head>
@@ -199,34 +231,61 @@ $currentKargo = mysqli_fetch_row($queryResult6);
                                         <i class="fa fa-bullhorn fa-fw"></i> Bu ayki Raporu:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity">şimdilik ay bütun siparişleri: </label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $totallMonthValue[0]; ?> </label> 
+                                                <label for="totallMonthValue">şimdilik ay bütun siparişleri: </label>
+                                                <label id="totallMonthValue" style="color: goldenrod"> <?php echo $totallMonthValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty">şimdilik satin almak siparişleri:  </label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $totallDoneMonthValue[0]; ?> </label> 
+                                                <label for="totallDoneMonthValue">şimdilik ay satin almak siparişleri:  </label>
+                                                <label id="totallDoneMonthValue" style="color: goldenrod"> <?php echo $totallDoneMonthValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> şimdilik ay iptalli siparişleri: </label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $totallCanceledMonthValue[0]; ?> </label> 
+                                                <label for="totallCanceledMonthValue"> şimdilik ay iptalli siparişleri: </label>
+                                                <label id="totallCanceledMonthValue" style="color: goldenrod"> <?php echo $totallCanceledMonthValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> şimdilik ay yeni siparişleri: </label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $totallNullMonthValue[0]; ?> </label> 
+                                                <label for="totallNullMonthValue"> şimdilik ay yeni siparişleri: </label>
+                                                <label id="totallNullMonthValue" style="color: goldenrod"> <?php echo $totallNullMonthValue[0]; ?> </label> 
                                             </div>
                                             <br>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> en son irana yolamiş kargo numarasi</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $currentKargo[0] ?> </label> 
+                                                <label for="currentKargo"> en son irana yolamiş kargo numarasi</label>
+                                                <label id="currentKargo" style="color: goldenrod"> <?php echo $currentKargo[0] ?> <a href='#kargoPrintModal' style="color: yellow" data-toggle='modal' data-target='#kargoPrintModal' class='open-kargoPrintModal'> <i class="fa fa-print fa-fw"></i> </a> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> sonraki kargo numarasi:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $currentKargo[0] + 1 ?> </label> 
+                                                <label for="nextKargo"> sonraki kargo numarasi:</label>
+                                                <label id="nextKargo" style="color: goldenrod"> <?php echo $currentKargo[0] + 1 ?> </label> 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-bullhorn fa-fw"></i> Offisde Raporu:
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="totallAvailableOffice">Officde galmiş siparişleri saysi: </label>
+                                                <label id="totallAvailableOffice" style="color: goldenrod"> <?php echo $totallAvailableOffice[0]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderWayOffice">Office siparişleri yolda saysi:  </label>
+                                                <label id="orderWayOffice" style="color: goldenrod"> <?php echo $ordersWayOffice[0]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="uknownOrders"> Bütun yeni siparişleri ki hala satin almamiş: </label>
+                                                <label id="unknownOrders" style="color: goldenrod"> <?php echo $unknownOrders[0]; ?> </label> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="returnOrders"> Bütun iade siparişler officde saysi: </label>
+                                                <label id="returnOrders" style="color: goldenrod"> <?php echo $totallReturnOffice[0]; ?> </label> 
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg col-md col-sm">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
@@ -243,7 +302,7 @@ $currentKargo = mysqli_fetch_row($queryResult6);
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <input type="hidden" name="searchReq" value="adminPage"/>
+                                                <input type="hidden" name="searchReq" value="turkish-admin"/>
                                             </div>
                                             <div class="form-group">
                                                 <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > arama
@@ -289,52 +348,52 @@ $currentKargo = mysqli_fetch_row($queryResult6);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    while ($row = mysqli_fetch_row($queryResult1)) {
+<?php
+while ($row = mysqli_fetch_row($queryResult1)) {
 
-                                        echo "<tr>";
-                                        echo "<td> " . $row[0] .
-                                        "<hr> "
-                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#officeDeliveryModal' data-toggle='modal' data-target='#officeDeliveryModal' data-id='$row[0]' class='open-officeDeliveryModal'> <i class='fa fa-home fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#turkeyReturnModal' data-toggle='modal' data-target='#turkeyReturnModal' data-id='$row[0]' class='open-turkeyReturnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
-                                        . " </td>";
-                                        echo "<td>" . $row[1] . "</td>";
-                                        echo "<td>" . $row[2] . "</td>";
+    echo "<tr>";
+    echo "<td> " . $row[0] .
+    "<hr> "
+    . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
+    . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
+    . "<a href='#officeDeliveryModal' data-toggle='modal' data-target='#officeDeliveryModal' data-id='$row[0]' class='open-officeDeliveryModal'> <i class='fa fa-home fa-fw fa-lg'></i> </a>"
+    . "<a href='#turkeyReturnModal' data-toggle='modal' data-target='#turkeyReturnModal' data-id='$row[0]' class='open-turkeyReturnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
+    . " </td>";
+    echo "<td>" . $row[1] . "</td>";
+    echo "<td>" . $row[2] . "</td>";
 
-                                        echo "<td>" . $row[4] . "</td>";
-                                        echo "<td>" . $row[5] . "</td>";
-                                        echo "<td> <a href= " . $row[6] . ">لینک محصول" . "</a> </td>";
-                                        $picURL = str_replace(' ', '%20', $row[7]);
-                                        echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+    echo "<td>" . $row[4] . "</td>";
+    echo "<td>" . $row[5] . "</td>";
+    echo "<td> <a href= " . $row[6] . ">لینک محصول" . "</a> </td>";
+    $picURL = str_replace(' ', '%20', $row[7]);
+    echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
 
-                                        echo "<td>" . $row[9] . "</td>";
-                                        echo "<td>" . $row[10] . "</td>";
+    echo "<td>" . $row[9] . "</td>";
+    echo "<td>" . $row[10] . "</td>";
 
 
-                                        echo "<td>" . $row[13] . "</td>";
-                                        echo "<td>" . $row[14] . "</td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
+    echo "<td>" . $row[13] . "</td>";
+    echo "<td>" . $row[14] . "</td>";
+    echo "</tr>";
+}
+?>
                                 </tbody>
                             </table>
                         </div>
-                        <?php
-                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
-                        $queryResult5 = $user->executeQuery($query5);
-                        $records = mysqli_fetch_row($queryResult5);
-                        $totalRecords = $records[0];
-                        $totalPages = ceil($totalRecords / $limit);
-                        echo "<div class='container'>";
-                        echo "<ul class='pagination'>";
-                        for ($i = 1; $i <= $totalPages; $i++) {
-                            echo "<li><a href='admin.php?page=" . $i . "'>" . $i . "</a></li>";
-                        }
-                        echo "</ul>";
-                        mysqli_close($user->conn);
-                        ?>
+<?php
+$query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
+$queryResult5 = $user->executeQuery($query5);
+$records = mysqli_fetch_row($queryResult5);
+$totalRecords = $records[0];
+$totalPages = ceil($totalRecords / $limit);
+echo "<div class='container'>";
+echo "<ul class='pagination'>";
+for ($i = 1; $i <= $totalPages; $i++) {
+    echo "<li><a href='turkish-admin.php?page=" . $i . "'>" . $i . "</a></li>";
+}
+echo "</ul>";
+mysqli_close($user->conn);
+?>
                         <script type="text/javascript">
                             $(document).ready(function () {
                                 $('.pagination').pagination({
@@ -346,9 +405,9 @@ $currentKargo = mysqli_fetch_row($queryResult6);
                                 });
                             });
                         </script>
-                        <?php
-                        echo "</div>";
-                        ?>
+<?php
+echo "</div>";
+?>
                     </div>
                 </div>
                 <!--cancel order modal -->
@@ -440,11 +499,11 @@ $currentKargo = mysqli_fetch_row($queryResult6);
                                     <!-- javascript to pass print variable to js file which is supouse to print the code -->
                                     <script>
                                         function printCodeFunc() {
-                                           $("#rowID").print({
-                                               mediaPrint: false,
-                                               iframe: false,
-                                               title: null
-                                           });
+                                            $("#rowID").print({
+                                                mediaPrint: false,
+                                                iframe: false,
+                                                title: null
+                                            });
                                         }
                                     </script>
 
@@ -489,6 +548,30 @@ $currentKargo = mysqli_fetch_row($queryResult6);
 
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayıt </button>
                                     <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--print kargo modal -->
+                <div class = "modal fade" id = "kargoPrintModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-print"> </span> Print Kargo </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="kargoMaker.php" method="post">
+                                    <div class="form-group">
+                                        <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> Kargo Kodu </label>
+                                        <input type="text" class="form-control" name="kargoID" id="kargoID">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="printButton" id="printButton"> Print </button>
                                 </form>
                             </div>
                         </div>

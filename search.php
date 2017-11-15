@@ -66,6 +66,9 @@ if (isset($_POST['searchButton'])) {
             break;
         case "orderlistPage":
             header("Location: orderlist.php");
+            break;
+        case "turkish-admin":
+            header("Location: turkish-admin.php");
     }
 }
 
@@ -81,6 +84,9 @@ if (isset($_POST['cancelSearchButton'])) {
             break;
         case "orderlistPage":
             header("Location: orderlist.php");
+            break;
+        case "turkish-admin":
+            header("Location: turkish-admin.php");
     }
 }
 ?>

@@ -1,7 +1,8 @@
 <?php
 
-/*
- * This script is responsible for making a kargo list for sending items to Iran.
+/* 
+ * PHP Script to print kargo list based on user input code
+ * 
  */
 ob_start();
 session_start();
@@ -48,32 +49,19 @@ ini_set('memory_limit', '512M');
 
 mysqli_autocommit($user->conn, false);
 $flag = true;
-// Query to extract the last kargo code from database
-$lastKargoQuery = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}+$';";
-
-if (!$user->executeQuery($lastKargoQuery)) {
-    $flag = false;
-    echo mysqli_error($user->conn);
+if (isset($_POST['printButton'])) {
+    $kargoCode = $_POST['kargoID'];
+    $kargoLabel = $kargoCode;
+    $kargoPrintQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID where shipment.cargoName = '$kargoCode' order by orders.orderDate;";
+    $user->executeQuery($kargoPrintQuery);
 }
 
-$lastKargoQueryResult = $user->executeQuery($lastKargoQuery);
-$row = mysqli_fetch_array($lastKargoQueryResult);
-$nextKargo = $row[0] + 1;
-$kargoLabel = $nextKargo;
-
-//query to prepare a kargo list based on the office arrival date
-$kargoMakerQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID where shipment.cargoName is null and shipment.officeArrivalDate is not null and (stat.orderstatus = 'انجام شده-tamam' or stat.orderstatus = 'انجام شده')  order by orders.orderDate asc limit 150;";
-
-if (!$user->executeQuery($kargoMakerQuery)) {
-    $flag = false;
-    echo mysqli_error($user->conn);
-}
-$kargoMakerQueryResult = $user->executeQuery($kargoMakerQuery);
+$kargoPrintQueryResylt = $user->executeQuery($kargoPrintQuery);
 
 //create excel sheet
 $i = 2;
 $objSheet = $objPHPExcel->getActiveSheet();
-while ($row = mysqli_fetch_row($kargoMakerQueryResult)) {
+while ($row = mysqli_fetch_row($kargoPrintQueryResylt)) {
     $objPHPExcel->getActiveSheet()->setCellValue('A' . $i, $i - 1);
     $objPHPExcel->getActiveSheet()->setCellValue('B' . $i, $row[0]);
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
@@ -97,29 +85,3 @@ $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="Kargo-' . $kargoLabel . '.xls"');
 $objWriter->save('php://output');
-
-// add kargoCode to database
-if(!$user->executeQuery($kargoMakerQuery)) {
-    $flag = false;
-    echo mysqli_errno($user->conn);
-}
-$addKargoNameQueryResult = $user->executeQuery($kargoMakerQuery);
-while ($res = mysqli_fetch_row($addKargoNameQueryResult)) {
-    $addKargoNameQuery = "update benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID set shipment.cargoName = '$nextKargo' where orders.orderID = '$res[0]';";
-    if (!$user->executeQuery($addKargoNameQuery)) {
-        $flag = false;
-        echo mysqli_error($user->conn);
-    }
-}
-
-// if flag is true then all changes apply to the database
-if ($flag) {
-    mysqli_commit($user->conn);
-} else {
-    mysqli_rollback($user->conn);
-}
-
-
-?>
-
-

@@ -205,7 +205,7 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                             <a href="turkish-admin.php"> <i class="fa fa-th-list fa-fw"> </i> Sipariş Liste </a>
                         </li>
                         <li>
-                            <a href="kargoMaker.php"> <i class="fa fa-truck fa-fw" > </i> Kargo Liste Yapmak</a>
+                            <a href="kargoMaker.php"> <i class="fa fa-truck fa-fw" > </i> Yeni Kargo Liste Yapmak</a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> profil</a>
@@ -563,7 +563,7 @@ echo "</div>";
                                 <h4><span class = "glyphicon glyphicon-print"> </span> Print Kargo </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="kargoMaker.php" method="post">
+                                <form role="form" action="printKargo.php" method="post">
                                     <div class="form-group">
                                         <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
                                     </div>

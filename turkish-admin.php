@@ -348,52 +348,52 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                     </tr>
                                 </thead>
                                 <tbody>
-<?php
-while ($row = mysqli_fetch_row($queryResult1)) {
+                                    <?php
+                                    while ($row = mysqli_fetch_row($queryResult1)) {
 
-    echo "<tr>";
-    echo "<td> " . $row[0] .
-    "<hr> "
-    . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
-    . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
-    . "<a href='#officeDeliveryModal' data-toggle='modal' data-target='#officeDeliveryModal' data-id='$row[0]' class='open-officeDeliveryModal'> <i class='fa fa-home fa-fw fa-lg'></i> </a>"
-    . "<a href='#turkeyReturnModal' data-toggle='modal' data-target='#turkeyReturnModal' data-id='$row[0]' class='open-turkeyReturnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
-    . " </td>";
-    echo "<td>" . $row[1] . "</td>";
-    echo "<td>" . $row[2] . "</td>";
+                                        echo "<tr>";
+                                        echo "<td> " . $row[0] .
+                                        "<hr> "
+                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#officeDeliveryModal' data-toggle='modal' data-target='#officeDeliveryModal' data-id='$row[0]' class='open-officeDeliveryModal'> <i class='fa fa-home fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#turkeyReturnModal' data-toggle='modal' data-target='#turkeyReturnModal' data-id='$row[0]' class='open-turkeyReturnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
+                                        . " </td>";
+                                        echo "<td>" . $row[1] . "</td>";
+                                        echo "<td>" . $row[2] . "</td>";
 
-    echo "<td>" . $row[4] . "</td>";
-    echo "<td>" . $row[5] . "</td>";
-    echo "<td> <a href= " . $row[6] . ">لینک محصول" . "</a> </td>";
-    $picURL = str_replace(' ', '%20', $row[7]);
-    echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+                                        echo "<td>" . $row[4] . "</td>";
+                                        echo "<td>" . $row[5] . "</td>";
+                                        echo "<td> <a href= " . $row[6] . ">لینک محصول" . "</a> </td>";
+                                        $picURL = str_replace(' ', '%20', $row[7]);
+                                        echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
 
-    echo "<td>" . $row[9] . "</td>";
-    echo "<td>" . $row[10] . "</td>";
+                                        echo "<td>" . $row[9] . "</td>";
+                                        echo "<td>" . $row[10] . "</td>";
 
 
-    echo "<td>" . $row[13] . "</td>";
-    echo "<td>" . $row[14] . "</td>";
-    echo "</tr>";
-}
-?>
+                                        echo "<td>" . $row[13] . "</td>";
+                                        echo "<td>" . $row[14] . "</td>";
+                                        echo "</tr>";
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
-<?php
-$query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
-$queryResult5 = $user->executeQuery($query5);
-$records = mysqli_fetch_row($queryResult5);
-$totalRecords = $records[0];
-$totalPages = ceil($totalRecords / $limit);
-echo "<div class='container'>";
-echo "<ul class='pagination'>";
-for ($i = 1; $i <= $totalPages; $i++) {
-    echo "<li><a href='turkish-admin.php?page=" . $i . "'>" . $i . "</a></li>";
-}
-echo "</ul>";
-mysqli_close($user->conn);
-?>
+                        <?php
+                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
+                        $queryResult5 = $user->executeQuery($query5);
+                        $records = mysqli_fetch_row($queryResult5);
+                        $totalRecords = $records[0];
+                        $totalPages = ceil($totalRecords / $limit);
+                        echo "<div class='container'>";
+                        echo "<ul class='pagination'>";
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            echo "<li><a href='turkish-admin.php?page=" . $i . "'>" . $i . "</a></li>";
+                        }
+                        echo "</ul>";
+                        mysqli_close($user->conn);
+                        ?>
                         <script type="text/javascript">
                             $(document).ready(function () {
                                 $('.pagination').pagination({
@@ -405,9 +405,9 @@ mysqli_close($user->conn);
                                 });
                             });
                         </script>
-<?php
-echo "</div>";
-?>
+                        <?php
+                        echo "</div>";
+                        ?>
                     </div>
                 </div>
                 <!--cancel order modal -->
@@ -438,8 +438,11 @@ echo "</div>";
                                             <option value = "به درخواست کاربر-muşteri istedin için">muşteri istedin için</option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> İptal </button>
-                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkKargoFunc('submit');"> İptal </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="checkKargoFunc('reset');"> Reset </button>
+                                    <div class="form-group">
+                                        <center> <p id="msg">  </p> </center>
+                                    </div>
                                 </form>
                             </div>
                         </div>

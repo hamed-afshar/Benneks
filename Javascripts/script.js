@@ -153,7 +153,7 @@ function calculator(userID, country, clothesType, productPrice) {
             break;
     }
     // if uk selected as a country then discount is zero
-    if (country === "UK" || country ==="FR") {
+    if (country === "UK" || country === "FR") {
         var discount = 0;
     }
 
@@ -413,49 +413,23 @@ function validateForm() {
     }
 }
 
-//function for iran deliver modal to show result from database
+//function to check if order has already assgined a kargo code or not. if yes then it is not possible to cancel or return this order
 
-function iranDeliverFunc(action) {
+function checkKargoFunc(action) {
     var orderID = document.getElementById("rowID").value;
-    var benneksDeliverDate = document.getElementById("benneksDeliverDate").value;
-    var cargoName = document.getElementById("cargoName").value;
+    var cancelDetails = document.getElementById("cancelDetails").value;
+    var incomingPage = document.getElementById("incomingPage").value;
     switch (action) {
         case "submit":
-            $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&benneksDeliverDate=" + benneksDeliverDate + "&cargoName=" + cargoName, function (data) {
-                // if cargo code has already been assigned to this order then show a suitable message
-                var result = data.result;
-                var msg = data.msg;
-                if (result === "exsist") {
-                    document.getElementById("msg").innerHTML = msg;
-                    $("#submitButton").prop('hidden', true);
-                    $("#resetButton").hide("slow");
-                    $("#changeCargoButton").show("slow");
-                    $("#Not-changeCargoButton").show("slow");
-                } else {
-                    document.getElementById("msg").innerHTML = msg;
-                }
-            });
-            break;
-        case "change":
-            $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&benneksDeliverDate=" + benneksDeliverDate + "&cargoName=" + cargoName, function (data) {
+            $.getJSON("./cancelOrder.php?action=" + action + "&orderID=" + orderID + "&cancelDetails=" + cancelDetails + "&incomingPage=" + incomingPage, function (data) {
                 // if cargo code has already been assigned to this order then show a suitable message
                 var result = data.result;
                 var msg = data.msg;
                 if (result === "exsist") {
                     document.getElementById("msg").innerHTML = msg;
                 } else {
-                    document.getElementById("msg").innerHTML = msg;
-                    $("#changeCargoButton").hide("slow");
-                    $("#Not-changeCargoButton").hide("slow");
+                    document.getElementById("msg").innerHTML = "";
                 }
-            });
-            break;
-        case "reset":
-            $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&benneksDeliverDate=" + benneksDeliverDate + "&cargoName=" + cargoName, function (data) {
-                // if cargo code has already been assigned to this order then show a suitable message
-                var result = data.result;
-                var msg = data.msg;
-                document.getElementById("msg").innerHTML = msg;
             });
             break;
     }

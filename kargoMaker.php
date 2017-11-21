@@ -62,7 +62,7 @@ $nextKargo = $row[0] + 1;
 $kargoLabel = $nextKargo;
 
 //query to prepare a kargo list based on the office arrival date
-$kargoMakerQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID where shipment.cargoName is null and shipment.officeArrivalDate is not null and (stat.orderstatus = 'انجام شده-tamam' or stat.orderstatus = 'انجام شده')  order by orders.orderDate asc limit 150;";
+$kargoMakerQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID where shipment.cargoName is null and shipment.officeArrivalDate is not null and stat.orderstatus = 'رسیده به دفتر-officde' order by orders.orderDate asc limit 150;";
 
 if (!$user->executeQuery($kargoMakerQuery)) {
     $flag = false;
@@ -105,7 +105,7 @@ if(!$user->executeQuery($kargoMakerQuery)) {
 }
 $addKargoNameQueryResult = $user->executeQuery($kargoMakerQuery);
 while ($res = mysqli_fetch_row($addKargoNameQueryResult)) {
-    $addKargoNameQuery = "update benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID set shipment.cargoName = '$nextKargo' where orders.orderID = '$res[0]';";
+    $addKargoNameQuery = "update benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID set shipment.cargoName = '$nextKargo', stat.orderStatus = 'در راه ایران-iran yolunda', stat.orderStatusDescription = 'در راه ایران-iran yolunda' where orders.orderID = '$res[0]';";
     if (!$user->executeQuery($addKargoNameQuery)) {
         $flag = false;
         echo mysqli_error($user->conn);
@@ -118,7 +118,6 @@ if ($flag) {
 } else {
     mysqli_rollback($user->conn);
 }
-
 
 ?>
 

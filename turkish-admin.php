@@ -401,7 +401,7 @@ mysqli_close($user->conn);
                                     itemsOnPage: <?php echo $limit; ?>,
                                     cssStyle: 'light-theme',
                                     currentPage: <?php echo $page; ?>,
-                                    hrefTextPrefix: 'admin.php?page='
+                                    hrefTextPrefix: 'turkish-admin.php?page='
                                 });
                             });
                         </script>

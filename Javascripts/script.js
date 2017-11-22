@@ -428,12 +428,20 @@ function checkKargoFunc(action) {
                 if (result === "exsist") {
                     document.getElementById("msg").innerHTML = msg;
                 } else {
-                    document.getElementById("msg").innerHTML = "";
+                    document.getElementById("msg").innerHTML = msg;
                 }
+            });
+            break;
+        case "reset":
+            $.getJSON("./cancelOrder.php?action=" + action + "&orderID=" + orderID + "&cancelDetails=" + cancelDetails + "&incomingPage=" + incomingPage, function (data) {
+                var result = data.result;
+                var msg = data.msg;
+                document.getElementById("msg").innerHTML = msg;
             });
             break;
     }
 }
+
 
 //Function to check numeric numbers only in customer Tel section in home.php
 function checkTel() {

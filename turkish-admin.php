@@ -144,23 +144,24 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 
+
 <!-- script for add modal -->
 <script>
     $(document).ready(function () {
-    $(document).on("click", ".open-addModal", function () {
-    var orderID = $(this).data('id');
-    $(".modal-body #rowID").val(orderID);
-    });
+        $(document).on("click", ".open-addModal", function () {
+        var orderID = $(this).data('id');
+        $(".modal-body #rowID").val(orderID);
+        });
     });
 </script>
 <!-- script for cancel modal -->
 <script>
-    $(document).ready(function () {
-        $(document).on("click", ".open-cancelModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
-        });
+$(document).ready(function () {
+    $(document).on("click", ".open-cancelModal", function () {
+        var orderID = $(this).data('id');
+        $(".modal-body #rowID").val(orderID);
     });
+});
 </script>
 <!-- script for iran Delivery modal -->
 <script>
@@ -420,13 +421,13 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                 <h4><span class = "glyphicon glyphicon-remove"> </span> Sipariş İptali </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="cancelOrder.php" method="post">
+                                <form role="form" method="post" action="cancelOrder.php" >
                                     <div class="form-group">
                                         <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
                                     </div>
                                     <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Kod </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly="">
                                     </div>
                                     <div class="form-group">
                                         <label for="cancelDetails"><span class="glyphicon glyphicon-hand-right"></span>  İptal Sebebi</label>
@@ -438,8 +439,8 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                             <option value = "به درخواست کاربر-muşteri istedin için">muşteri istedin için</option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkKargoFunc('submit');"> İptal </button>
-                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="checkKargoFunc('reset');"> Reset </button>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkKargoFunc('submit');"> İptal </button>
+                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="checkKargoFunc('reset');"> Reset </button>
                                     <div class="form-group">
                                         <center> <p id="msg">  </p> </center>
                                     </div>

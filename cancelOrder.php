@@ -18,8 +18,8 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 
-$orderID = $_GET['orderID'];
 $action = $_GET['action'];
+$orderID = $_GET['orderID'];
 $incomingPage = $_GET['incomingPage'];
 $statusDescription = $_GET['cancelDetails'];
 /* apply relevant action based on the action got from deliver modal.
@@ -27,30 +27,47 @@ $statusDescription = $_GET['cancelDetails'];
  * reset = to delete all information and set it as defualt
  */
 
+//first check to see if this order ID has already asgined a cargo code or not. if yes then it is not allowed to cancel the order or reset it
+$checkQuery = "select shipment.cargoName from benneks.shipment where orders_orderID ='$orderID'";
+$checkQueryResult = $user->executeQuery($checkQuery);
+$row = mysqli_fetch_row($checkQueryResult);
+
 switch ($action) {
     case "submit" :
-        //first check to see if this order ID has already asgined a cargo code or not. if yes then it is not allowed to cancel the order
-        $checkQuery = "select benneks.cargoName from benneks.shipment where orders_orderID ='$orderID'";
-        $checkQueryResult = $user->executeQuery($checkQuery);
-        $row = mysqli_fetch_row($checkQueryResult);
         if (isset($row[0])) {
             $sback['result'] = "exsist";
-            $sback['msg'] = "کد کارگو شماره " . $row[0] . "قبلا برای این سفارش وارد شده است و شما نمیتوانید این سفارش را لغو نمایید.";
-            echo json_encode($sback, JSON_PRETTY_PRINT);
+            $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $row[0]" . " iptal imkansız ";
+            break;
         } else {
             $status = "لغو-İptal";
             $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET stat.orderStatus = '$status', stat.orderStatusDescription='$statusDescription', shipment.benneksShoppingDate = null WHERE orders.orderID = '$orderID'";
-            $user->executeQuery($query);
+            if (!$user->executeQuery($query)) {
+                $sback['msg'] = "خطایی در وارد کردن اطلاعات رخ داده است!";
+            }
             $sback['result'] = "not-exsist";
-            $sback['msg'] = "با موفقیت لغو گردید";
+            $sback['msg'] = "Sipariş İptali ";
             mysqli_close($user->conn);
         }
         break;
     case "reset" :
-        $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID inner join benneks.shipment ON shipment.orders_orderID = orders.orderID SET"
-                . " stat.orderStatus = NULL, stat.orderStatusDescription = NULL, shipment.benneksShoppingDate = NULL WHERE orders.orderID = '$orderID'";
-        $user->executeQuery($query);
+        if (isset($row[0])) {
+            $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $row[0]" . " iptal imkansız ";
+            break;
+        } else {
+            $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID inner join benneks.shipment ON shipment.orders_orderID = orders.orderID SET"
+                    . " stat.orderStatus = NULL, stat.orderStatusDescription = NULL, shipment.benneksShoppingDate = NULL WHERE orders.orderID = '$orderID'";
+            if (!$user->executeQuery($query)) {
+                $sback['msg'] = "خطایی در پاک کردن اطلاعات رخ داده است!";
+            }
+        }
+        $sback['msg'] = "reset";
         mysqli_close($user->conn);
         break;
 }
+echo json_encode($sback, JSON_PRETTY_PRINT);
 
+
+
+/*$sback['result'] = "exsist";
+$sback['msg'] =  $row[0];
+echo json_encode($sback, JSON_PRETTY_PRINT);*/

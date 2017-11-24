@@ -105,7 +105,9 @@ if(!$user->executeQuery($kargoMakerQuery)) {
 }
 $addKargoNameQueryResult = $user->executeQuery($kargoMakerQuery);
 while ($res = mysqli_fetch_row($addKargoNameQueryResult)) {
-    $addKargoNameQuery = "update benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID set shipment.cargoName = '$nextKargo', stat.orderStatus = 'در راه ایران-iran yolunda', stat.orderStatusDescription = 'در راه ایران-iran yolunda' where orders.orderID = '$res[0]';";
+    $orderStatus = "در راه ایران-iran yolunda";
+    $orderStatusDescription = "در راه ایران-iran yolunda";
+    $addKargoNameQuery = "update benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID set shipment.cargoName = '$nextKargo', shipment.benneksDeliverDate = DATE(now()), stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription' where orders.orderID = '$res[0]';";
     if (!$user->executeQuery($addKargoNameQuery)) {
         $flag = false;
         echo mysqli_error($user->conn);

@@ -529,7 +529,7 @@ $(document).ready(function () {
                                 <h4><span class = "glyphicon glyphicon-transfer"> </span> İade </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="return.php" method="post" dir="ltr">
+                                <form role="form" action="return-turkey.php" method="post" dir="ltr">
                                     <div class="form-group">
                                         <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
                                     </div>

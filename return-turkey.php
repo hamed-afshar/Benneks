@@ -20,7 +20,7 @@ date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitButton'])) {
     $incomingPage = $_POST['incomingPage'];
     $orderID = $_POST['rowID'];
-    $orderStatus = 'عودت-İade';
+    $orderStatus = 'عودت ترکیه-İade-Turkey';
     $returnReason = $_POST['returnReason'];
     $returnComment = $_POST['returnComment'];
     $query = "UPDATE benneks.stat INNER JOIN benneks.orders ON orders.orderID = stat.orders_orderID SET stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$returnReason', stat.comment = '$returnComment' WHERE orders.orderID = '$orderID'";

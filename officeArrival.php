@@ -21,7 +21,9 @@ if (isset($_POST['submitButton'])) {
     $incomingPage = $_POST['incomingPage'];
     $officeArrivalDate = $_POST['officeArrivalDate'];
     $orderID = $_POST['rowID'];
-    $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = '$officeArrivalDate', stat.orderStatus = 'رسیده به دفتر-officde', stat.orderStatusDescription = 'رسیده به دفتر-officde' WHERE orders.orderID = '$orderID'";
+    $orderStatus = "رسیده به دفتر-officde";
+    $orderStatusDescription = "رسیده به دفتر-officde";
+    $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = '$officeArrivalDate', stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription' WHERE orders.orderID = '$orderID'";
     echo $query;
 } elseif (isset($_POST['resetButton'])) {
     $incomingPage = $_POST['incomingPage'];

@@ -511,9 +511,9 @@ $(document).ready(function () {
                                         }
                                     </script>
 
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayıt</button>
-                                    <button type="button" class="btn btn-info btn-block" name="printButton" id="printButton" onclick="printCodeFunc();"> Print </button>
-                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkOrderCancelation('submit')"> Kayıt</button>
+                                    <button type="button" class="btn btn-info btn-block" name="printButton" id="printButton"> Print </button>
+                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="checkOrderCancelation('reset');"> Reset </button>
                                 </form>
                             </div>
                         </div>

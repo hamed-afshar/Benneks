@@ -442,6 +442,33 @@ function checkKargoFunc(action) {
     }
 }
 
+//function to check if order has been canceled already by a user or not
+function checkOrderCancelation() {
+    var orderID = document.getElementById("rowID").value;
+    var officeArrivalDate = document.getElementById("officeArrivalDate");
+    switch (action) {
+        case "submit":
+            $.getJSON("./officeArrival.php?action=" + action + "&orderID=" + orderID + "&officeArrivalDate=" + officeArrivalDate + "&incomingPage" + incomingPage, function (data) {
+                //if order has canceled before office arrival suitable msg will pops up
+                var result = data.result;
+                var msg = data.msg;
+                if (result === "exsist") {
+                    document.getElementById("msg").innerHTML = msg;
+                } else {
+                    document.getElementById("msg").innerHTML = msg;
+                }
+            });
+            break;
+        case "reset":
+            $.getJSON("./officeArrival.php?action=" + action + "&orderID=" + orderID + "&incomingPage" + incomingPage, function (data) {
+                //if reset button clicked
+                var result = data.result;
+                var msg = data.msg;
+                document.getElementById("msg").innerHTML = msg;
+            });
+    }
+}
+
 
 //Function to check numeric numbers only in customer Tel section in home.php
 function checkTel() {

@@ -25,14 +25,16 @@ date_default_timezone_set("Asia/Tehran");
 $action = $_GET['action'];
 $orderID = $_GET['orderID'];
 $officeArrivalDate = $_GET['officeArrivalDate'];
-$incomingPage = $_GET['incomingPage'];
+$orderStatus = "رسیده به دفتر-officde";
+$orderStatusDescription = "رسیده به دفتر-officde";
 
 //first check to see if this order ID has already cancealed by the user
-$checkQuery = "select stat.orderStatus from bennek benneks.stat where orders_orderID = '$orderID'";
+$checkQuery = "select stat.orderStatus from benneks.stat where orders_orderID =  '$orderID'";
 $checkQueryResult = $user->executeQuery($checkQuery);
 $row = mysqli_fetch_row($checkQueryResult);
+$previousOrderStatus = $row[0];
 
-switch (action) {
+switch ($action) {
     case "submit" :
         if ($row[0] === "عودت ترکیه-İade-Turkey") {
             $sback['result'] = "exsist";
@@ -41,48 +43,51 @@ switch (action) {
         }
         if ($row[0] === "لغو-İptal") {
             $sback['result'] = "exsist";
-            $sbcak['msg'] = "bu sipariş daha once mosteri tarafindan iptal olmuş, lotfan iade listerinde koyon";
+            $sback['msg'] = "bu sipariş daha oncesi satin alma zamani iptal olmuş ve officede olmamali lotfan bunu iade listde koyon";
             break;
         }
         if ($row[0] === NULL) {
             $sback['result'] = "exsist";
-            $sbcak['msg'] = "bu sipariş daha once mosteri tarafindan iptal olmuş, lotfan iade listerinde koyon";
+            $sback['msg'] = "bu siparis hala satin almamiş lik bunu satin alin";
             break;
         }
-        $sback['result'] = "exsist";
+        $sback['result'] = "not-exist";
         $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = '$officeArrivalDate', stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription' WHERE orders.orderID = '$orderID'";
-        if(!$user->executeQuery($query)) {
+        if (!$user->executeQuery($query)) {
             $sback['msg'] = "خطایی در وارد کردن اطلاعات رخ داده است!";
         }
         $sback['msg'] = "sept";
-        }
+        break;
+}
+mysqli_close($user->conn);
+echo json_encode($sback, JSON_PRETTY_PRINT);
 
 
 /* if (isset($_POST['submitButton'])) {
-    $incomingPage = $_POST['incomingPage'];
-    $officeArrivalDate = $_POST['officeArrivalDate'];
-    $orderID = $_POST['rowID'];
-    $orderStatus = "رسیده به دفتر-officde";
-    $orderStatusDescription = "رسیده به دفتر-officde";
-    $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = '$officeArrivalDate', stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription' WHERE orders.orderID = '$orderID'";
-    echo $query;
-} elseif (isset($_POST['resetButton'])) {
-    $incomingPage = $_POST['incomingPage'];
-    $orderID = $_POST['rowID'];
-    $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = NULL, stat.orderStatus = NULL, stat.orderStatusDescription = NULL WHERE orders.orderID = '$orderID'";
-}
+  $incomingPage = $_POST['incomingPage'];
+  $officeArrivalDate = $_POST['officeArrivalDate'];
+  $orderID = $_POST['rowID'];
+  $orderStatus = "رسیده به دفتر-officde";
+  $orderStatusDescription = "رسیده به دفتر-officde";
+  $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = '$officeArrivalDate', stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription' WHERE orders.orderID = '$orderID'";
+  echo $query;
+  } elseif (isset($_POST['resetButton'])) {
+  $incomingPage = $_POST['incomingPage'];
+  $orderID = $_POST['rowID'];
+  $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = NULL, stat.orderStatus = NULL, stat.orderStatusDescription = NULL WHERE orders.orderID = '$orderID'";
+  }
 
-if (!$user->executeQuery($query)) {
-    echo mysqli_error($user->conn);
-}
-mysqli_close($user->conn);
+  if (!$user->executeQuery($query)) {
+  echo mysqli_error($user->conn);
+  }
+  mysqli_close($user->conn);
 
-switch ($incomingPage) {
-    case "turkish-Admin":
-        header("Location: turkish-admin.php");
-        break;
-    case "farsi-Admin":
-        header("Location: admin.php");
-        break;
-}*/
+  switch ($incomingPage) {
+  case "turkish-Admin":
+  header("Location: turkish-admin.php");
+  break;
+  case "farsi-Admin":
+  header("Location: admin.php");
+  break;
+  } */
 ?>

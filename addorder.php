@@ -67,7 +67,7 @@ if (isset($_POST['submitButton'])) {
           $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID inner join benneks.shipment ON shipment.orders_orderID = orders.orderID SET"
             . " stat.orderStatus = NULL, stat.orderStatusDescription = NULL, shipment.benneksShoppingDate = NULL, shipment.officeArrivalDate = NULL WHERE orders.orderID = '$orderID'";
             break;
-        //if bought and not arrived to office
+        //if bought or canceled and not arrived to office
         case($previousShoppingDate !== NULL and $previousArrivalDate === NULL) :
           $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID inner join benneks.shipment ON shipment.orders_orderID = orders.orderID SET"
             . " stat.orderStatus = NULL, stat.orderStatusDescription = NULL, shipment.benneksShoppingDate = NULL, shipment.officeArrivalDate = NULL  WHERE orders.orderID = '$orderID'";

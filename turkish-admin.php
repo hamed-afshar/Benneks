@@ -440,7 +440,6 @@ $(document).ready(function () {
                                         </select>
                                     </div>
                                     <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkKargoFunc('submit');"> İptal </button>
-                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="checkKargoFunc('reset');"> Reset </button>
                                     <div class="form-group">
                                         <center> <p id="msg">  </p> </center>
                                     </div>
@@ -469,7 +468,7 @@ $(document).ready(function () {
                                     </div>
                                     <div class="form-group">
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  Satin Almak Tarihi</label>
-                                        <input type="date" class="form-control" name="shoppingDate" id="shoppingDate"> 
+                                        <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" name="shoppingDate" id="shoppingDate"> 
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayit </button>
                                     <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
@@ -488,7 +487,7 @@ $(document).ready(function () {
                                 <h4><span class = "glyphicon glyphicon-home"> </span> Office Galmış </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form"  method="post" action="officeArrival.php">
+                                <form role="form"  method="post" action="">
                                     <div class="form-group">
                                         <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
                                     </div>
@@ -498,22 +497,15 @@ $(document).ready(function () {
                                     </div>
                                     <div class="form-group">
                                         <label for="officeArrivalDate"><span class="glyphicon glyphicon-calendar"></span>  Gönderme Tarihi</label>
-                                        <input type="date" class="form-control" name="officeArrivalDate" id="officeArrivalDate"> 
+                                        <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" name="officeArrivalDate" id="officeArrivalDate"> 
                                     </div>
-                                    <!-- javascript to pass print variable to js file which is supouse to print the code -->
-                                    <script>
-                                        function printCodeFunc() {
-                                            $("#rowID").print({
-                                                mediaPrint: false,
-                                                iframe: false,
-                                                title: null
-                                            });
-                                        }
-                                    </script>
+                                   
 
-                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkOrderCancelation('submit')"> Kayıt</button>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkOrderCancelation('submit');"> Kayıt</button>
                                     <button type="button" class="btn btn-info btn-block" name="printButton" id="printButton"> Print </button>
-                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="checkOrderCancelation('reset');"> Reset </button>
+                                     <div class="form-group">
+                                        <center> <p id="OfficeDeliverMsg">  </p> </center>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -551,7 +543,6 @@ $(document).ready(function () {
                                     </div>
 
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayıt </button>
-                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
                                 </form>
                             </div>
                         </div>

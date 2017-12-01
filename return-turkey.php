@@ -17,31 +17,53 @@ error_reporting(E_ALL);
 $user = new user();
 date_default_timezone_set("Asia/Tehran");
 
-if (isset($_POST['submitButton'])) {
-    $incomingPage = $_POST['incomingPage'];
-    $orderID = $_POST['rowID'];
-    $orderStatus = 'عودت ترکیه-İade-Turkey';
-    $returnReason = $_POST['returnReason'];
-    $returnComment = $_POST['returnComment'];
-    $query = "UPDATE benneks.stat INNER JOIN benneks.orders ON orders.orderID = stat.orders_orderID SET stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$returnReason', stat.comment = '$returnComment' WHERE orders.orderID = '$orderID'";
-} elseif (isset($_POST['resetButton'])) {
-    $incomingPage = $_POST['incomingPage'];
-    $orderID = $_POST['rowID'];
-    $query = "UPDATE benneks.stat INNER JOIN benneks.orders ON orders.orderID = stat.orders_orderID SET stat.orderStatus = NULL, stat.orderStatusDescription = NULL, stat.comment = NULL WHERE orders.orderID = '$orderID'";
-}
+$action = $_GET['action'];
+$orderID = $_GET['orderID'];
+$orderStatus = "عودت ترکیه-İade-Turkey";
+$orderStatusDescription = $_GET['returnReason'];
 
-if (!$user->executeQuery($query)) {
-    echo mysqli_error($user->conn);
+//first check to see if this order ID has already arrived to the office
+$checkQuery = "select stat.orderStatus from benneks.stat where orders_orderID =  '$orderID'";
+$checkQueryResult = $user->executeQuery($checkQuery);
+$row = mysqli_fetch_row($checkQueryResult);
+$previousOrderStatus = $row[0];
+
+switch ($action) {
+    case "submit" :
+        if($row[0] === "در راه ایران-iran yolunda") {
+            $sback['result'] = "exsist";
+            $findKargoQuery = "select shipment.cargoName from benneks.shipment where orders_orderID = '$orderID'";
+            $findKargoQueryResult = $user->executeQuery($findKargoQuery);
+            $res = mysqli_fetch_row($findKargoQueryResult);
+            $kargoNo = $res[0];
+            $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $kargoNo" . " iade imkansız ";
+            break;
+        }
+        if ($row[0] === "عودت ترکیه-İade-Turkey") {
+            $sback['result'] = "exsist";
+            $sback['msg'] = "قبلا به لیست عودت اضافه شده و احتیاج به ثبت مجدد نمی باشد.";
+            break;
+        }
+        if ($row[0] === "لغو-İptal") {
+            $sback['result'] = "exsist";
+            $sback['msg'] = "این سفارش به دفتر رسیده و عودت شده است پس عملیات لغو امکان پذیر نمی باشد.";
+            break;
+        }
+        if ($row[0] !== "رسیده به دفتر-officde") {
+            $sback['result'] = "exsist";
+            $sback['msg'] = "برای اعاده سفارش در ابتدا باید آن سفارش به دفتر رسیده باشد و هنوز رسیدن به دفتر وارد سیستم نشده";
+            break;
+        }
+        $sback['result'] = "not-exist";
+        $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription' WHERE orders.orderID = '$orderID'";
+        if (!$user->executeQuery($query)) {
+            $sback['msg'] = "خطایی در وارد کردن اطلاعات رخ داده است!";
+        }
+        $sback['msg'] = "باموفقیت به لیست اعاده ها اضافه شد.";
+        break;
 }
 mysqli_close($user->conn);
+echo json_encode($sback, JSON_PRETTY_PRINT);
 
-switch ($incomingPage) {
-    case "turkish-Admin":
-        header("Location: turkish-admin.php");
-        break;
-    case "farsi-Admin":
-        header("Location: admin.php");
-        break;
-}
 ?>
 

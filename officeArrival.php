@@ -36,6 +36,15 @@ $previousOrderStatus = $row[0];
 
 switch ($action) {
     case "submit" :
+        if($row[0] === "در راه ایران-iran yolunda") {
+            $sback['result'] = "exsist";
+            $findKargoQuery = "select shipment.cargoName from benneks.shipment where orders_orderID = '$orderID'";
+            $findKargoQueryResult = $user->executeQuery($findKargoQuery);
+            $res = mysqli_fetch_row($findKargoQueryResult);
+            $kargoNo = $res[0];
+            $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $kargoNo" . " değiştirmek imkansız ";;
+            break;
+        }
         if ($row[0] === "عودت ترکیه-İade-Turkey") {
             $sback['result'] = "exsist";
             $sback['msg'] = "bu sipariş daha once mosteri tarafindan iptal olmuş, lotfan iade listerinde koyon";
@@ -62,32 +71,4 @@ switch ($action) {
 mysqli_close($user->conn);
 echo json_encode($sback, JSON_PRETTY_PRINT);
 
-
-/* if (isset($_POST['submitButton'])) {
-  $incomingPage = $_POST['incomingPage'];
-  $officeArrivalDate = $_POST['officeArrivalDate'];
-  $orderID = $_POST['rowID'];
-  $orderStatus = "رسیده به دفتر-officde";
-  $orderStatusDescription = "رسیده به دفتر-officde";
-  $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = '$officeArrivalDate', stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription' WHERE orders.orderID = '$orderID'";
-  echo $query;
-  } elseif (isset($_POST['resetButton'])) {
-  $incomingPage = $_POST['incomingPage'];
-  $orderID = $_POST['rowID'];
-  $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET shipment.officeArrivalDate = NULL, stat.orderStatus = NULL, stat.orderStatusDescription = NULL WHERE orders.orderID = '$orderID'";
-  }
-
-  if (!$user->executeQuery($query)) {
-  echo mysqli_error($user->conn);
-  }
-  mysqli_close($user->conn);
-
-  switch ($incomingPage) {
-  case "turkish-Admin":
-  header("Location: turkish-admin.php");
-  break;
-  case "farsi-Admin":
-  header("Location: admin.php");
-  break;
-  } */
 ?>

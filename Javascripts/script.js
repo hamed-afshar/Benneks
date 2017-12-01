@@ -415,7 +415,7 @@ function validateForm() {
 
 //function to check if order has already assgined a kargo code or not. if yes then it is not possible to cancel or return this order
 
-function checkKargoFunc(action) {
+function checkCancelFunc(action) {
     var orderID = document.getElementById("rowID").value;
     var cancelDetails = document.getElementById("cancelDetails").value;
     var incomingPage = document.getElementById("incomingPage").value;
@@ -435,8 +435,8 @@ function checkKargoFunc(action) {
     }
 }
 
-//function to check if order has been canceled already by a user or not
-function checkOrderCancelation(action) {
+//function to check order status once it arrives to the office
+function checkOfficeArrivalFunc(action) {
     var orderID = document.getElementById("rowID").value;
     var officeArrivalDate = document.getElementById("officeArrivalDate").value;
     switch (action) {
@@ -454,6 +454,27 @@ function checkOrderCancelation(action) {
             break;
     }
 }
+
+//function to return items in turkey
+function returnTurkeyFunc(action) {
+    var orderID = document.getElementById("rowID").value;
+    var returnReason = document.getElementById("returnReason").value;
+    switch(action) {
+        case "submit":
+        $.getJSON("./return-turkey.php?action=" + action + "&orderID=" + orderID + "&returnReason=" + returnReason, function (data) { 
+            //only orders that has arived to the office can be returned to the tury
+            var result = data.result;
+            var msg = data.msg;
+            if(result === "exsist") {
+                document.getElementById("returnTurkeyMsg").innerHTML = msg;
+            } else {
+                document.getElementById("returnTurkeyMsg").innerHTML = msg;
+            }
+        });
+        break;
+    }
+}
+
 //Function to check numeric numbers only in customer Tel section in home.php
 function checkTel() {
     var tel = document.getElementById("customerTel").value;
@@ -473,6 +494,7 @@ function checkTel() {
     }
 
 }
+
 
 //Function to print code on label
 function printCodeFunc(printCode) {

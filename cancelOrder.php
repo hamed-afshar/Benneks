@@ -22,52 +22,46 @@ $action = $_GET['action'];
 $orderID = $_GET['orderID'];
 $incomingPage = $_GET['incomingPage'];
 $statusDescription = $_GET['cancelDetails'];
-/* apply relevant action based on the action got from deliver modal.
+/* apply relevant action based on the action got from cancel modal.
  * submit = to cancel order.
  * reset = to delete all information and set it as defualt
  */
 
 //first check to see if this order ID has already asgined a cargo code or not. if yes then it is not allowed to cancel the order or reset it
-$checkQuery = "select shipment.cargoName from benneks.shipment where orders_orderID ='$orderID'";
+$checkQuery = "select stat.orderStatus from benneks.stat where orders_orderID =  '$orderID'";
 $checkQueryResult = $user->executeQuery($checkQuery);
 $row = mysqli_fetch_row($checkQueryResult);
 
 switch ($action) {
     case "submit" :
-        if (isset($row[0])) {
+        if ($row[0] === "در راه ایران-iran yolunda" ) {
             $sback['result'] = "exsist";
-            $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $row[0]" . " iptal imkansız ";
+            $findKargoQuery = "select shipment.cargoName from benneks.shipment where orders_orderID = '$orderID'";
+            $findKargoQueryResult = $user->executeQuery($findKargoQuery);
+            $res = mysqli_fetch_row($findKargoQueryResult);
+            $kargoNo = $res[0];
+            $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $kargoNo" . " iptal imkansız ";
             break;
-        } else {
-            $status = "لغو-İptal";
-            $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET stat.orderStatus = '$status', stat.orderStatusDescription='$statusDescription', shipment.benneksShoppingDate = null WHERE orders.orderID = '$orderID'";
-            if (!$user->executeQuery($query)) {
-                $sback['msg'] = "خطایی در وارد کردن اطلاعات رخ داده است!";
-            }
-            $sback['result'] = "not-exsist";
-            $sback['msg'] = "Sipariş İptali ";
-            mysqli_close($user->conn);
         }
-        break;
-    case "reset" :
-        if (isset($row[0])) {
-            $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $row[0]" . " iptal imkansız ";
+        if ($row[0] === "رسیده به دفتر-officde") {
+            $sback['result'] = "exsist";
+            $sback['msg'] = "این سفارش به دفتر رسیده و لغو آن امکان پذیر نمی باشد و شما به جای لغو می توانید این سفارش را عودت دهید.";
             break;
-        } else {
-            $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID inner join benneks.shipment ON shipment.orders_orderID = orders.orderID SET"
-                    . " stat.orderStatus = NULL, stat.orderStatusDescription = NULL, shipment.benneksShoppingDate = NULL WHERE orders.orderID = '$orderID'";
-            if (!$user->executeQuery($query)) {
-                $sback['msg'] = "خطایی در پاک کردن اطلاعات رخ داده است!";
-            }
         }
-        $sback['msg'] = "reset";
+        if ($row[0] === "عودت ترکیه-İade-Turkey") {
+            $sback['result'] = "exsist";
+            $sback['msg'] = "این سفارش به دفتر رسیده و عودت شده است پس عملیات لغو امکان پذیر نمی باشد.";
+            break;
+        }
+        $status = "لغو-İptal";
+        $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET stat.orderStatus = '$status', stat.orderStatusDescription='$statusDescription', shipment.benneksShoppingDate = null WHERE orders.orderID = '$orderID'";
+        if (!$user->executeQuery($query)) {
+            $sback['msg'] = "خطایی در وارد کردن اطلاعات رخ داده است!";
+        }
+        $sback['result'] = "not-exsist";
+        $sback['msg'] = "Sipariş İptali ";
         mysqli_close($user->conn);
         break;
 }
 echo json_encode($sback, JSON_PRETTY_PRINT);
 
-
-
-/*$sback['result'] = "exsist";
-$sback['msg'] =  $row[0];
-echo json_encode($sback, JSON_PRETTY_PRINT);*/

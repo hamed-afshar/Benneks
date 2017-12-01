@@ -148,20 +148,20 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
 <!-- script for add modal -->
 <script>
     $(document).ready(function () {
-        $(document).on("click", ".open-addModal", function () {
-        var orderID = $(this).data('id');
-        $(".modal-body #rowID").val(orderID);
-        });
+    $(document).on("click", ".open-addModal", function () {
+    var orderID = $(this).data('id');
+    $(".modal-body #rowID").val(orderID);
+    });
     });
 </script>
 <!-- script for cancel modal -->
 <script>
-$(document).ready(function () {
-    $(document).on("click", ".open-cancelModal", function () {
-        var orderID = $(this).data('id');
-        $(".modal-body #rowID").val(orderID);
+    $(document).ready(function () {
+        $(document).on("click", ".open-cancelModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
     });
-});
 </script>
 <!-- script for iran Delivery modal -->
 <script>
@@ -439,7 +439,7 @@ $(document).ready(function () {
                                             <option value = "به درخواست کاربر-muşteri istedin için">muşteri istedin için</option>
                                         </select>
                                     </div>
-                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkKargoFunc('submit');"> İptal </button>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkCancelFunc('submit');"> İptal </button>
                                     <div class="form-group">
                                         <center> <p id="msg">  </p> </center>
                                     </div>
@@ -477,7 +477,7 @@ $(document).ready(function () {
                         </div>
                     </div>
                 </div>
-                <!--Turkey Office delivery Modal -->
+                <!--Turkey Office arrival Modal -->
                 <div class = "modal fade" id = "officeDeliveryModal" role="dialog">
                     <div class="modal-dialog">
                         <!--modal content -->
@@ -498,12 +498,10 @@ $(document).ready(function () {
                                     <div class="form-group">
                                         <label for="officeArrivalDate"><span class="glyphicon glyphicon-calendar"></span>  Gönderme Tarihi</label>
                                         <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" name="officeArrivalDate" id="officeArrivalDate"> 
-                                    </div>
-                                   
-
-                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkOrderCancelation('submit');"> Kayıt</button>
+                                    </div> 
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="checkOfficeArrivalFunc('submit');"> Kayıt</button>
                                     <button type="button" class="btn btn-info btn-block" name="printButton" id="printButton"> Print </button>
-                                     <div class="form-group">
+                                    <div class="form-group">
                                         <center> <p id="OfficeDeliverMsg">  </p> </center>
                                     </div>
                                 </form>
@@ -537,12 +535,10 @@ $(document).ready(function () {
                                             <option value = "به درخواست کاربر-muşteri istedin için">muşteri istedin için</option>
                                         </select>
                                     </div>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="returnTurkeyFunc('submit');"> Kayıt </button>
                                     <div class="form-group">
-                                        <label for="returnDescription"><span class="glyphicon glyphicon-comment"></span>  açıklama</label>
-                                        <input type="text" class="form-control" name="returnComment" id="returnComment"> 
-                                    </div>
-
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayıt </button>
+                                        <center> <p id="returnTurkeyMsg">  </p> </center>
+                                    </div
                                 </form>
                             </div>
                         </div>
@@ -577,7 +573,6 @@ $(document).ready(function () {
     </div>
 </body>
 </html>
-?>
 
 
 

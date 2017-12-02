@@ -181,6 +181,15 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
         });
     });
 </script>
+<!-- script for new kargo modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-newKargoModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
 
 <title>Benneks Order System</title>
 </head>
@@ -206,7 +215,21 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                             <a href="turkish-admin.php"> <i class="fa fa-th-list fa-fw"> </i> Sipariş Liste </a>
                         </li>
                         <li>
-                            <a href="kargoMaker.php"> <i class="fa fa-truck fa-fw" > </i> Yeni Kargo Liste Yapmak</a>
+                            <a href='#newKargoModal' data-toggle='modal' data-target='#newKargoModal' class='open-newKargoModal'> <i class="fa fa-truck fa-fw" > </i> Yeni Kargo Liste Yapmak</a>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="fa fa-file-excel-o fa-fw"></span>
+                                    Excel
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a href='#tenDaysReportModal' data-toggle='modal' data-target='#tenDaysReportModal' class='open-tenDaysReportModal' >10 gün rapor</a></li>
+                                    <li><a href="#returnListReportModal" data-toggle='modal' data-target='#returnListReportModal' class='open-returnListReportModal' > iade list rapor</a></li>
+                                </ul>
+
+                            </div>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> profil</a>
@@ -458,7 +481,7 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                 <h4><span class = "glyphicon glyphicon-shopping-cart"> </span> Satin Almak Sipariş </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="addorder.php" method="post">
+                                <form role="form" action="" method="">
                                     <div class="form-group">
                                         <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
                                     </div>
@@ -470,8 +493,11 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  Satin Almak Tarihi</label>
                                         <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" name="shoppingDate" id="shoppingDate"> 
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> Kayit </button>
-                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> Reset </button>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="addOrderCheck('submit');"> Kayit </button>
+                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="addOrderCheck('reset');"> Reset </button>
+                                    <div class="form-group">
+                                        <center> <p id="addOrderMsg">  </p> </center>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -563,6 +589,85 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                         <input type="text" class="form-control" name="kargoID" id="kargoID">
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="printButton" id="printButton"> Print </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--new kargo modal -->
+                <div class = "modal fade" id = "newKargoModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-plane"> </span> Yeni Kargo </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="kargoMaker.php" method="post">
+                                    <div class="form-group">
+                                        <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
+                                    </div>
+                                    <div class="form-group">
+                                        <p> Botun mevcüt urünler yeni kargo için <?php echo $totallAvailableOffice[0]; ?> olucak. <br> Yeni kargo yapmak için emin misiniz? </p>  
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="confirmKargoButton" id="confirmKargoButton"> Evet </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Ten days report -->
+                <div class = "modal fade" id = "tenDaysReportModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> Rapor </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="tenDaysReport.php" method="post">
+                                    <div class="form-group">
+                                        <p>Buton siparişleri ki 10 gün satin almayin dun geçmiş ve hala officde gelmemiş.</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="startDate"> başlanmiş tarih raporlari: </label>
+                                        <input type="date" class="form-control" name="startDate" id="startDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="finishDate"> bitmiş tarih raporlari: </label>
+                                        <input type="date" class="form-control" name="finishDate" id="finishDate">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> rapor yapmak </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!--retrun lıst report modal -->
+                <div class = "modal fade" id = "returnListReportModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> Rapor </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="ReturnListReport.php" method="post">
+                                    <div class="form-group">
+                                        <p>iade list raporlari</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="startDate"> başlanmiş tarih raporlari: </label>
+                                        <input type="date" class="form-control" name="startDate" id="startDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="finishDate"> bitmiş tarih raporlari: </label>
+                                        <input type="date" class="form-control" name="finishDate" id="finishDate">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> rapor</button>
                                 </form>
                             </div>
                         </div>

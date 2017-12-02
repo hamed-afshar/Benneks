@@ -455,23 +455,55 @@ function checkOfficeArrivalFunc(action) {
     }
 }
 
-//function to return items in turkey
+//function for return items in turkey
 function returnTurkeyFunc(action) {
     var orderID = document.getElementById("rowID").value;
     var returnReason = document.getElementById("returnReason").value;
-    switch(action) {
+    switch (action) {
         case "submit":
-        $.getJSON("./return-turkey.php?action=" + action + "&orderID=" + orderID + "&returnReason=" + returnReason, function (data) { 
-            //only orders that has arived to the office can be returned to the tury
-            var result = data.result;
-            var msg = data.msg;
-            if(result === "exsist") {
-                document.getElementById("returnTurkeyMsg").innerHTML = msg;
-            } else {
-                document.getElementById("returnTurkeyMsg").innerHTML = msg;
-            }
-        });
-        break;
+            $.getJSON("./return-turkey.php?action=" + action + "&orderID=" + orderID + "&returnReason=" + returnReason, function (data) {
+                //only orders that has arived to the office can be returned to the tury
+                var result = data.result;
+                var msg = data.msg;
+                if (result === "exsist") {
+                    document.getElementById("returnTurkeyMsg").innerHTML = msg;
+                } else {
+                    document.getElementById("returnTurkeyMsg").innerHTML = msg;
+                }
+            });
+            break;
+    }
+}
+
+//function for add order in turkey
+function addOrderCheck(action) {
+    var orderID = document.getElementById("rowID").value;
+    var shoppingDate = document.getElementById("shoppingDate").value;
+    switch (action) {
+        case "submit" :
+            $.getJSON("./addorder.php?action=" + action + "&orderID=" + orderID + "&shoppingDate=" + shoppingDate, function (data) {
+                //check the order status and shows a proper msg
+                var result = data.result;
+                var msg = data.msg;
+                if (result === "exsist") {
+                    document.getElementById("addOrderMsg").innerHTML = msg;
+                } else {
+                    document.getElementById("addOrderMsg").innerHTML = msg;
+                }
+            });
+            break;
+        case "reset" :
+            $.getJSON("./addorder.php?action=" + action + "&orderID=" + orderID + "&shoppingDate=" + shoppingDate, function (data) {
+                //check the order status and shows a proper msg
+                var result = data.result;
+                var msg = data.msg;
+                if (result === "exsist") {
+                    document.getElementById("addOrderMsg").innerHTML = msg;
+                } else {
+                    document.getElementById("addOrderMsg").innerHTML = msg;
+                }
+            });
+            break;
     }
 }
 

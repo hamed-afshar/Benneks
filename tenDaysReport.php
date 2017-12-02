@@ -47,7 +47,7 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('D1', 'satin alma tarihi');
 //query to extract orders purchased ten days ago but not arrived to the office yet from the db and insert them into the excel report file
 $query1 = "select orders.orderID, orders.productPrice, shipment.benneksShoppingDate, shipment.officeArrivalDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID where "
-        . "benneksShoppingDate < DATE_SUB(NOW(), INTERVAL 1 DAY) and benneksShoppingDate > '2017-11-29' and  officeArrivalDate is null order by benneksShoppingDate desc;";
+        . "benneksShoppingDate < DATE_SUB(NOW(), INTERVAL 10 DAY) and benneksShoppingDate > '2017-12-01' and  officeArrivalDate is null order by benneksShoppingDate desc;";
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }

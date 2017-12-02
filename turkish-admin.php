@@ -631,14 +631,6 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                     <div class="form-group">
                                         <p>Buton siparişleri ki 10 gün satin almayin dun geçmiş ve hala officde gelmemiş.</p>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="startDate"> başlanmiş tarih raporlari: </label>
-                                        <input type="date" class="form-control" name="startDate" id="startDate">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="finishDate"> bitmiş tarih raporlari: </label>
-                                        <input type="date" class="form-control" name="finishDate" id="finishDate">
-                                    </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> rapor yapmak </button>
                                 </form>
                             </div>
@@ -658,14 +650,6 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                 <form role="form" action="ReturnListReport.php" method="post">
                                     <div class="form-group">
                                         <p>iade list raporlari</p>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="startDate"> başlanmiş tarih raporlari: </label>
-                                        <input type="date" class="form-control" name="startDate" id="startDate">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="finishDate"> bitmiş tarih raporlari: </label>
-                                        <input type="date" class="form-control" name="finishDate" id="finishDate">
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> rapor</button>
                                 </form>

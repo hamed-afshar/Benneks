@@ -93,6 +93,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
         });
     });
 </script>
+<!-- script for avaılable modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-avaılableModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
 
 <title>Benneks Order System</title>
 </head>
@@ -240,7 +249,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<tr>";
                                         echo "<td>" . $row[0] .
                                         "<hr> "
-                                        . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> لغو سفارش </a>"
+                                        . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#availableModal' data-toggle='modal' data-target='#availableModal' data-id = '$row[0]' class='open-availableModal'> <i class = 'fa fa-tag fa-fw fa-lg'></i> </a>"
                                         . "</td>";
                                         $picURL = str_replace(' ', '%20', $row[1]);
                                         $productLink = $row[2];
@@ -314,7 +324,31 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         </div>
                     </div>
                 </div>
-                <!--Delete order modal end! -->
+                <!--Available modal -->
+                <div class = "modal fade" id = "availableModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-tag"> </span> اضافه کردن به لیست موجودی</h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="avaılable.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="rowID"> کد سفارش </label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                    </div>
+                                    <div class="form-group">
+                                        <center> در صورتی که این سفارش موجود می باشد دکمه اضافه و در صورت فروش دکمه حذف را بزنید</center> 
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="addButton" id="addButton"> اضافه به لیست </button>
+                                    <button type="submit" class="btn btn-danger btn-block" name="removeButton" id="removeButton"> حذف از لیست </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             </body>
             </html>

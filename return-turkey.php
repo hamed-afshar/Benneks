@@ -30,6 +30,7 @@ $previousOrderStatus = $row[0];
 
 switch ($action) {
     case "submit" :
+        //if it has assgined a cargo name
         if($row[0] === "در راه ایران-iran yolunda") {
             $sback['result'] = "exsist";
             $findKargoQuery = "select shipment.cargoName from benneks.shipment where orders_orderID = '$orderID'";
@@ -39,14 +40,16 @@ switch ($action) {
             $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $kargoNo" . " iade imkansız ";
             break;
         }
+        //if it has returned
         if ($row[0] === "عودت ترکیه-İade-Turkey") {
             $sback['result'] = "exsist";
-            $sback['msg'] = "قبلا به لیست عودت اضافه شده و احتیاج به ثبت مجدد نمی باشد.";
+            $sback['msg'] = "daha once iade listeri eklemeş ve yeni septemek imkansiz";
             break;
         }
+        //any status rather than office arrival
         if ($row[0] !== "رسیده به دفتر-officde") {
             $sback['result'] = "exsist";
-            $sback['msg'] = "برای اعاده سفارش در ابتدا باید آن سفارش به دفتر رسیده باشد و هنوز رسیدن به دفتر وارد سیستم نشده";
+            $sback['msg'] = "iade için siparişlar officde gelmek lazim. iade imkansiz";
             break;
         }
         $sback['result'] = "not-exist";
@@ -54,7 +57,7 @@ switch ($action) {
         if (!$user->executeQuery($query)) {
             $sback['msg'] = "خطایی در وارد کردن اطلاعات رخ داده است!";
         }
-        $sback['msg'] = "باموفقیت به لیست اعاده ها اضافه شد.";
+        $sback['msg'] = "iade listleri eklemiş.";
         break;
 }
 mysqli_close($user->conn);

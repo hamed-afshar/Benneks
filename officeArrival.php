@@ -36,6 +36,7 @@ $previousOrderStatus = $row[0];
 
 switch ($action) {
     case "submit" :
+        //if it hase asigned a cargo code
         if($row[0] === "در راه ایران-iran yolunda") {
             $sback['result'] = "exsist";
             $findKargoQuery = "select shipment.cargoName from benneks.shipment where orders_orderID = '$orderID'";
@@ -45,16 +46,19 @@ switch ($action) {
             $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $kargoNo" . " değiştirmek imkansız ";;
             break;
         }
+        //if it has returned 
         if ($row[0] === "عودت ترکیه-İade-Turkey") {
             $sback['result'] = "exsist";
             $sback['msg'] = "bu sipariş daha once mosteri tarafindan iptal olmuş, lotfan iade listerinde koyon";
             break;
         }
+        //if it has canceled 
         if ($row[0] === "لغو-İptal") {
             $sback['result'] = "exsist";
             $sback['msg'] = "bu sipariş daha oncesi satin alma zamani iptal olmuş ve officede olmamali lotfan bunu iade listde koyon";
             break;
         }
+        // if without any status(pre order)
         if ($row[0] === NULL) {
             $sback['result'] = "exsist";
             $sback['msg'] = "bu siparis hala satin almamiş lik bunu satin alin";

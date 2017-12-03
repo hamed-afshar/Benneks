@@ -28,7 +28,7 @@ if (isset($_POST['searchButton'])) {
             $searchQuery = "users.userName = " . "'" . $searchValue . "'" . "";
             break;
         case "done":
-            $searchQuery = "stat.orderStatus = " . "'انجام شده'";
+            $searchQuery = "stat.orderStatus = " . "'انجام شده-tamam'";
             break;
         case "turkey":
             $searchQuery = "orders.country = " . "'ترکیه'";
@@ -40,7 +40,7 @@ if (isset($_POST['searchButton'])) {
             $searchQuery = "orders.country = " . "'انگلیس'";
             break;
         case "cancel":
-            $searchQuery = "stat.orderStatus = " . "'لغو'";
+            $searchQuery = "stat.orderStatus = " . "'لغو-İptal'";
             break;
         case "unknown":
             $searchQuery = "stat.orderStatus IS NULL";

@@ -32,7 +32,9 @@ $checkQuery = "select stat.orderStatus from benneks.stat where orders_orderID = 
 $checkQueryResult = $user->executeQuery($checkQuery);
 $row = mysqli_fetch_row($checkQueryResult);
 
+// make a decision based on the latest order status
 switch ($action) {
+    // if it has assigned a cargo code
     case "submit" :
         if ($row[0] === "در راه ایران-iran yolunda" ) {
             $sback['result'] = "exsist";
@@ -43,16 +45,19 @@ switch ($action) {
             $sback['msg'] = "Bu Sipariş daha onçe kargodan irana gunderdilar-kargo $kargoNo" . " iptal imkansız ";
             break;
         }
+        //if it has arrived to the office then it is not possible to cancel the order
         if ($row[0] === "رسیده به دفتر-officde") {
             $sback['result'] = "exsist";
-            $sback['msg'] = "این سفارش به دفتر رسیده و لغو آن امکان پذیر نمی باشد و شما به جای لغو می توانید این سفارش را عودت دهید.";
+            $sback['msg'] = "imkansiz";
             break;
         }
+        //if it has returned then it is not possible to cancel the order
         if ($row[0] === "عودت ترکیه-İade-Turkey") {
             $sback['result'] = "exsist";
-            $sback['msg'] = "این سفارش به دفتر رسیده و عودت شده است پس عملیات لغو امکان پذیر نمی باشد.";
+            $sback['msg'] = "imkansiz";
             break;
         }
+        // any other status
         $status = "لغو-İptal";
         $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET stat.orderStatus = '$status', stat.orderStatusDescription='$statusDescription', shipment.benneksShoppingDate = null WHERE orders.orderID = '$orderID'";
         if (!$user->executeQuery($query)) {

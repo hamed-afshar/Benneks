@@ -2,7 +2,7 @@
 
 /*
  * This script will be used to add order shopping date into database
- * whn admin press add button in admin page
+ * when admin press add button in admin page
  * 
  */
 ob_start();
@@ -24,7 +24,7 @@ $statusDescription = "خرید با موفقیت-başarıyla satın aldı";
 $shoppingDate = $_GET['shoppingDate'];
 $orderID = $_GET['orderID'];
 $action = $_GET['action'];
-//first check to see if this order ID has already cancealed by the user
+//first check to see the latest order status
 $checkQuery = "select stat.orderStatus from benneks.stat where orders_orderID =  '$orderID'";
 $checkQueryResult = $user->executeQuery($checkQuery);
 $row = mysqli_fetch_row($checkQueryResult);
@@ -34,7 +34,7 @@ switch ($action) {
     case "submit" :
         if ($row[0] === "در راه ایران-iran yolunda" || $row[0] === "عودت ترکیه-İade-Turkey" || $row[0] === "رسیده به دفتر-officde") {
             $sback['result'] = "exsist";
-            $sback['msg'] = "عملیات امکان پذیر نمی باشد";
+            $sback['msg'] = "imkansiz";
             break;
         }
         if ($row[0] === "لغو-İptal" || $row[0] === NULL || $row[0] === "انجام شده-tamam") {
@@ -47,6 +47,7 @@ switch ($action) {
             break;
         }
     case "reset" :
+        //first check the latest query stage
         $previousStageQuery = "select stat.orderStatus, stat.orderStatusDescription, shipment.benneksShoppingDate, shipment.officeArrivalDate, shipment.benneksDeliverDate, shipment.cargoName from benneks.stat inner join benneks.shipment on"
                 . " stat.orders_orderID = shipment.orders_orderID where stat.orders_orderID = '$orderID';";
         if (!$user->executeQuery($previousStageQuery)) {

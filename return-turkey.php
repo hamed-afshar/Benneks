@@ -6,9 +6,9 @@
 ob_start();
 session_start();
 require 'src/benneks.php';
-// if session is not set this will redirect to login page
-if (!isset($_SESSION['user'])) {
-    header("Location: index.php");
+// if Admin session is not set this will get access denied msg
+if ($_SESSION['userAccess'] !== '3') {
+    echo "اجازه دسترسی ندارید";
     exit();
 }
 ini_set('display_errors', 1);

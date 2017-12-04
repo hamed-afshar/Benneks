@@ -50,24 +50,30 @@ if (isset($_POST['loginButton'])) {
         $loginRes = $user->loginUser($query);
         $row = mysqli_fetch_array($loginRes);
         $count = mysqli_num_rows($loginRes); // if username and password are correct it must return 1
-        //For admin user
-        if ($count == 1 && $row['userName'] == "benneksadmin" && $row['userPass'] == $pass) {
+        //For  iran admin user
+        if ($count === 1 && $row['userName'] === "benneksadmin" && $row['userPass'] === $pass) {
             $_SESSION['user'] = $row ['userID'];
             $_SESSION['userAccess'] = $row ['userAccess'];
             $user->loginUser($loginDetailsQuery);
             header("Location: admin.php");
         }
+        //For Turkish admin user
+        if ($count === 1 && $row['userName'] === "turkishadmin" && $row['userPass'] === $pass) {
+            $_SESSION['user'] = $row ['userID'];
+            $_SESSION['userAccess'] = $row ['userAccess'];
+            $user->loginUser($loginDetailsQuery);
+            header("Location: turkish-admin.php");
+        }
         //for Normal users
-        else if ($count == 1 && $row['userPass'] == $pass && $row['userLock'] == 0) {
+        if ($count == 1 && ($row['userName'] !== "turkishadmin" && $row['userName'] !== "benneksadmin")  && $row['userPass'] == $pass && $row['userLock'] == 0) {
             $_SESSION['user'] = $row['userID'];
             $_SESSION['userAccess'] = $row ['userAccess'];
             $user->loginUser($loginDetailsQuery);
             header("Location: home.php");
-        } else {
-            $user->loginUser($loginDetailsQuery);
-            $errMSG = "نام کاربری و یا کلمه عبور صحیح نمی باشد همچنین ممکن است حساب شما مسدود شده باشد.";
-            echo $errMSG;
         }
+        $user->loginUser($loginDetailsQuery);
+        $errMSG = "نام کاربری و یا کلمه عبور صحیح نمی باشد همچنین ممکن است حساب شما مسدود شده باشد.";
+        echo $errMSG;
     }
 }
 ?>

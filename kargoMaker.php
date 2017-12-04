@@ -6,8 +6,8 @@
 ob_start();
 session_start();
 require 'src/benneks.php';
-// if Admin session is not set this will get access denied msg
-if ($_SESSION['userAccess'] !== '2') {
+// if turkish admin session is not set this will get access denied msg
+if ($_SESSION['userAccess'] !== '3') {
     echo "اجازه دسترسی ندارید";
     exit();
 }

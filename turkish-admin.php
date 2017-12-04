@@ -68,7 +68,7 @@ $totallCanceledMonthValue = mysqli_fetch_row($queryResult4);
 //Get the tottal number of unknown orders for current month
 // query 5 position
 //Get the current kargo Number
-$query6 = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}+$';";
+$query6 = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}';";
 if (!$user->executeQuery($query6)) {
     echo mysqli_error($user->conn);
 }
@@ -466,11 +466,15 @@ echo "</div>";
                                     </div>
                                     <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Kod </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  Satin Almak Tarihi</label>
                                         <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" name="shoppingDate" id="shoppingDate"> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="supplierRefCode"> <span class="glyphicon glyphicon-asterisk"></span> Ref </label>
+                                        <input type="text" class="form-control" name="supplierRefCode" id="supplierRefCode">
                                     </div>
                                     <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="addOrderCheck('submit');"> Kayit </button>
                                     <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="addOrderCheck('reset');"> Reset </button>

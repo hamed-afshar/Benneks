@@ -479,9 +479,10 @@ function returnTurkeyFunc(action) {
 function addOrderCheck(action) {
     var orderID = document.getElementById("rowID").value;
     var shoppingDate = document.getElementById("shoppingDate").value;
+    var supplierRefCode = document.getElementById("supplierRefCode").value;
     switch (action) {
         case "submit" :
-            $.getJSON("./addorder.php?action=" + action + "&orderID=" + orderID + "&shoppingDate=" + shoppingDate, function (data) {
+            $.getJSON("./addorder.php?action=" + action + "&orderID=" + orderID + "&shoppingDate=" + shoppingDate + "&supplierRefCode=" + supplierRefCode, function (data) {
                 //check the order status and shows a proper msg
                 var result = data.result;
                 var msg = data.msg;

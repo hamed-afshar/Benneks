@@ -24,6 +24,7 @@ $statusDescription = "خرید با موفقیت-başarıyla satın aldı";
 $shoppingDate = $_GET['shoppingDate'];
 $orderID = $_GET['orderID'];
 $action = $_GET['action'];
+$supplierRefCode = $_GET['supplierRefCode'];
 //first check to see the latest order status
 $checkQuery = "select stat.orderStatus from benneks.stat where orders_orderID =  '$orderID'";
 $checkQueryResult = $user->executeQuery($checkQuery);
@@ -38,7 +39,7 @@ switch ($action) {
             break;
         }
         if ($row[0] === "لغو-İptal" || $row[0] === NULL || $row[0] === "انجام شده-tamam") {
-            $query = "UPDATE benneks.shipment inner JOIN benneks.stat ON shipment.orders_orderID = stat.orders_orderID SET shipment.benneksShoppingDate = '$shoppingDate', shipment.officeArrivalDate = NULL, stat.orderStatus = '$status', stat.orderStatusDescription = '$statusDescription' WHERE shipment.orders_orderID = '$orderID'";
+            $query = "UPDATE benneks.shipment inner JOIN benneks.stat ON shipment.orders_orderID = stat.orders_orderID SET shipment.benneksShoppingDate = '$shoppingDate', shipment.officeArrivalDate = NULL, stat.orderStatus = '$status', stat.orderStatusDescription = '$statusDescription', stat.supplierRefCode = '$supplierRefCode' WHERE shipment.orders_orderID = '$orderID'";
             if (!$user->executeQuery($query)) {
                 echo mysqli_error($user->conn);
             }

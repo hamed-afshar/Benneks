@@ -96,7 +96,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
 <!-- script for avaılable modal -->
 <script>
     $(document).ready(function () {
-        $(document).on("click", ".open-avaılableModal", function () {
+        $(document).on("click", ".open-availableModal", function () {
             var orderID = $(this).data('id');
             $(".modal-body #rowID").val(orderID);
         });
@@ -193,6 +193,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label for="searchOption"> نوع فیلتر:</label>
                                                 <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption">
                                                     <option value="code" selected> کد </option>
+                                                    <option value="available"> موجودی ها</option>
                                                     <option value="done"> خریداری شده</option>
                                                     <option value="cancel"> لغو شده</option>
                                                     <option value="unknown"> نامشخص </option>
@@ -334,10 +335,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <h4><span class = "glyphicon glyphicon-tag"> </span> اضافه کردن به لیست موجودی</h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="avaılable.php" method="post" dir="rtl">
+                                <form role="form" action="makeAvailable.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="rowID"> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly>
                                     </div>
                                     <div class="form-group">
                                         <center> در صورتی که این سفارش موجود می باشد دکمه اضافه و در صورت فروش دکمه حذف را بزنید</center> 

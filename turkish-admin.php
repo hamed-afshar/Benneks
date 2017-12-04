@@ -29,11 +29,11 @@ if (isset($_SESSION['searchQuery'])) {
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country, stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country, stat.orderStatus, stat.orderStatusDescription, stat.supplierRefCode FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription, stat.supplierRefCode FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 };
 //unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query1)) {
@@ -42,28 +42,28 @@ if (!$user->executeQuery($query1)) {
 $queryResult1 = $user->executeQuery($query1);
 
 //Get the totall number of orders from begining
-$query2 = "select count(orders.orderID) from benneks.orders WHERE orders.country = 'ترکیه' and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW());";
+/*$query2 = "select count(orders.orderID) from benneks.orders WHERE orders.country = 'ترکیه' and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW());";
 if (!$user->executeQuery($query2)) {
     echo mysqli_error($user->conn);
 }
 $queryResult2 = $user->executeQuery($query2);
-$totallMonthValue = mysqli_fetch_row($queryResult2);
+$totallMonthValue = mysqli_fetch_row($queryResult2);*/
 
 //Get the totall number of purchased orders for current month
-$query3 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where orders.country = 'ترکیه' and stat.orderStatus = 'انجام شده-tamam' or stat.orderStatus = 'انجام شده'  and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW());";
+/*$query3 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where orders.country = 'ترکیه' and stat.orderStatus = 'انجام شده-tamam' or stat.orderStatus = 'انجام شده'  and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW());";
 if (!$user->executeQuery($query3)) {
     echo mysqli_error($user->conn);
 }
 $queryResult3 = $user->executeQuery($query3);
-$totallDoneMonthValue = mysqli_fetch_row($queryResult3);
+$totallDoneMonthValue = mysqli_fetch_row($queryResult3);*/
 
 //Get the totall number of canceled orders for current month
 $query4 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus = 'لغو-İptal' or stat.orderStatus = 'لغو' and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW()) and orders.country = 'ترکیه';";
-if (!$user->executeQuery($query4)) {
+/*if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
 $queryResult4 = $user->executeQuery($query4);
-$totallCanceledMonthValue = mysqli_fetch_row($queryResult4);
+$totallCanceledMonthValue = mysqli_fetch_row($queryResult4);*/
 
 //Get the tottal number of unknown orders for current month
 // query 5 position
@@ -243,19 +243,6 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                         <i class="fa fa-bullhorn fa-fw"></i> Bu ayki Raporu:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="totallMonthValue">şimdilik ay bütun siparişleri: </label>
-                                                <label id="totallMonthValue" style="color: goldenrod"> <?php echo $totallMonthValue[0]; ?> </label> 
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="totallDoneMonthValue">şimdilik ay satin almak siparişleri:  </label>
-                                                <label id="totallDoneMonthValue" style="color: goldenrod"> <?php echo $totallDoneMonthValue[0]; ?> </label> 
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="totallCanceledMonthValue"> şimdilik ay iptalli siparişleri: </label>
-                                                <label id="totallCanceledMonthValue" style="color: goldenrod"> <?php echo $totallCanceledMonthValue[0]; ?> </label> 
-                                            </div>
-                                            <br>
-                                            <div class="form-group">
                                                 <label for="currentKargo"> en son irana yolamiş kargo numarasi</label>
                                                 <label id="currentKargo" style="color: goldenrod"> <?php echo $currentKargo[0] ?> <a href='#kargoPrintModal' style="color: yellow" data-toggle='modal' data-target='#kargoPrintModal' class='open-kargoPrintModal'> <i class="fa fa-print fa-fw"></i> </a> </label> 
                                             </div>
@@ -335,7 +322,7 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                 <thead>
                                     <tr>
                                         <th style="text-align: center"> Kod</th>
-                                        <th style="text-align: center"> Kullanıcı adı</th>
+                                        <th style="text-align: center"> Ref</th>
                                         <th style="text-align: center"> Sipariş Tarihi</th>
 
                                         <th style="text-align: center"> Fiyat</th>
@@ -352,52 +339,53 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                     </tr>
                                 </thead>
                                 <tbody>
-<?php
-while ($row = mysqli_fetch_row($queryResult1)) {
+                                    <?php
+                                    while ($row = mysqli_fetch_row($queryResult1)) {
 
-    echo "<tr>";
-    echo "<td> " . $row[0] .
-    "<hr> "
-    . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
-    . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
-    . "<a href='#officeDeliveryModal' data-toggle='modal' data-target='#officeDeliveryModal' data-id='$row[0]' class='open-officeDeliveryModal'> <i class='fa fa-home fa-fw fa-lg'></i> </a>"
-    . "<a href='#turkeyReturnModal' data-toggle='modal' data-target='#turkeyReturnModal' data-id='$row[0]' class='open-turkeyReturnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
-    . " </td>";
-    echo "<td>" . $row[1] . "</td>";
-    echo "<td>" . $row[2] . "</td>";
+                                        echo "<tr>";
+                                        echo "<td> " . $row[0] .
+                                        "<hr> "
+                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#officeDeliveryModal' data-toggle='modal' data-target='#officeDeliveryModal' data-id='$row[0]' class='open-officeDeliveryModal'> <i class='fa fa-home fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#turkeyReturnModal' data-toggle='modal' data-target='#turkeyReturnModal' data-id='$row[0]' class='open-turkeyReturnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
+                                        . " </td>";
+                                        //echo "<td>" . $row[1] . "</td>";
+                                        echo "<td>" . $row[15] . "</td>";
+                                        echo "<td>" . $row[2] . "</td>";
 
-    echo "<td>" . $row[4] . "</td>";
-    echo "<td>" . $row[5] . "</td>";
-    echo "<td> <a href= " . $row[6] . ">لینک محصول" . "</a> </td>";
-    $picURL = str_replace(' ', '%20', $row[7]);
-    echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+                                        echo "<td>" . $row[4] . "</td>";
+                                        echo "<td>" . $row[5] . "</td>";
+                                        echo "<td> <a href= " . $row[6] . ">Link" . "</a> </td>";
+                                        $picURL = str_replace(' ', '%20', $row[7]);
+                                        echo "<td><a href=" . $picURL . "> <img src=" . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
 
-    echo "<td>" . $row[9] . "</td>";
-    echo "<td>" . $row[10] . "</td>";
+                                        echo "<td>" . $row[9] . "</td>";
+                                        echo "<td>" . $row[10] . "</td>";
 
 
-    echo "<td>" . $row[13] . "</td>";
-    echo "<td>" . $row[14] . "</td>";
-    echo "</tr>";
-}
-?>
+                                        echo "<td>" . $row[13] . "</td>";
+                                        echo "<td>" . $row[14] . "</td>";
+                                        echo "</tr>";
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
-<?php
-$query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
-$queryResult5 = $user->executeQuery($query5);
-$records = mysqli_fetch_row($queryResult5);
-$totalRecords = $records[0];
-$totalPages = ceil($totalRecords / $limit);
-echo "<div class='container'>";
-echo "<ul class='pagination'>";
-for ($i = 1; $i <= $totalPages; $i++) {
-    echo "<li><a href='turkish-admin.php?page=" . $i . "'>" . $i . "</a></li>";
-}
-echo "</ul>";
-mysqli_close($user->conn);
-?>
+                        <?php
+                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery";
+                        $queryResult5 = $user->executeQuery($query5);
+                        $records = mysqli_fetch_row($queryResult5);
+                        $totalRecords = $records[0];
+                        $totalPages = ceil($totalRecords / $limit);
+                        echo "<div class='container'>";
+                        echo "<ul class='pagination'>";
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            echo "<li><a href='turkish-admin.php?page=" . $i . "'>" . $i . "</a></li>";
+                        }
+                        echo "</ul>";
+                        mysqli_close($user->conn);
+                        ?>
                         <script type="text/javascript">
                             $(document).ready(function () {
                                 $('.pagination').pagination({
@@ -409,9 +397,9 @@ mysqli_close($user->conn);
                                 });
                             });
                         </script>
-<?php
-echo "</div>";
-?>
+                        <?php
+                        echo "</div>";
+                        ?>
                     </div>
                 </div>
                 <!--cancel order modal -->
@@ -556,7 +544,7 @@ echo "</div>";
                                     <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="returnTurkeyFunc('submit');"> Kayıt </button>
                                     <div class="form-group">
                                         <center> <p id="returnTurkeyMsg">  </p> </center>
-                                    </div
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -572,7 +560,7 @@ echo "</div>";
                                 <h4><span class = "glyphicon glyphicon-print"> </span> Print Kargo </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="printKargo.php" method="post">
+                                <form role="form" action="printkargo.php" method="post">
                                     <div class="form-group">
                                         <input type="hidden" id="incomingPage" name="incomingPage" value="turkish-Admin">
                                     </div>

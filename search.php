@@ -51,6 +51,9 @@ if (isset($_POST['searchButton'])) {
         case "return":
             $searchQuery = "stat.orderStatus = " . "'عودت'";
             break;
+        case "available": 
+            $searchQuery = "orders.sellerSideAvailable = " . "'yes'";
+            break;
         default :
             $searchQuery = "";
             break;

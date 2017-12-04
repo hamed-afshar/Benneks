@@ -58,11 +58,11 @@ switch ($orderStatus) {
         break;
     //any stage else
     case "رسیده به دفتر-officde" || "انجام شده-tamam" || "عودت ترکیه-İade-Turkey":
-        $orderStatus="عودت ترکیه-İade-Turkey";
-        $orderStatusDescription="عودت ترکیه-İade-Turkey";
+        $orderStatus = "عودت ترکیه-İade-Turkey";
+        $orderStatusDescription = "عودت ترکیه-İade-Turkey";
         $query = "update benneks.stat set stat.orderStatus ='$orderStatus', stat.orderStatusDescription = '$orderStatusDescription' where stat.orders_orderID = '$orderID'";
         $msg = "سفارش شما در ترکیه عودت گردید.";
-         if (!$user->executeQuery($query)) {
+        if (!$user->executeQuery($query)) {
             echo mysqli_error($user->conn);
         }
         break;

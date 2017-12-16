@@ -76,7 +76,7 @@ $queryResult6 = $user->executeQuery($query6);
 $currentKargo = mysqli_fetch_row($queryResult6);
 
 //Get the totall number of available purchased items in office
-$query7 = "select count(*) from benneks.shipment where shipment.officeArrivalDate is not null and shipment.cargoName is Null;";
+$query7 = "select count(*) from benneks.shipment inner join benneks.stat on shipment.orders_orderID = stat.orders_orderID where shipment.officeArrivalDate is not null and shipment.cargoName is Null and stat.orderStatus = 'رسیده به دفتر-officde';";
 if (!$user->executeQuery($query7)) {
     echo mysqli_error($user->conn);
 }

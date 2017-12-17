@@ -54,6 +54,9 @@ if (isset($_POST['searchButton'])) {
         case "available": 
             $searchQuery = "orders.sellerSideAvailable = " . "'yes'";
             break;
+        case "ref":
+            $searchQuery = "stat.supplierRefCode = " . "'" . $searchValue . "'" . "";
+            break;
         default :
             $searchQuery = "";
             break;

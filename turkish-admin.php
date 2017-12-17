@@ -29,11 +29,11 @@ if (isset($_SESSION['searchQuery'])) {
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country, stat.orderStatus, stat.orderStatusDescription, stat.supplierRefCode FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country, stat.orderStatus, stat.orderStatusDescription, stat.supplierRefCode, shipment.cargoName FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription, stat.supplierRefCode FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
+    $query1 = "SELECT orders.orderID, users.username ,orders.orderDate, orders.orderTime ,orders.productPrice, orders.productBrand, orders.productLink, orders.productPic, orders.clothesType, orders.productSize, orders.productColor, orders.orderQuantity, orders.country ,stat.orderStatus, stat.orderStatusDescription, stat.supplierRefCode, shipment.cargoName FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.users ON users.userID = orders.users_userID $searchQuery ORDER BY orders.orderDate desc, orders.orderTime desc LIMIT " . $startFrom . "," . $limit;
 };
 //unset($_SESSION['searchQuery']);
 if (!$user->executeQuery($query1)) {
@@ -125,7 +125,7 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
 <!-- Pagination jquery plugin -->
 <script type="text/javascript" src="./Javascripts/jquery.simplePagination.js"></script>
 <!-- printer jquery plugin -->
-<script type="text/JavaScript" src="./Javascripts/jquery.print.js" /></script>
+<script type="text/JavaScript" src="./Javascripts/jQuery.print.js" /></script>
 <!--CSS Style-->
 <link rel="stylesheet" type="text/css" href="style.css" />
 
@@ -290,6 +290,7 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                                     <option value="done"> satın almış siparişleri</option>
                                                     <option value="cancel"> iptal edilmiştir</option>
                                                     <option value="unknown"> bilinmeyen </option>
+                                                    <option value="ref"> ref </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -336,6 +337,7 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
 
                                         <th style="text-align: center">Durum </th>
                                         <th style="text-align: center">Ayrıntılar </th>
+                                        <th style="text-align: center">Kargo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -366,6 +368,7 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
 
                                         echo "<td>" . $row[13] . "</td>";
                                         echo "<td>" . $row[14] . "</td>";
+                                        echo "<td>" . $row[16] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>

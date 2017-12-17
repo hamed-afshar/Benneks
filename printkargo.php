@@ -38,7 +38,8 @@ $style = array(
 $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('A1', 'No')
         ->setCellValue('B1', 'Kod')
-        ->setCellValue('C1', 'Satin Almak Tarihi');
+        ->setCellValue('C1', 'Satin Almak Tarihi')
+        ->setCellValue('D1', 'Fiyat');
 
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
@@ -52,7 +53,7 @@ $flag = true;
 if (isset($_POST['printButton'])) {
     $kargoCode = $_POST['kargoID'];
     $kargoLabel = $kargoCode;
-    $kargoPrintQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID where shipment.cargoName = '$kargoCode' order by orders.orderDate;";
+    $kargoPrintQuery = "select orders.orderID, orders.orderDate, orders.productPrice from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID where shipment.cargoName = '$kargoCode' order by orders.orderDate;";
     $user->executeQuery($kargoPrintQuery);
 }
 
@@ -65,6 +66,7 @@ while ($row = mysqli_fetch_row($kargoPrintQueryResylt)) {
     $objPHPExcel->getActiveSheet()->setCellValue('A' . $i, $i - 1);
     $objPHPExcel->getActiveSheet()->setCellValue('B' . $i, $row[0]);
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
+    $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $row[2]);
     $i++;
 }
 
@@ -72,15 +74,16 @@ while ($row = mysqli_fetch_row($kargoPrintQueryResylt)) {
 $objSheet->getColumnDimension('A')->setAutoSize(true);
 $objSheet->getColumnDimension('B')->setAutoSize(true);
 $objSheet->getColumnDimension('C')->setAutoSize(true);
+$objSheet->getColumnDimension('D')->setAutoSize(true);
 
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:C1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:C1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:C1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:D1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:D1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:D1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="Kargo-' . $kargoLabel . '.xls"');

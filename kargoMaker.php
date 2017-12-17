@@ -37,7 +37,8 @@ $style = array(
 $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('A1', 'No')
         ->setCellValue('B1', 'Kod')
-        ->setCellValue('C1', 'Satin Almak Tarihi');
+        ->setCellValue('C1', 'Satin Almak Tarihi')
+        ->setCellValue('D1', 'Fiyat');
 
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
@@ -49,7 +50,7 @@ ini_set('memory_limit', '512M');
 mysqli_autocommit($user->conn, false);
 $flag = true;
 // Query to extract the last kargo code from database
-$lastKargoQuery = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}+$';";
+$lastKargoQuery = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}';";
 
 if (!$user->executeQuery($lastKargoQuery)) {
     $flag = false;
@@ -62,7 +63,7 @@ $nextKargo = $row[0] + 1;
 $kargoLabel = $nextKargo;
 
 //query to prepare a kargo list based on the office arrival date
-$kargoMakerQuery = "select orders.orderID, orders.orderDate from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID where shipment.cargoName is null and shipment.officeArrivalDate is not null and stat.orderstatus = 'رسیده به دفتر-officde' order by orders.orderDate asc limit 150;";
+$kargoMakerQuery = "select orders.orderID, orders.orderDate, orders.productPrice from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner Join benneks.stat on orders.orderID = stat.orders_orderID where shipment.cargoName is null and shipment.officeArrivalDate is not null and stat.orderstatus = 'رسیده به دفتر-officde' order by orders.orderDate asc;";
 
 if (!$user->executeQuery($kargoMakerQuery)) {
     $flag = false;
@@ -77,6 +78,7 @@ while ($row = mysqli_fetch_row($kargoMakerQueryResult)) {
     $objPHPExcel->getActiveSheet()->setCellValue('A' . $i, $i - 1);
     $objPHPExcel->getActiveSheet()->setCellValue('B' . $i, $row[0]);
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
+    $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $row[2]);
     $i++;
 }
 
@@ -84,22 +86,22 @@ while ($row = mysqli_fetch_row($kargoMakerQueryResult)) {
 $objSheet->getColumnDimension('A')->setAutoSize(true);
 $objSheet->getColumnDimension('B')->setAutoSize(true);
 $objSheet->getColumnDimension('C')->setAutoSize(true);
-
+$objSheet->getColumnDimension('D')->setAutoSize(true);
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:C1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:C1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:C1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:D1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:D1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:D1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="Kargo-' . $kargoLabel . '.xls"');
 $objWriter->save('php://output');
 
 // add kargoCode to database
-if(!$user->executeQuery($kargoMakerQuery)) {
+if (!$user->executeQuery($kargoMakerQuery)) {
     $flag = false;
     echo mysqli_errno($user->conn);
 }
@@ -120,7 +122,6 @@ if ($flag) {
 } else {
     mysqli_rollback($user->conn);
 }
-
 ?>
 
 

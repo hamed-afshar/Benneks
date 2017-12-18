@@ -507,6 +507,24 @@ function addOrderCheck(action) {
             break;
     }
 }
+//Function to add member and customer information in to the database
+function addMemberFunc() {
+    var customerName = document.getElementById("customerName").value;
+    var customerTel = document.getElementById("customerTel").value;
+    var customerTelegramID = document.getElementById("customerTelegramID").value;
+    var orderSalePrice = document.getElementById("orderSalePrice").value;
+    var advancedPayment = document.getElementById("advancedPayment").value;
+    
+    
+    $.getJSON("./addmember.php?customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID + "&orderSalePrice" + orderSalePrice + "&advancedPayment" + advancedPayment, function(data) {
+       //check the member status
+       var result = data.result;
+       var msg = data.msg;
+       if (result === "exsist") {
+           document.getElementById("memberMsg").innerHTML = msg;
+       }
+    });
+}
 
 //Function to check numeric numbers only in customer Tel section in home.php
 function checkTel() {

@@ -15,9 +15,6 @@ mysqli_autocommit($user->conn, false);
 $flag = true;
 date_default_timezone_set("Asia/Tehran");
 if (isset($_POST['submitOrderButton'])) {
-    // For phase 1 we dont get these information from users
-    $customerName = "نامشخص";
-    $customerTel = "نامشخص";
 //Need to get the last customerID from Database if it is a first record then LastID will be 0;
     $query1 = "SELECT customerID FROM benneks.customers ORDER BY customerID DESC LIMIT 1";
     if (!$user->executeQuery($query1)) {
@@ -45,6 +42,7 @@ if (isset($_POST['submitOrderButton'])) {
     move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetPath);
 // Insert customer information into database
     $customerID = $lastID + 1;
+    //customerID is actualy a counter
     $query2 = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
     if (!$user->executeQuery($query2)) {
         $flag = false;
@@ -72,6 +70,7 @@ if (isset($_POST['submitOrderButton'])) {
     $productWeight = $_POST['productWeight'];
     $benneksMargin = $_POST['benneksMargin'];
     $iranDeliverCost = $_POST['iranDeliverCost'];
+
     // user directory needs to be added before pic name
     $productPic = $targetPath;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
@@ -87,12 +86,14 @@ if (isset($_POST['submitOrderButton'])) {
     $query4 = "INSERT INTO benneks.shipment(orders_orderID) VALUES ('$orderID')";
     $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
     $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice, currency, benneksMargin, iranDeliverCost) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice', '$currency', '$benneksMargin', '$iranDeliverCost')";
+
     if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
         $flag = true;
     } else {
         $flag = false;
         echo mysqli_error($user->conn);
     }
+
 // if all queries executed properly then comit the changes in to database otherwise roll back all changes
     if ($flag) {
         mysqli_commit($user->conn);
@@ -195,6 +196,7 @@ if (isset($_POST['submitOrderButton'])) {
                                 <i class="fa fa-shopping-bag fa-fw"></i> ثبت سفارش 
                             </div>
                             <!-- /.new-order-panel-heading -->
+
                             <div class="panel-body">
                                 <div class="col-lg-6 col-lg-push-6" >
                                     <form role = "form" method="post" name="orderForm" id="orderForm" onsubmit="return validateForm();" enctype="multipart/form-data">
@@ -563,25 +565,12 @@ if (isset($_POST['submitOrderButton'])) {
                                         <div class="form-group">
                                             <label for="productPrice"> قیمت :</label>
                                             <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); showRealPrice();" id="productPrice" name = "productPrice">
-                                        </div>
-                                        <!-- check box for entering customer information based on user behalf-->
-                                        <div class="form-group">
-                                            <input type="hidden" id="customerInfoOption" name="customerInfoOption"> 
-                                        </div>
-                                        <div class = "form-group">
-                                            <input type = "hidden" class = "form-control eng-format" dir="ltr" id = "customerName" name = "customerName" placeholder = "نام مشتری ">
-                                        </div>
-                                        <div class = "form-group">
-                                            <input type = "hidden" class = "form-control eng-format" dir="ltr" id = "customerTel" name = "customerTel" maxlength="8" onkeyup="checkTel()" placeholder = "تلفن مشتری فقط  چهار رقم اول و آخر مثال: 09123474">
-                                        </div>
+                                        </div>                 
                                         <div class="form-group">
                                             <span style="color:red" id="priceAlert">
                                             </span>
                                         </div>
-                                        <div class="form-group">
-                                            <span style="color:red" id="telAlert">
-                                            </span>
-                                        </div>
+
                                         <div class = "form-group">
                                             <label for = "benneksPrice"> قیمت فروش سیستم :</label>
                                             <input type = "text" class = "form-control eng-format" dir="ltr" id = "benneksPrice" name = "benneksPrice" readonly="readonly" placeholder = "قیمت فروش سیستم ">
@@ -627,6 +616,42 @@ if (isset($_POST['submitOrderButton'])) {
                                             </span>
                                         </button>
                                     </form>
+                                </div>
+                                <div class="col-lg-6 col-lg-pull-6" >
+                                    <div class="form-group">
+                                        <label for="customerName">نام مشتری:</label>
+                                        <input type="text" dir="rtl" class="form-control eng-format" id="customerName" name="customerName">
+                                    </div>
+                                    <div class = "form-group">
+                                        <label for="customerTel">تلفن مشتری:</label>
+                                        <input type = "text" class = "form-control eng-format" dir="ltr" id = "customerTel" name = "customerTel" maxlength="11" onkeyup="checkTel()" placeholder = " موبایل مشتری به عنوان کد فروشنده">
+                                    </div>
+                                    <div class="form-group">
+                                        <span style="color:red" id="telAlert">
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <span style="color:red" id="memberMsg">
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customerTelegramID">تلگرام:</label>
+                                        <input type="text" dir="rtl" class="form-control eng-format" id="customerTelegramID" name="customerTelegramID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orderSalePrice">قیمت فروش به مشتری:</label>
+                                        <input type="text" dir="rtl" class="form-control eng-format" id="orderSalePrice" name="orderSalePrice">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="advancedPayment">مبلغ بیعانه:</label>
+                                        <input type="text" dir="rtl" class="form-control eng-format" id="advancedPayment" name="advancedPayment">
+                                    </div>
+                                    <button class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="addMemberFunc();" > ثبت مشتری 
+                                        <span>
+                                            <i class="fa fa-plus"> </i>
+                                        </span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>

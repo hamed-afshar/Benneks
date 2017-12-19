@@ -514,16 +514,22 @@ function addMemberFunc() {
     var customerTelegramID = document.getElementById("customerTelegramID").value;
     var orderSalePrice = document.getElementById("orderSalePrice").value;
     var advancedPayment = document.getElementById("advancedPayment").value;
-    
-    
-    $.getJSON("./addmember.php?customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID + "&orderSalePrice" + orderSalePrice + "&advancedPayment" + advancedPayment, function(data) {
-       //check the member status
-       var result = data.result;
-       var msg = data.msg;
-       if (result === "exsist") {
-           document.getElementById("memberMsg").innerHTML = msg;
-       }
-    });
+    if (customerName === "" || customerTel === "" || customerTelegramID === "" || orderSalePrice === "" || advancedPayment === "") {
+        alert("خطا یکی از اطلاعات مرتبط با مشتری وارد نشده است!");
+    } else {
+        $.getJSON("./addmember.php?customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID + "&orderSalePrice" + orderSalePrice + "&advancedPayment" + advancedPayment, function (data) {
+            //check the member status
+            var result = data.result;
+            var msg = data.msg;
+            if (result === "exsist") {
+                document.getElementById("memberMsg").innerHTML = msg;
+                $("#submitOrderButton").prop('disabled', false);
+                $("#memberSubmitButton").prop('disabled', true);
+                
+            }
+        });
+    }
+
 }
 
 //Function to check numeric numbers only in customer Tel section in home.php
@@ -531,15 +537,16 @@ function checkTel() {
     var tel = document.getElementById("customerTel").value;
     // check if price is all numeric
     var illegalChar = /[^0-9.]/g;
-    if ((illegalChar.test(tel))) {
-        document.getElementById("telAlert").innerHTML = "برای تلفن مشتری تنها از اعداد استفاده نمایید";
+    if ((illegalChar.test(tel)) || tel.length < 11) {
+        document.getElementById("telAlert").innerHTML = "تلفن موبایل به صورت کامل، فقط از اعداد استفاده کنید";
         $("#submitOrderButton").prop('disabled', true);
+        $("#memberSubmitButton").prop('disabled', true);
         priceFlag = false;
         return telFlag;
     } else
     {
         document.getElementById("telAlert").innerHTML = "";
-        $("#submitOrderButton").prop('disabled', false);
+        $("#memberSubmitButton").prop('disabled', false);
         priceFlag = true;
         return telFlag;
     }

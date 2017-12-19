@@ -610,7 +610,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                 document.getElementById("iranDeliverCost").value = orderDetailsVar.iranDeliverCost;
                                             }
                                         </script>
-                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" > ثبت سفارش 
+                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="true"> ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>
                                             </span>
@@ -630,10 +630,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         <span style="color:red" id="telAlert">
                                         </span>
                                     </div>
-                                    <div class="form-group">
-                                        <span style="color:red" id="memberMsg">
-                                        </span>
-                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="customerTelegramID">تلگرام:</label>
                                         <input type="text" dir="rtl" class="form-control eng-format" id="customerTelegramID" name="customerTelegramID">
@@ -651,6 +648,10 @@ if (isset($_POST['submitOrderButton'])) {
                                             <i class="fa fa-plus"> </i>
                                         </span>
                                     </button>
+                                    <div class="form-group">
+                                        <span style="color:red" id="memberMsg">
+                                        </span>
+                                    </div>
 
                                 </div>
                             </div>

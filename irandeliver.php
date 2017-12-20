@@ -21,46 +21,41 @@ date_default_timezone_set("Asia/Tehran");
 
 
 $orderID = $_GET['orderID'];
-$benneksDeliverDate = $_GET['benneksDeliverDate'];
+$iranArrivalDate = $_GET['iranArrivalDate'];
 $cargoName = $_GET['cargoName'];
 $action = $_GET['action'];
-/*apply relevant action based on the action got from deliver modal.
- * submit = to add cargo details into database.
- * change = means orderId has already assgined with a cargoname and should be changed to new one
- * reset: means all information about an orderID should be deleted and set to null
+/* apply relevant action based on the action got from deliver modal.
+ * search = search for a cargo code
  */
 switch ($action) {
-    case "submit" :
+    case "search" :
         $checkQuery = "SELECT shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID WHERE orders.orderID = '$orderID'";
         $checkQueryResult = $user->executeQuery($checkQuery);
         $row = mysqli_fetch_row($checkQueryResult);
-        if (isset($row[0])) {
-            $sback['result'] = "exsist";
-            $sback['msg'] = "برای این سفارش قبلا کد کارگو " . $row[0] . " وارد شده است" . " آیا مایل به تغییر می باشید؟";
+        if (($row[0]) === $cargoName) {
+            $orderStatus = 'رسیده به ایران-İrana galmiş';
+            $orderStatusDescription = 'رسیده به ایران-İrana galmiş';
+            $sback['result'] = "success-search";
+            $sback['msg'] = "کد کارگو  " . $row[0] . " برای این سفارش با شماره " . $row[0] . "صحیح می باشد.";
+            $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription', shipment.iranArrivalDate = '$iranArrivalDate' WHERE orders.orderID = '$orderID'";
+        } else if (($row[0]) === NULL) {
+            $orderStatus = 'رسیده به ایران-İrana galmiş';
+            $orderStatusDescription = 'بدون کد کارگو';
+            $sback['result'] = "null-search";
+            $sback['msg'] = " برای سفارش شماره " . $orderID . " هیچ کد کارگویی ثبت نشده و لذا کارگو شماره" . $cargoName . " برای آن ثبت می گردد.";
+            $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID SET stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription', shipment.iranArrivalDate = '$iranArrivalDate', shipment.cargoName = '$cargoName' WHERE orders.orderID = '$orderID'";
         } else {
-            $sback['result'] = "not-exsist";
-            $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET shipment.benneksDeliverDate = '$benneksDeliverDate', shipment.cargoName = '$cargoName' WHERE orders.orderID = '$orderID'";
-            if (!$user->executeQuery($query)) {
-                $sback['msg'] = "خطایی در ورود اطلاعات رخ داده است!";
-            }
-            $sback['msg'] = "کد کارگو " . $cargoName . " برای این سفارش ثبت گردید";
+            $orderStatus = 'عودت ایران-İade-Iran';
+            $orderStatusDescription = 'کارگوی تکراری';
+            $sback['result'] = "wrong-search";
+            $sback['msg'] = "کد سفارش " . $orderID . " قبلا در کارگو شماره " . $row[0] . "به ایران ارسال شده و لذا به لیست عودت در ایران اضافه می شود. ";
+            $query = "UPDATE benneks.orders inner JOIN benneks.stat ON orders.orderID = stat.orders_orderID inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET stat.orderStatus = '$orderStatus', stat.orderStatusDescription = '$orderStatusDescription', shipment.iranArrivalDate = '$iranArrivalDate' where orders.orderID = '$orderID'";
         }
         break;
-    case "change" :
-        $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET shipment.benneksDeliverDate = '$benneksDeliverDate', shipment.cargoName = '$cargoName' WHERE orders.orderID = '$orderID'";
-        if (!$user->executeQuery($query)) {
-            $sback['msg'] = "خطایی در ورود اطلاعات رخ داده است!";
-        }
-        $sback['msg'] = "کد کارگو " . $cargoName . " برای این سفارش تغییر یافت";
-        break;
-    case "reset" :
-        $query = "UPDATE benneks.orders inner JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID SET shipment.benneksDeliverDate = NULL, shipment.cargoName = NULL WHERE orders.orderID = '$orderID'";
-        if (!$user->executeQuery($query)) {
-            $sback['msg'] = "خطایی در ورود اطلاعات رخ داده است!";
-        }
-        $sback['msg'] = "اطلاعات کارگو و تاریخ ارسال برای این کد محصول حذف گردید.";
 }
-
+if (!$user->executeQuery($query)) {
+    $sback['msg'] = mysqli_error($user->conn);
+}
 
 echo json_encode($sback, JSON_PRETTY_PRINT);
 ?>

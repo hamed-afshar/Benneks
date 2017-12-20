@@ -378,6 +378,34 @@ function calculator(userID, country, clothesType, productPrice) {
     }
 
 }
+//Function to check iran deliver
+function iranDeliverFunc(action) {
+    var orderID = document.getElementById("rowID").value;
+    var iranArrivalDate = document.getElementById("iranArrivalDate").value;
+    var cargoName = document.getElementById("cargoName").value;
+    switch (action) {
+        case "search" : 
+            $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&iranArrivalDate=" + iranArrivalDate + "&cargoName=" + cargoName, function (data) {
+                var result = data.result;
+                var msg = data.msg;
+                if(result === "success-search") {
+                    document.getElementById("iranDeliverMsg").innerHTML = msg;
+                    $("#searchButton").prop('hidden', true);
+                    $("#changeCargoButton").show("slow");
+                    $("#Not-changeCargoButton").show("slow");
+                } 
+                if (result === "wrong-search") {
+                    document.getElementById("iranDeliverMsg").innerHTML = msg;
+                }
+                if (result === "null-search") {
+                    document.getElementById("iranDeliverMsg").innerHTML = msg;
+                }
+                
+                
+            });
+            
+    }
+}
 
 //Function to check numeric prices only in making order section in home.php
 function checkPrice() {

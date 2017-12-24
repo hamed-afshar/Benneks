@@ -383,11 +383,16 @@ function iranDeliverFunc(action) {
     var orderID = document.getElementById("rowID").value;
     var iranArrivalDate = document.getElementById("iranArrivalDate").value;
     var cargoName = document.getElementById("cargoName").value;
+    if (cargoName === "") {
+        alert ("لطفا شماره کارگور را وارد نمایید.");
+        return false;
+    }
     switch (action) {
         case "search" : 
             $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&iranArrivalDate=" + iranArrivalDate + "&cargoName=" + cargoName, function (data) {
                 var result = data.result;
                 var msg = data.msg;
+                var counterMsg = data.counterMsg;
                 if(result === "success-search") {
                     document.getElementById("iranDeliverMsg").innerHTML = msg;
                     $("#searchButton").prop('hidden', true);
@@ -400,6 +405,7 @@ function iranDeliverFunc(action) {
                 if (result === "null-search") {
                     document.getElementById("iranDeliverMsg").innerHTML = msg;
                 }
+                document.getElementById("counterMsg").innerHTML = counterMsg;
                 
                 
             });

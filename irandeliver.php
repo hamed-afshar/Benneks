@@ -57,5 +57,12 @@ if (!$user->executeQuery($query)) {
     $sback['msg'] = mysqli_error($user->conn);
 }
 
+//counter for arrived orders in to the Iran
+$query2 = "SELECT count(*) from benneks.shipment WHERE cargoName = '$cargoName' AND iranArrivalDate = '$iranArrivalDate'";
+
+$queryResult2 = $user->executeQuery($query2);
+$row = mysqli_fetch_row($queryResult2);
+$sback['counterMsg'] = "تعداد شمارش شده تا به حال: " . $row[0];
+
 echo json_encode($sback, JSON_PRETTY_PRINT);
 ?>

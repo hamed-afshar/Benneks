@@ -379,7 +379,7 @@ function calculator(userID, country, clothesType, productPrice) {
 
 }
 //Function to check iran deliver
-function iranDeliverFunc(action) {
+function iranDeliverFunc() {
     var orderID = document.getElementById("rowID").value;
     var iranArrivalDate = document.getElementById("iranArrivalDate").value;
     var cargoName = document.getElementById("cargoName").value;
@@ -389,7 +389,7 @@ function iranDeliverFunc(action) {
     }
     switch (action) {
         case "search" : 
-            $.getJSON("./irandeliver.php?action=" + action + "&orderID=" + orderID + "&iranArrivalDate=" + iranArrivalDate + "&cargoName=" + cargoName, function (data) {
+            $.getJSON("./irandeliver.php?orderID=" + orderID + "&iranArrivalDate=" + iranArrivalDate + "&cargoName=" + cargoName, function (data) {
                 var result = data.result;
                 var msg = data.msg;
                 var counterMsg = data.counterMsg;

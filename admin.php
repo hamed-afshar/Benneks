@@ -429,7 +429,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <input type="text" class="form-control" name="rowID" id="rowID" onclick="return false;">
                                     </div>
 
-                                    <button type="button" class="btn btn-success btn-block" name="searchButton" id="searchButton" onclick="iranDeliverFunc('search');"> بررسی و ثبت </button>
+                                    <button type="button" class="btn btn-success btn-block" name="searchButton" id="searchButton" onclick="iranDeliverFunc();"> بررسی و ثبت </button>
                                     <div class="form-group">
                                         <center> <p id="iranDeliverMsg">  </p> </center>
                                     </div>

@@ -102,19 +102,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 
-<!-- script for add modal -->
+<!-- script for change Kargo modal -->
 <script>
     $(document).ready(function () {
-        $(document).on("click", ".open-addModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
-        });
-    });
-</script>
-<!-- script for cancel modal -->
-<script>
-    $(document).ready(function () {
-        $(document).on("click", ".open-cancelModal", function () {
+        $(document).on("click", ".open-changeKargoModal", function () {
             var orderID = $(this).data('id');
             $(".modal-body #rowID").val(orderID);
         });
@@ -349,8 +340,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<tr>";
                                         echo "<td> " . $row[0] .
                                         "<hr> "
-                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#changeKargoModal' data-toggle='modal' data-target='#changeKargoModal' data-id='$row[0]' class='open-changeKargoModal' > <i class='fa fa-pencil fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#iranDeliverModal' data-id='$row[0]' class='open-iranDeliverModal'> <i class='fa fa-plane fa-fw fa-lg'></i> </a>"
                                         . "<a href='#returnModal' data-toggle='modal' data-target='#returnModal' data-id='$row[0]' class='open-returnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
                                         . " </td>";
@@ -412,7 +402,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> ارسال به ایران </h4>
+                                <h4><span class = "glyphicon glyphicon-plane"> </span> ارسال به ایران </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form"  method="post" action="irandeliver.php" dir="rtl">
@@ -429,16 +419,42 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <input type="text" class="form-control" name="rowID" id="rowID" onclick="return false;">
                                     </div>
 
-                                    <button type="button" class="btn btn-success btn-block" name="searchButton" id="searchButton" onclick="iranDeliverFunc();"> بررسی و ثبت </button>
+                                    <button type="button" class="btn btn-success btn-block" name="searchButton" id="searchButton" onclick="iranDeliverFunc('search');"> بررسی و ثبت </button>
                                     <div class="form-group">
                                         <center> <p id="iranDeliverMsg">  </p> </center>
                                     </div>
                                     <div class="form-group">
-                                        <center> <p id="counterMsg" style="color: red">  </p> </center>
+                                        <center> <p id="counterMsg" style="color: black">  </p> </center>
                                     </div>
-
-
+                                    <div class="form-group">
+                                        <center> <p id="counterErrorMsg" style="color: red">  </p> </center>
+                                    </div>
                                     <button type="button" class="btn btn-danger btn-block" id="Not-changeCargoButton" onclick="$('#iranDeliverModal').modal('hide');"> انصراف </button>   
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--change kargo modal -->
+                <div class = "modal fade" id = "changeKargoModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-pencil"> </span> تغییر کارگو </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form"  method="post" action="changekargo.php" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly="" onclick="return false;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
+                                        <input type="text" class="form-control" name="cargoName" id="cargoName" onclick="return false;">
+                                    </div>          
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>
                             </div>
                         </div>
@@ -484,10 +500,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-refresh"> </span> عودت محصول </h4>
+                                <h4><span class = "glyphicon glyphicon-refresh"> </span> عودت محصول در ایران </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="return.php" method="post" dir="rtl">
+                                <form role="form" action="returniran.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="rowID"> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
@@ -495,6 +511,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     <div class="form-group">
                                         <label for="returnReason"><span class="glyphicon glyphicon-hand-left"></span>  دلیل عودت سفارش</label>
                                         <select dir = "rtl" class = "form-control" id = "returnReason" name="returnReason"> 
+                                            <option value = "دیر رسیدن کالا">دیر رسیدن کالا </option>
                                             <option value = "اشتباه بودن محصول">اشتباه بودن محصول</option>
                                             <option value = "خراب بودن محصول">خراب بودن محصول</option>
                                             <option value = "تعویض با جنس دیگر">تعویض با جنس دیگر</option>

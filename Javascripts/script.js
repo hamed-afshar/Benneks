@@ -379,7 +379,7 @@ function calculator(userID, country, clothesType, productPrice) {
 
 }
 //Function to check iran deliver
-function iranDeliverFunc() {
+function iranDeliverFunc(action) {
     var orderID = document.getElementById("rowID").value;
     var iranArrivalDate = document.getElementById("iranArrivalDate").value;
     var cargoName = document.getElementById("cargoName").value;
@@ -393,6 +393,7 @@ function iranDeliverFunc() {
                 var result = data.result;
                 var msg = data.msg;
                 var counterMsg = data.counterMsg;
+                var counterErrorMsg = data.counterErrorMsg;
                 if(result === "success-search") {
                     document.getElementById("iranDeliverMsg").innerHTML = msg;
                     $("#searchButton").prop('hidden', true);
@@ -406,8 +407,8 @@ function iranDeliverFunc() {
                     document.getElementById("iranDeliverMsg").innerHTML = msg;
                 }
                 document.getElementById("counterMsg").innerHTML = counterMsg;
-                
-                
+                document.getElementById("counterErrorMsg").innerHTML = counterErrorMsg;
+                                
             });
             
     }

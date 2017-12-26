@@ -60,14 +60,42 @@ $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
 //Get totall value and numbers for month orders
 $query4 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.frSUM, SecondSet.frCount FROM " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date()) AND orders.country = 'ترکیه') as FirstSet " .
+        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date()) AND YEAR(orders.orderDate) = YEAR(NOW()) AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(current_date()) AND orders.country = 'فرانسه') as SecondSet";
+        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(current_date()) AND YEAR(orders.orderDate) = YEAR(NOW()) AND orders.country = 'فرانسه') as SecondSet";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
 $queryResult4 = $user->executeQuery($query4);
 $monthValue = mysqli_fetch_row($queryResult4);
+//Get totall value for orders that have not bought yet
+$notBoughtValueQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus is null";
+if (!$user->executeQuery($notBoughtValueQuery)) {
+    echo mysqli_error($user->conn);
+}
+$queryResultNotBoughtValue = $user->executeQuery($notBoughtValueQuery);
+$notBoughtValue = mysqli_fetch_row($queryResultNotBoughtValue);
+//get the totall value for orders that have bought and are on the way to office from 2018-12-1
+$wayToOfficeValueQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID inner join benneks.shipment on orders.orderID = shipment.orders_orderID where stat.orderStatus = 'انجام شده-tamam' and benneksShoppingDate > '2017-12-01'";
+if (!$user->executeQuery($wayToOfficeValueQuery)) {
+    echo mysqli_error($user->conn);
+}
+$queryResultWayToOfficeValue = $user->executeQuery($wayToOfficeValueQuery);
+$wayToOfficeValue = mysqli_fetch_row($queryResultWayToOfficeValue);
+//get the totall value for order which are available in the office
+$officeValueQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID inner join benneks.shipment on orders.orderID = shipment.orders_orderID where stat.orderStatus = 'رسیده به دفتر-officde'";
+if (!$user->executeQuery($officeValueQuery)) {
+    echo mysqli_error($user->conn);
+}
+$queryResultOfficeValueQuery = $user->executeQuery($officeValueQuery);
+$officeValue = mysqli_fetch_row($queryResultOfficeValueQuery);
+//get the total value for orders which are on the way to iran and kargoCode > 112
+$iranWayQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID inner join benneks.shipment on orders.orderID = shipment.orders_orderID where stat.orderStatus = 'در راه ایران-iran yolunda' and shipment.cargoName > '112'";
+if (!$user->executeQuery($iranWayQuery)) {
+    echo mysqli_error($user->conn);
+}
+$queryResultIranWayQuery= $user->executeQuery($iranWayQuery);
+$iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
 ?>
 <html>
     <head>
@@ -204,31 +232,23 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-push-4 col-md-push-4 col-sm-push-4" dir="rtl">
                                 <div class="panel panel-primary" dir="rtl">
                                     <div class="panel-heading">
-                                        <i class="fa fa-exchange fa-fw"></i> حجم مالی:
+                                        <i class="fa fa-exchange fa-fw"></i>  مالی:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> سفارشات امروز لیر:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
+                                                <label for="notBoughtValue"> مبلغ سفارشات خرید نشده:<br></label>
+                                                <label id="notBought" style="color: goldenrod"> <?php echo $notBoughtValue[0]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> سفارشات روز گذشته لیر :</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['0']; ?> </label>  
+                                                <label for="wayToOfficeValue"> مبلغ سفارشات در راه شرکت:</label>
+                                                <label id="wayToOfficeValue" style="color: goldenrod"> <?php echo $wayToOfficeValue[0]; ?> </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه لیر:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
+                                                <label for="officeValue"> مبلغ سفارشات رسیده به دفتر:</label>
+                                                <label id="officeValue" style="color: goldenrod"> <?php echo $officeValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز یورو:<br></label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[2]; ?>  </label>  
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته یورو :</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['2']; ?> </label>  
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="monthQuantity"> ماه یورو:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[2]; ?> </label> 
+                                                <label for="iranWayValue"> مبلغ سفارشات در راه ایران:</label>
+                                                <label id="iranWayValue" style="color: goldenrod"> <?php echo $iranWayValue[0]; ?> </label> 
                                             </div>
                                         </div>
                                     </div>
@@ -252,17 +272,19 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز فرانسه:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[3]; ?> </label> 
+                                                <label for="dayQuantity"> سفارشات امروز لیر:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته فرانسه:</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[3]; ?> </label> 
+                                                <label for="yesterdayQuantuty"> سفارشات روز گذشته لیر :</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['0']; ?> </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه فرانسه:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[3]; ?> </label> 
+                                                <label for="monthQuantity"> ماه لیر:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
                                             </div>
+
+
                                         </div>
                                     </div>
                                 </div>

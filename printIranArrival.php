@@ -45,10 +45,12 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('A1', 'ردیف')
         ->setCellValue('B1', 'کد')
         ->setCellValue('C1', 'وضعیت')
-        ->setCellValue('D1', 'جزئیات');
+        ->setCellValue('D1', 'جزئیات')
+        ->setCellValue('E1', 'قیمت');
 
 //query to extract requiered data from db and insert it to excel
-$query = "select shipment.orders_orderID, stat.orderStatus, stat.orderStatusDescription from benneks.shipment inner join benneks.stat on shipment.orders_orderID = stat.orders_orderID where shipment.cargoName = '$cargoName' and shipment.iranArrivalDate is not null;";
+$query = "select shipment.orders_orderID, stat.orderStatus, stat.orderStatusDescription, cost.benneksPrice from benneks.shipment inner join benneks.stat on shipment.orders_orderID = stat.orders_orderID "
+        ."inner join benneks.cost on shipment.orders_orderID = cost.orders_orderID where shipment.cargoName = '$cargoName' and shipment.iranArrivalDate is not null;";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -61,6 +63,7 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('B' . $i, $row[0]);
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
     $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $row[2]);
+    $objPHPExcel->getActiveSheet()->setCellValue('E' . $i, $row[3]);
     $i++;
 }
 
@@ -69,6 +72,7 @@ $objSheet->getColumnDimension('A')->setAutoSize(true);
 $objSheet->getColumnDimension('B')->setAutoSize(true);
 $objSheet->getColumnDimension('C')->setAutoSize(true);
 $objSheet->getColumnDimension('D')->setAutoSize(true);
+$objSheet->getColumnDimension('E')->setAutoSize(true);
 
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);

@@ -56,13 +56,13 @@ if (!$user->executeQuery($query)) {
 }
 
 //counter for totall arrived orders in to the Iran
-$query2 = "SELECT count(*) from benneks.shipment WHERE iranArrivalDate = '$iranArrivalDate'";
+$query2 = "SELECT count(*) from benneks.shipment WHERE iranArrivalDate = '$iranArrivalDate' and (cargoName = '$cargoArray[0]' or cargoName = '$cargoArray[1]');";
 $queryResult2 = $user->executeQuery($query2);
 $row = mysqli_fetch_row($queryResult2);
 $sback['counterMsg'] = "تعداد شمارش شده تا به حال: " . $row[0];
 
 // counter for problem in arrival orders
-$query3 = "SELECT count(*) from benneks.stat inner join benneks.shipment on stat.orders_orderID = shipment.orders_orderID where stat.orderStatus = 'رسیده به ایران با مشکل-İrana galmiş' and iranArrivalDate = '$iranArrivalDate'";
+$query3 = "SELECT count(*) from benneks.stat inner join benneks.shipment on stat.orders_orderID = shipment.orders_orderID where stat.orderStatus = 'رسیده به ایران با مشکل-İrana galmiş' and iranArrivalDate = '$iranArrivalDate' and (cargoName = '$cargoArray[0]' or cargoName = '$cargoArray[1]')";
 $queryResult3 = $user->executeQuery($query3);
 $row = mysqli_fetch_row($queryResult3);
 $sback['counterErrorMsg'] = "اشتباهات: " . $row[0];

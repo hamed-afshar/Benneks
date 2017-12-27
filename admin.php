@@ -202,6 +202,8 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                     <li><a href="#"> گزارش کارگو</a></li>
                                     <li><a href="#finalReportModal" data-toggle='modal' data-target='#finalReportModal' class='open-finalReportModal' > گزارش جامع</a></li>
                                     <li><a href="#iranPrintModal" data-toggle='modal' data-target='#iranPrintModal' class='open-iranPrintModal' > لیست رسیده به ایران</a></li>
+                                    <li><a href="#iranPrintMissingModal" data-toggle='modal' data-target='#iranPrintMissingModal' class='open-iranPrintMissingModal' > لیست گم شده های کارگو</a></li>
+                                    
                                 </ul>
 
                             </div>
@@ -592,10 +594,31 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-print"> </span> پرینت</h4>
+                                <h4><span class = "glyphicon glyphicon-print"> </span> پرینت کد های رسیده کارگو</h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form" action="printIranArrival.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> کد کارگو</label>
+                                        <input type="text" class="form-control" name="kargoID" id="kargoID">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                   <!--print iran missing modal -->
+                <div class = "modal fade" id = "iranPrintMissingModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-print"> </span> پرینت کد های گم شده در کارگو</h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="printIranMissing.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> کد کارگو</label>
                                         <input type="text" class="form-control" name="kargoID" id="kargoID">

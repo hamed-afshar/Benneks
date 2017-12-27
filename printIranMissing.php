@@ -1,7 +1,7 @@
 <?php
 
 /* 
- * Script to print iran arrival items
+ * script to print missing items in the cargo
  */
 ob_start();
 session_start();
@@ -48,7 +48,7 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('D1', 'جزئیات');
 
 //query to extract requiered data from db and insert it to excel
-$query = "select shipment.orders_orderID, stat.orderStatus, stat.orderStatusDescription from benneks.shipment inner join benneks.stat on shipment.orders_orderID = stat.orders_orderID where shipment.cargoName = '$cargoName' and shipment.iranArrivalDate is not null and stat.orderStatus = 'رسیده به ایران-İrana galmiş';";
+$query = "select shipment.orders_orderID, stat.orderStatus, stat.orderStatusDescription from benneks.shipment inner join benneks.stat on shipment.orders_orderID = stat.orders_orderID where shipment.cargoName = '$cargoName' and shipment.iranArrivalDate is null;";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -83,3 +83,5 @@ header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="Kargo-Iran-Arrival-' . $cargoName . '.xls"');
 
 $objWriter->save('php://output');
+
+?>

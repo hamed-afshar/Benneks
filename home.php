@@ -167,7 +167,7 @@ if (isset($_POST['submitOrderButton'])) {
                             <a href="orderlist.php"> <i class="fa fa-th-list fa-fw"> </i> لیست سفارشات </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-area-chart fa-fw"> </i> گزارش مفصل </a>
+                            <a href="#printKargoModal" data-toggle='modal' data-target='#printKargoModal' class='open-printKargoModal'> <i class="fa fa-print fa-fw"> </i> پرینت کارگو </a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-money fa-fw" > </i> گزارش مالی</a>
@@ -630,7 +630,7 @@ if (isset($_POST['submitOrderButton'])) {
                                         <span style="color:red" id="telAlert">
                                         </span>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label for="customerTelegramID">تلگرام:</label>
                                         <input type="text" dir="rtl" class="form-control eng-format" id="customerTelegramID" name="customerTelegramID">
@@ -660,7 +660,29 @@ if (isset($_POST['submitOrderButton'])) {
                     <!-- /.new-order-panel-body -->
                 </div>
                 <!--new-order-panel-->
+                <!--print kargo modal -->
+                <div class = "modal fade" id = "printKargoModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-print"> </span> پرینت کارگو</h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="printUsersKargo.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> کد کارگو</label>
+                                        <input type="text" class="form-control" name="kargoID" id="kargoID">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
 </body>
 </html>

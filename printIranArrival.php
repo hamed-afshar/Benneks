@@ -48,7 +48,7 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('D1', 'جزئیات');
 
 //query to extract requiered data from db and insert it to excel
-$query = "select shipment.orders_orderID, stat.orderStatus, stat.orderStatusDescription from benneks.shipment inner join benneks.stat on shipment.orders_orderID = stat.orders_orderID where shipment.cargoName = '$cargoName' and shipment.iranArrivalDate is not null and stat.orderStatus = 'رسیده به ایران-İrana galmiş';";
+$query = "select shipment.orders_orderID, stat.orderStatus, stat.orderStatusDescription from benneks.shipment inner join benneks.stat on shipment.orders_orderID = stat.orders_orderID where shipment.cargoName = '$cargoName' and shipment.iranArrivalDate is not null;";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }

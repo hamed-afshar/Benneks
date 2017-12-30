@@ -440,7 +440,7 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                     </div>
                                     <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID" onclick="return false;">
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly onclick="return false;">
                                     </div>
 
                                     <button type="button" class="btn btn-success btn-block" name="searchButton" id="searchButton" onclick="iranDeliverFunc('search');"> بررسی و ثبت </button>

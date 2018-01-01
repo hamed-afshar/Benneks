@@ -643,16 +643,19 @@ if (isset($_POST['submitOrderButton'])) {
                                         <label for="advancedPayment">مبلغ بیعانه:</label>
                                         <input type="text" dir="rtl" class="form-control eng-format" id="advancedPayment" name="advancedPayment">
                                     </div>
-                                    <button class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="addMemberFunc();" > ثبت مشتری 
+                                    <button class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="addMemberFunc('add');" > ثبت مشتری 
                                         <span>
                                             <i class="fa fa-plus"> </i>
                                         </span>
                                     </button>
                                     <div class="form-group">
-                                        <span style="color:red" id="memberMsg">
+                                        <span style="color:red; text-align: justify" id="memberMsg">
                                         </span>
                                     </div>
-
+                                    <div class="form-group">
+                                        <button class="form-control btn btn-group btn-danger" style="display: none" id="memberEditButton" name="memberEditButton" onclick="addMemberFunc('edit');" > تغییر </button>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

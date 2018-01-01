@@ -384,22 +384,22 @@ function iranDeliverFunc(action) {
     var iranArrivalDate = document.getElementById("iranArrivalDate").value;
     var cargoName = document.getElementById("cargoName").value;
     if (cargoName === "") {
-        alert ("لطفا شماره کارگور را وارد نمایید.");
+        alert("لطفا شماره کارگور را وارد نمایید.");
         return false;
     }
     switch (action) {
-        case "search" : 
+        case "search" :
             $.getJSON("./irandeliver.php?orderID=" + orderID + "&iranArrivalDate=" + iranArrivalDate + "&cargoName=" + cargoName, function (data) {
                 var result = data.result;
                 var msg = data.msg;
                 var counterMsg = data.counterMsg;
                 var counterErrorMsg = data.counterErrorMsg;
-                if(result === "success-search") {
+                if (result === "success-search") {
                     document.getElementById("iranDeliverMsg").innerHTML = msg;
                     $("#searchButton").prop('hidden', true);
                     $("#changeCargoButton").show("slow");
                     $("#Not-changeCargoButton").show("slow");
-                } 
+                }
                 if (result === "wrong-search") {
                     document.getElementById("iranDeliverMsg").innerHTML = msg;
                 }
@@ -408,9 +408,9 @@ function iranDeliverFunc(action) {
                 }
                 document.getElementById("counterMsg").innerHTML = counterMsg;
                 document.getElementById("counterErrorMsg").innerHTML = counterErrorMsg;
-                                
+
             });
-            
+
     }
 }
 
@@ -543,7 +543,7 @@ function addOrderCheck(action) {
     }
 }
 //Function to add member and customer information in to the database
-function addMemberFunc() {
+function addMemberFunc(action) {
     var customerName = document.getElementById("customerName").value;
     var customerTel = document.getElementById("customerTel").value;
     var customerTelegramID = document.getElementById("customerTelegramID").value;
@@ -552,15 +552,29 @@ function addMemberFunc() {
     if (customerName === "" || customerTel === "" || customerTelegramID === "" || orderSalePrice === "" || advancedPayment === "") {
         alert("خطا یکی از اطلاعات مرتبط با مشتری وارد نشده است!");
     } else {
-        $.getJSON("./addmember.php?customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID + "&orderSalePrice" + orderSalePrice + "&advancedPayment" + advancedPayment, function (data) {
+        $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID + "&orderSalePrice=" + orderSalePrice + "&advancedPayment=" + advancedPayment, function (data) {
             //check the member status
             var result = data.result;
             var msg = data.msg;
             if (result === "exsist") {
+                //if customer has already exist in the db
                 document.getElementById("memberMsg").innerHTML = msg;
                 $("#submitOrderButton").prop('disabled', false);
                 $("#memberSubmitButton").prop('disabled', true);
-                
+                $("#memberEditButton").show("slow");
+            }
+            //if customer does not exist in the db and this new customer added to the system
+            if (result === "success") {
+                document.getElementById("memberMsg").innerHTML = msg;
+                $("#submitOrderButton").prop('disabled', false);
+                $("#memberSubmitButton").prop('disabled', true);
+                $("#submitOrderButton").prop('disabled', false);
+            }
+            if (result === "edit") {
+                document.getElementById("memberMsg").innerHTML = msg;
+                $("#memberEditButton").show("slow");
+                $("#memberSubmitButton").prop('disabled', false);
+                $("#memberEditButton").show("slow");
             }
         });
     }

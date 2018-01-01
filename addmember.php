@@ -47,15 +47,6 @@ switch ($action) {
             $sback['msg'] = "سفارش مشتری جدید با کد  " . $customerCode . " به سیستم اضافه گردید.";
         }
         break;
-    case "edit" :
-        $editQuery = "update benneks.members set customerCode = '$customerCode', customerName = '$customerName', customerTel = '$customerTel', customerTelegramID = '$customerTelegramID' where members.customerCode = '$customerCode';";
-        if (!$user->executeQuery($editQuery)) {
-
-            $sback['msg'] = mysqli_error($user->conn);
-        }
-        $sback['result'] = "edit";
-        $sback['msg'] = "تغییرات اعمال گردید.";
-        break;
 }
 
 echo json_encode($sback, JSON_PRETTY_PRINT);

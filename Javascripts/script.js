@@ -561,20 +561,12 @@ function addMemberFunc(action) {
                 document.getElementById("memberMsg").innerHTML = msg;
                 $("#submitOrderButton").prop('disabled', false);
                 $("#memberSubmitButton").prop('disabled', true);
-                $("#memberEditButton").show("slow");
             }
             //if customer does not exist in the db and this new customer added to the system
             if (result === "success") {
                 document.getElementById("memberMsg").innerHTML = msg;
                 $("#submitOrderButton").prop('disabled', false);
                 $("#memberSubmitButton").prop('disabled', true);
-                $("#submitOrderButton").prop('disabled', false);
-            }
-            if (result === "edit") {
-                document.getElementById("memberMsg").innerHTML = msg;
-                $("#memberEditButton").show("slow");
-                $("#memberSubmitButton").prop('disabled', false);
-                $("#memberEditButton").show("slow");
             }
         });
     }

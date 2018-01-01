@@ -86,7 +86,8 @@ if (isset($_POST['submitOrderButton'])) {
     $query4 = "INSERT INTO benneks.shipment(orders_orderID) VALUES ('$orderID')";
     $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
     $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice, currency, benneksMargin, iranDeliverCost) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice', '$currency', '$benneksMargin', '$iranDeliverCost')";
-
+    // need to insert customer detail and financial transaction details in to the database
+    $transactionQuery = "INSERT INTO benneks.transaction(transactionID, debpt, transactionDate, transactionStatus, customerCode";
     if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
         $flag = true;
     } else {
@@ -651,11 +652,7 @@ if (isset($_POST['submitOrderButton'])) {
                                     <div class="form-group">
                                         <span style="color:red; text-align: justify" id="memberMsg">
                                         </span>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="form-control btn btn-group btn-danger" style="display: none" id="memberEditButton" name="memberEditButton" onclick="addMemberFunc('edit');" > تغییر </button>
-                                    </div>
-                                    
+                                    </div>                                 
                                 </div>
                             </div>
                         </div>

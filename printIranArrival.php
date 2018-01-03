@@ -79,9 +79,9 @@ $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:Q1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:Q1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:Q1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:E1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:E1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:E1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="Kargo-Iran-Arrival-' . $cargoName . '.xls"');

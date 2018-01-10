@@ -70,14 +70,15 @@ if (isset($_POST['submitOrderButton'])) {
     $productWeight = $_POST['productWeight'];
     $benneksMargin = $_POST['benneksMargin'];
     $iranDeliverCost = $_POST['iranDeliverCost'];
+    $customerCode = $userID . $_POST['customerTel'];
 
     // user directory needs to be added before pic name
     $productPic = $targetPath;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = 1;
-    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country, productsWeight) "
+    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country, productsWeight, members_customerCode) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
-            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity', '$country', '$productWeight')";
+            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity', '$country', '$productWeight', '$customerCode')";
     if (!$user->executeQuery($query3)) {
         $flag = false;
         echo mysqli_error($user->conn);

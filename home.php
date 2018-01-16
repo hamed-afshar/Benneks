@@ -43,7 +43,7 @@ if (isset($_POST['submitOrderButton'])) {
 // Insert customer information into database
     $customerID = $lastID + 1;
     //customerID is actualy a counter
-    $query2 = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', '$customerName', '$customerTel')";
+    $query2 = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', 'نامشخص', 'نامشخص')";
     if (!$user->executeQuery($query2)) {
         $flag = false;
         echo "error2";
@@ -70,8 +70,11 @@ if (isset($_POST['submitOrderButton'])) {
     $productWeight = $_POST['productWeight'];
     $benneksMargin = $_POST['benneksMargin'];
     $iranDeliverCost = $_POST['iranDeliverCost'];
-    $customerCode = $userID . $_POST['customerTel'];
-
+// variable to hold transaction and customer information
+    $customerTel = $_POST['customerTel'];
+    $customerCode = $userID . doubleval($customerTel);
+    $amount = $_POST['orderSalePrice'];
+    $advancedPayment = $_POST['advancedPayment'];
     // user directory needs to be added before pic name
     $productPic = $targetPath;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
@@ -88,8 +91,11 @@ if (isset($_POST['submitOrderButton'])) {
     $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
     $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice, currency, benneksMargin, iranDeliverCost) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice', '$currency', '$benneksMargin', '$iranDeliverCost')";
     // need to insert customer detail and financial transaction details in to the database
-    $transactionQuery = "INSERT INTO benneks.transaction(transactionID, debpt, transactionDate, transactionStatus, customerCode";
-    if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
+    //first query create dept for customer based on her orders
+    $amountStatus = 'بدهکار';
+    $transactionStatus = 'بابت خرید ' . $clothesType;
+    $transactionQuery1 = "INSERT INTO benneks.transaction(amount, amountStatus, transactionDate, transactionStatus) VALUES('$amount','$amountStatus','$orderDate','$transactionStatus')";
+    if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6)) && ($user->executeQuery($transactionQuery1))) {
         $flag = true;
     } else {
         $flag = false;
@@ -565,7 +571,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="productPrice"> قیمت :</label>
+                                            <label for="productPrice"> قیمت اصلی :</label>
                                             <input type="text" class="form-control eng-format" dir="ltr" maxlength="8" onkeyup="checkPrice(); showRealPrice();" id="productPrice" name = "productPrice">
                                         </div>                 
                                         <div class="form-group">
@@ -576,6 +582,14 @@ if (isset($_POST['submitOrderButton'])) {
                                         <div class = "form-group">
                                             <label for = "benneksPrice"> قیمت فروش سیستم :</label>
                                             <input type = "text" class = "form-control eng-format" dir="ltr" id = "benneksPrice" name = "benneksPrice" readonly="readonly" placeholder = "قیمت فروش سیستم ">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="orderSalePrice">قیمت فروش به مشتری:</label>
+                                            <input type="text" dir="rtl" class="form-control eng-format" id="orderSalePrice" name="orderSalePrice">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="advancedPayment">مبلغ بیعانه از مشتری:</label>
+                                            <input type="text" dir="rtl" class="form-control eng-format" id="advancedPayment" name="advancedPayment">
                                         </div>
                                         <div class="form-group">
                                             <input type="hidden" id="currency" name="currency">
@@ -612,48 +626,41 @@ if (isset($_POST['submitOrderButton'])) {
                                                 document.getElementById("iranDeliverCost").value = orderDetailsVar.iranDeliverCost;
                                             }
                                         </script>
+                                        <fieldset>
+                                            <legend> اطلاعات مشتری</legend>
+                                            <div class="form-group">
+                                                <label for="customerName">نام مشتری:</label>
+                                                <input type="text" dir="rtl" class="form-control eng-format" id="customerName" name="customerName">
+                                            </div>
+                                            <div class = "form-group">
+                                                <label for="customerTel">تلفن مشتری:</label>
+                                                <input type = "text" class = "form-control eng-format" dir="ltr" id = "customerTel" name = "customerTel" maxlength="11" onkeyup="checkTel()" placeholder = " موبایل مشتری به عنوان کد فروشنده">
+                                            </div>
+                                            <div class="form-group">
+                                                <span style="color:red" id="telAlert">
+                                                </span>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="customerTelegramID">تلگرام:</label>
+                                                <input type="text" dir="rtl" class="form-control eng-format" id="customerTelegramID" name="customerTelegramID">
+                                            </div>
+                                            <button class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="addMemberFunc('add');" > ثبت مشتری 
+                                                <span>
+                                                    <i class="fa fa-plus"> </i>
+                                                </span>
+                                            </button>
+                                            <div class="form-group">
+                                                <span style="color:red; text-align: justify" id="memberMsg">
+                                                </span>
+                                            </div>  
+                                        </fieldset>
                                         <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="true"> ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>
                                             </span>
                                         </button>
                                     </form>
-                                </div>
-                                <div class="col-lg-6 col-lg-pull-6" >
-                                    <div class="form-group">
-                                        <label for="customerName">نام مشتری:</label>
-                                        <input type="text" dir="rtl" class="form-control eng-format" id="customerName" name="customerName">
-                                    </div>
-                                    <div class = "form-group">
-                                        <label for="customerTel">تلفن مشتری:</label>
-                                        <input type = "text" class = "form-control eng-format" dir="ltr" id = "customerTel" name = "customerTel" maxlength="11" onkeyup="checkTel()" placeholder = " موبایل مشتری به عنوان کد فروشنده">
-                                    </div>
-                                    <div class="form-group">
-                                        <span style="color:red" id="telAlert">
-                                        </span>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="customerTelegramID">تلگرام:</label>
-                                        <input type="text" dir="rtl" class="form-control eng-format" id="customerTelegramID" name="customerTelegramID">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="orderSalePrice">قیمت فروش به مشتری:</label>
-                                        <input type="text" dir="rtl" class="form-control eng-format" id="orderSalePrice" name="orderSalePrice">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="advancedPayment">مبلغ بیعانه:</label>
-                                        <input type="text" dir="rtl" class="form-control eng-format" id="advancedPayment" name="advancedPayment">
-                                    </div>
-                                    <button class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="addMemberFunc('add');" > ثبت مشتری 
-                                        <span>
-                                            <i class="fa fa-plus"> </i>
-                                        </span>
-                                    </button>
-                                    <div class="form-group">
-                                        <span style="color:red; text-align: justify" id="memberMsg">
-                                        </span>
-                                    </div>                                 
                                 </div>
                             </div>
                         </div>

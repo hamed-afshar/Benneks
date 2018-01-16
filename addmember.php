@@ -23,8 +23,7 @@ $action = $_GET['action'];
 $customerName = $_GET['customerName'];
 $customerTel = $_GET['customerTel'];
 $customerTelegramID = $_GET['customerTelegramID'];
-$customerCode = $userID . $_GET['customerTel'];
-;
+$customerCode = $userID . doubleval($customerTel);
 //apply proper action based on action
 //add = check if this customerCode is available in the DB
 //confirm = confim member insertion in to the database

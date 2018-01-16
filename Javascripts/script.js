@@ -547,12 +547,10 @@ function addMemberFunc(action) {
     var customerName = document.getElementById("customerName").value;
     var customerTel = document.getElementById("customerTel").value;
     var customerTelegramID = document.getElementById("customerTelegramID").value;
-    var orderSalePrice = document.getElementById("orderSalePrice").value;
-    var advancedPayment = document.getElementById("advancedPayment").value;
-    if (customerName === "" || customerTel === "" || customerTelegramID === "" || orderSalePrice === "" || advancedPayment === "") {
+    if (customerName === "" || customerTel === "" || customerTelegramID === "") {
         alert("خطا یکی از اطلاعات مرتبط با مشتری وارد نشده است!");
     } else {
-        $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID + "&orderSalePrice=" + orderSalePrice + "&advancedPayment=" + advancedPayment, function (data) {
+        $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID , function (data) {
             //check the member status
             var result = data.result;
             var msg = data.msg;

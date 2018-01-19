@@ -95,7 +95,11 @@ if (isset($_POST['submitOrderButton'])) {
     $amountStatus = 'بدهکار';
     $transactionStatus = 'بابت خرید ' . $clothesType;
     $transactionQuery1 = "INSERT INTO benneks.transaction(amount, amountStatus, transactionDate, transactionStatus) VALUES('$amount','$amountStatus','$orderDate','$transactionStatus')";
-    if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6)) && ($user->executeQuery($transactionQuery1))) {
+    // second query create due amount based on customer advanced payment
+    $amountStatus = 'بستانکار';
+    $transactionStatus = 'بابت پرداخت بیعانه';
+    $transactionQuery2 = "INSERT INTO benneks.transaction(amount, amountStatus, transactionDate, transactionStatus) VALUES('$advancedPayment','$amountStatus','$orderDate','$transactionStatus')";
+    if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6)) && ($user->executeQuery($transactionQuery1)) && ($user->executeQuery($transactionQuery2))) {
         $flag = true;
     } else {
         $flag = false;

@@ -35,7 +35,7 @@ switch ($action) {
         $row = mysqli_fetch_row($checkQueryResult);
         if ($row[0] === $customerCode) {
             $sback['result'] = "exsist";
-            $sback['msg'] = "مشتری با کد ذکر شده، نام " . $row[1] . " و آیدی " . $row[2] . " درسیستم ثبت شده و لذا این سفارش برای همین مشتری ثبت می گردد.";
+            $sback['msg'] = "مشتری با کد ذکر شده، نام " . $row[1] . " و آیدی " . $row[2] . " در سیستم ثبت شده و لذا این سفارش برای همین مشتری ثبت می گردد، درصورت تمایل به تغییر مشخصات مشتری صفحه را مجدادا بارگذاری فرمایید.";
         } else {
             // if this new customer does not exist in the db then it will be added to the database
             $memberQuery = "INSERT INTO benneks.members(customerCode, customerName, customerTel, customerTelegramID) VALUES ('$customerCode', '$customerName', '$customerTel', '$customerTelegramID')";

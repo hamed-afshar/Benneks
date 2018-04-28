@@ -559,6 +559,9 @@ function addMemberFunc(action) {
                 document.getElementById("memberMsg").innerHTML = msg;
                 $("#submitOrderButton").prop('disabled', false);
                 $("#memberSubmitButton").prop('disabled', true);
+                $("#customerName").prop('disabled', true);
+                $("#customerTel").prop('disabled', true);
+               $("#customerTelegramID").prop('disabled', true);
             }
             //if customer does not exist in the db and this new customer added to the system
             if (result === "success") {

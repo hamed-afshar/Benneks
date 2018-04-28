@@ -550,7 +550,7 @@ function addMemberFunc(action) {
     if (customerName === "" || customerTel === "" || customerTelegramID === "") {
         alert("خطا یکی از اطلاعات مرتبط با مشتری وارد نشده است!");
     } else {
-        $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID , function (data) {
+        $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID, function (data) {
             //check the member status
             var result = data.result;
             var msg = data.msg;
@@ -561,7 +561,7 @@ function addMemberFunc(action) {
                 $("#memberSubmitButton").prop('disabled', true);
                 $("#customerName").prop('disabled', true);
                 $("#customerTel").prop('disabled', true);
-               $("#customerTelegramID").prop('disabled', true);
+                $("#customerTelegramID").prop('disabled', true);
             }
             //if customer does not exist in the db and this new customer added to the system
             if (result === "success") {

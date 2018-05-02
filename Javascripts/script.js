@@ -442,8 +442,11 @@ function validateForm() {
     var productSize = document.forms["orderForm"]["productSize"].value;
     var productColor = document.forms["orderForm"]["productColor"].value;
     var productPrice = document.forms["orderForm"]["productPrice"].value;
-    if (clothesType === "" || productBrand === "" || productPic === "" || productLink === "" || productSize === "" || productColor === "" || productPrice === "") {
-        alert("خطا! یکی از اطلاعات ورودی پر نشده است. لطفا تمامی اطلاعات را وارد نمایید");
+    var orderSalePrice = document.forms["orderForm"]["orderSalePrice"].value;
+    var advancedPayment = document.forms["orderForm"]["advancedPayment"].value;
+    var paymentRefPic = document.forms["orderForm"]["paymentRefPic"].value;
+    if (clothesType === "" || productBrand === "" || productPic === "" || productLink === "" || productSize === "" || productColor === "" || productPrice === "" || orderSalePrice === "" || advancedPayment === "" || paymentRefPic === "") {
+        alert("خطا! یکی از اطلاعات ورودی مرتبط با اطلاعات سفارش و یا فروش پر نشده است. لطفا تمامی اطلاعات را وارد نمایید");
         return false;
     }
 }
@@ -546,11 +549,12 @@ function addOrderCheck(action) {
 function addMemberFunc(action) {
     var customerName = document.getElementById("customerName").value;
     var customerTel = document.getElementById("customerTel").value;
-    var customerTelegramID = document.getElementById("customerTelegramID").value;
-    if (customerName === "" || customerTel === "" || customerTelegramID === "") {
+    var customerSocialLink = document.getElementById("customerSocialLink").value;
+    var customerSocialID = document.getElementById("customerSocialID").value;
+    if (customerName === "" || customerTel === "" || customerSocialID === "") {
         alert("خطا یکی از اطلاعات مرتبط با مشتری وارد نشده است!");
     } else {
-        $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerTelegramID=" + customerTelegramID, function (data) {
+        $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerSocialLink=" + customerSocialLink + "&customerSocialID=" + customerSocialID, function (data) {
             //check the member status
             var result = data.result;
             var msg = data.msg;
@@ -561,7 +565,8 @@ function addMemberFunc(action) {
                 $("#memberSubmitButton").prop('disabled', true);
                 $("#customerName").prop('disabled', true);
                 $("#customerTel").prop('disabled', true);
-                $("#customerTelegramID").prop('disabled', true);
+                $("#customerSocialLink").prop('disabled', true);
+                $("#customerSocialID").prop('disabled', true);
             }
             //if customer does not exist in the db and this new customer added to the system
             if (result === "success") {

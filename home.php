@@ -29,7 +29,7 @@ if (isset($_POST['submitOrderButton'])) {
     if (is_null($lastID)) {
         $lastID = 0;
     }
-// create folder for each user based on userID and upload the product pic into database
+    // create folder for each user based on userID and upload the product pic into database
     $userDir = $_SESSION['user'];
     if (file_exists('orderpics/' . $userDir)) {
         $targetDir = 'orderpics/' . $userDir . "/";
@@ -38,9 +38,21 @@ if (isset($_POST['submitOrderButton'])) {
         $targetDir = 'orderpics/' . $userDir . "/";
     }
     $fileName = time() . rand(11, 99) . basename($_FILES['productPic']['name']);
-    $targetPath = $targetDir . $fileName;
-    move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetPath);
-// Insert customer information into database
+    $targetPath1 = $targetDir . $fileName;
+    move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetPath1);
+    
+    // to save payment pictures, create a foolder for each user and save payment pictures to this folder
+    $userPaymentDir = $_SESSION['user'] . "-payment";
+    if (file_exists('paymentpics/' . $userPaymentDir)) {
+        $targetDir = 'paymentpics/' . $userPaymentDir . "/";
+    } else {
+        mkdir('paymentpics/' . $userPaymentDir);
+        $targetDir = 'paymentspics/' . $userPaymentDir . "/";
+    }
+    $fileName = time() . rand(11, 99) . basename($_FILES['paymentRefPic']['name']);
+    $targetPath2 = $targetDir . $fileName;
+    move_uploaded_file($_FILES["paymentRefPic"]["tmp_name"], $targetPath2);
+    // Insert customer information into database
     $customerID = $lastID + 1;
     //customerID is actualy a counter
     $query2 = "INSERT INTO benneks.customers(customerID, customerName, customerTel) VALUES ('$customerID', 'نامشخص', 'نامشخص')";
@@ -49,10 +61,10 @@ if (isset($_POST['submitOrderButton'])) {
         echo "error2";
         echo mysqli_error($user->conn);
     }
-// order id which is a PK is made by combining userID and customerID
+    // order id which is a PK is made by combining userID and customerID
     $userID = $_SESSION['user'];
     $orderID = intval(strval($userID) . strval($customerID));
-//Insert order information into database orderID is a combination of customerID and userID
+    //Insert order information into database orderID is a combination of customerID and userID
     $orderDate = date("Y-m-d");
     $orderTime = date("H:i:s");
     $clothesType = $_POST['clothesType'];
@@ -73,15 +85,18 @@ if (isset($_POST['submitOrderButton'])) {
 // variable to hold transaction and customer information
     $customerTel = $_POST['customerTel'];
     $customerCode = $userID . doubleval($customerTel);
-    $amount = $_POST['orderSalePrice'];
+    $orderSalePrice = $_POST['orderSalePrice'];
     $advancedPayment = $_POST['advancedPayment'];
+    $paymentExtraDesc = $_POST['paymentExtraDesc'];
+    $purchaseID = time() + rand(1, 100);
     // user directory needs to be added before pic name
-    $productPic = $targetPath;
+    $productPic = $targetPath1;
+    $paymentRefPic = $targetPath2;
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = 1;
-    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country, productsWeight, members_customerCode) "
+    $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country, productsWeight, purchaseInfo_purchaseID, members_customerCode) "
             . "values('$orderID' ,(SELECT userID FROM benneks.users where userID='$userID'), (SELECT customerID FROM benneks.customers where customerID='$customerID'), '$orderDate', '$orderTime', '$clothesType',"
-            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity', '$country', '$productWeight', '$customerCode')";
+            . "'$productGender' ,'$productBrand', '$productSize', '$productColor',  '$productLink', '$productPrice', '$productPic', '$orderQuantity', '$country', '$productWeight', '$purchaseID', '$customerCode')";
     if (!$user->executeQuery($query3)) {
         $flag = false;
         echo mysqli_error($user->conn);
@@ -90,23 +105,21 @@ if (isset($_POST['submitOrderButton'])) {
     $query4 = "INSERT INTO benneks.shipment(orders_orderID) VALUES ('$orderID')";
     $query5 = "INSERT INTO benneks.stat(orders_orderID) VALUES ('$orderID')";
     $query6 = "INSERT INTO benneks.cost(orders_orderID, rateTL, benneksPrice, originalTomanPrice, currency, benneksMargin, iranDeliverCost) VALUES ('$orderID', '$rateTL' ,'$benneksPrice', '$originalTomanPrice', '$currency', '$benneksMargin', '$iranDeliverCost')";
-    // need to insert customer detail and financial transaction details in to the database
-    //first query create dept for customer based on her orders
-    $amountStatus = 'بدهکار';
-    $transactionStatus = 'بابت خرید ' . $clothesType;
-    $transactionQuery1 = "INSERT INTO benneks.transaction(amount, amountStatus, transactionDate, transactionStatus) VALUES('$amount','$amountStatus','$orderDate','$transactionStatus')";
-    // second query create due amount based on customer advanced payment
-    $amountStatus = 'بستانکار';
-    $transactionStatus = 'بابت پرداخت بیعانه';
-    $transactionQuery2 = "INSERT INTO benneks.transaction(amount, amountStatus, transactionDate, transactionStatus) VALUES('$advancedPayment','$amountStatus','$orderDate','$transactionStatus')";
-    if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6)) && ($user->executeQuery($transactionQuery1)) && ($user->executeQuery($transactionQuery2))) {
+    if (($user->executeQuery($query4)) && ($user->executeQuery($query5)) && ($user->executeQuery($query6))) {
         $flag = true;
     } else {
         $flag = false;
         echo mysqli_error($user->conn);
     }
+    // insert purchase information to purchaseinfo table
+    $purchaseQuery = "INSERT INTO benneks.purchaseinfo(purchaseID, orderSalePrice, advancedPayment, paymentRefPic, paymentExtraDesc) VALUES ('$purchaseID', '$orderSalePrice', '$advancedPayment', '$paymentRefPic', '$paymentExtraDesc')";
+    if(!$user->executeQuery($purchaseQuery)) {
+        $flag = false;
+        echo "error purchase info";
+        echo mysqli_error($user->conn);
+    }
 
-// if all queries executed properly then comit the changes in to database otherwise roll back all changes
+    // if all queries executed properly then comit the changes in to database otherwise roll back all changes
     if ($flag) {
         mysqli_commit($user->conn);
         $string = "سفارش شما با کد " . "$orderID" . " در سیستم ثبت گردید.";
@@ -227,10 +240,17 @@ if (isset($_POST['submitOrderButton'])) {
                                                 </span>
                                             </div>
                                             <div class="form-group">
-                                                <label for="customerTelegramID">تلگرام:</label>
-                                                <input type="text" dir="rtl" class="form-control eng-format" id="customerTelegramID" name="customerTelegramID">
+                                                <label for="customerSocialLink">نوع ارتباط:</label>
+                                                <select dir="rtl" class="form-control" id="customerSocialLink" name ="customerSocialLink">
+                                                    <option value="تلگرام" selected> تلگرام </option>
+                                                    <option value="اینستاگرام"> اینستاگرام</option>
+                                                </select>
                                             </div>
-                                            <button class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="addMemberFunc('add');" > ثبت مشتری 
+                                            <div class="form-group">
+                                                <label for="customerSocialID">آیدی:</label>
+                                                <input type="text" dir="rtl" class="form-control eng-format" id="customerSocialID" name="customerSocialID">
+                                            </div>
+                                            <button type="button" class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="addMemberFunc('add');" > ثبت مشتری 
                                                 <span>
                                                     <i class="fa fa-plus"> </i>
                                                 </span>
@@ -627,51 +647,55 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <input type="text" dir="rtl" class="form-control eng-format" id="advancedPayment" name="advancedPayment">
                                             </div>
                                             <div class="form-group">
-                                                <label for="paymentRef">شماره پیگیری:</label>
-                                                <input type="text" dir="rtl" class="form-control eng-format" id="paymentRef" name="paymentRef">
-                                            </div>
+                                                <label for="paymentRefPic"> عکس:</label>
+                                                <input type="file" class="eng-format" id="paymentRefPic" name = "paymentRefPic" accept="image/*">
+                                                </di
+                                                <div class="form-group">
+                                                    <label for="paymentExtraDesc">توضیحات:</label>
+                                                    <textarea rows="4" cols="50" dir="rtl" class="form-control eng-format" id="paymentExtraDesc" name="paymentExtraDesc"> </textarea>
+                                                </div>
                                         </fieldset>
-                                            <div class="form-group">
-                                                <input type="hidden" id="currency" name="currency">
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="hidden" id="currencyRate" name="currencyRate" >
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="hidden" id="productWeight" name="productWeight" >
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="hidden" id="benneksMargin" name="benneksMargin" >
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="hidden" id="iranDeliverCost" name="iranDeliverCost" >
-                                            </div>
-                                            <!-- to get userID for different prices for different users based on js file -->
-                                            <div class="form-group">
-                                                <input type="hidden" id="userID" name="userID" value="<?php echo $_SESSION['user']; ?>" >
-                                            </div>
-                                            <!-- javascript to pass variables to calculator() in script.js file -->
-                                            <script>
-                                                function showRealPrice() {
-                                                    var userID = document.getElementById("userID").value;
-                                                    var country = document.getElementById("country").value;
-                                                    var clothesType = document.getElementById("clothesType").value;
-                                                    var productPrice = document.getElementById("productPrice").value;
-                                                    var orderDetailsVar = calculator(userID, country, clothesType, productPrice);
-                                                    document.getElementById("currency").value = orderDetailsVar.currency;
-                                                    document.getElementById("currencyRate").value = orderDetailsVar.currencyRate;
-                                                    document.getElementById("benneksPrice").value = orderDetailsVar.totalCost;
-                                                    document.getElementById("productWeight").value = orderDetailsVar.productWeight;
-                                                    document.getElementById("benneksMargin").value = orderDetailsVar.benneksMargin;
-                                                    document.getElementById("iranDeliverCost").value = orderDetailsVar.iranDeliverCost;
-                                                }
-                                            </script>
+                                        <div class="form-group">
+                                            <input type="hidden" id="currency" name="currency">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="currencyRate" name="currencyRate" >
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="productWeight" name="productWeight" >
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="benneksMargin" name="benneksMargin" >
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" id="iranDeliverCost" name="iranDeliverCost" >
+                                        </div>
+                                        <!-- to get userID for different prices for different users based on js file -->
+                                        <div class="form-group">
+                                            <input type="hidden" id="userID" name="userID" value="<?php echo $_SESSION['user']; ?>" >
+                                        </div>
+                                        <!-- javascript to pass variables to calculator() in script.js file -->
+                                        <script>
+                                            function showRealPrice() {
+                                                var userID = document.getElementById("userID").value;
+                                                var country = document.getElementById("country").value;
+                                                var clothesType = document.getElementById("clothesType").value;
+                                                var productPrice = document.getElementById("productPrice").value;
+                                                var orderDetailsVar = calculator(userID, country, clothesType, productPrice);
+                                                document.getElementById("currency").value = orderDetailsVar.currency;
+                                                document.getElementById("currencyRate").value = orderDetailsVar.currencyRate;
+                                                document.getElementById("benneksPrice").value = orderDetailsVar.totalCost;
+                                                document.getElementById("productWeight").value = orderDetailsVar.productWeight;
+                                                document.getElementById("benneksMargin").value = orderDetailsVar.benneksMargin;
+                                                document.getElementById("iranDeliverCost").value = orderDetailsVar.iranDeliverCost;
+                                            }
+                                        </script>
 
-                                            <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="true"> ثبت سفارش 
-                                                <span>
-                                                    <i class="fa fa-plus"> </i>
-                                                </span>
-                                            </button>
+                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="true"> ثبت سفارش 
+                                            <span>
+                                                <i class="fa fa-plus"> </i>
+                                            </span>
+                                        </button>
                                     </form>
                                 </div>
                             </div>

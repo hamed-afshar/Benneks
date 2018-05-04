@@ -199,7 +199,7 @@ if (isset($_POST['submitOrderButton'])) {
                             <a href="#printCustomerExcelModal" data-toggle='modal' data-target='#printCustomerExcelModal' class='open-printCustomerExcelModal'> <i class="fa fa-file-excel-o fa-fw" > </i> اکسل فروش</a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
+                            <a href="customersOrderList.php"> <i class="fa fa-list fa-fw" > </i> سفارشات مشتریان</a>
                         </li>
                         <li>
                             <a href="logout.php?logout"> <i class="fa fa-sign-out fa-fw" > </i> خروج</a>

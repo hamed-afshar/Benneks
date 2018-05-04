@@ -1,4 +1,7 @@
 <?php
+/*
+ * This page shows all orders for customer which are submited in the system
+ */
 ob_start();
 session_start();
 require 'src/benneks.php';
@@ -24,11 +27,29 @@ if (isset($_SESSION['searchQuery'])) {
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc LIMIT " . $startFrom . "," . $limit;
+    //$query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc LIMIT " . $startFrom . "," . $limit;
+    $query = "SELECT users.userID, orders.productPic, orders.orderDate, orders.orderID, members.customerCode, "
+            . "stat.orderStatus, stat.orderStatusDescription, "
+            . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment "
+            . "FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID "
+            . "INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
+            . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
+            . "INNER JOIN benneks.shipment ON shipment.orders_orderID = orders.orderID "
+            . "INNER JOIN benneks.purchaseInfo ON purchaseInfo.purchaseID = orders.purchaseInfo_purchaseID "
+            . "WHERE users.userID = '$userID' $searchQuery ORDER BY orders.orderID DESC LIMIT  " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    $query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
+    //$query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
+    $query = "SELECT users.userID, orders.productPic, orders.orderDate, orders.orderID, members.customerCode, "
+            . "stat.orderStatus, stat.orderStatusDescription, "
+            . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment "
+            . "FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID "
+            . "INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
+            . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
+            . "INNER JOIN benneks.shipment ON shipment.orders_orderID = orders.orderID "
+            . "INNER JOIN benneks.purchaseInfo ON purchaseInfo.purchaseID = orders.purchaseInfo_purchaseID "
+            . "WHERE users.userID = '$userID' $searchQuery ORDER BY orders.orderID DESC LIMIT  " . $startFrom . "," . $limit;
 };
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
@@ -192,16 +213,11 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                             <div class="form-group">
                                                 <label for="searchOption"> نوع فیلتر:</label>
                                                 <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption">
-                                                    <option value="code" selected> کد </option>
-                                                    <option value="available"> موجودی ها</option>
-                                                    <option value="done"> خریداری شده</option>
-                                                    <option value="cancel"> لغو شده</option>
-                                                    <option value="unknown"> نامشخص </option>
-                                                    <option value="cargo"> کارگو </option>
+                                                    <option value="customerCode" selected> کد مشتری </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <input type="hidden" name="searchReq" value="orderlistPage"/>
+                                                <input type="hidden" name="searchReq" value="customersOrderList"/>
                                             </div>
                                             <div class="form-group">
                                                 <button class="form-control btn btn-group btn-success" id="searchButton" name="searchButton" > جستجو
@@ -230,32 +246,25 @@ $monthValue = mysqli_fetch_row($queryResult4);
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped" id="orderTable">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align: center"> کد</th>
-                                        <th style="text-align: center"> عکس</th>
-                                        <th style="text-align: center"> سایز</th>
-                                        <th style="text-align: center"> قیمت(تومان)</th>
-                                        <th style="text-align: center"> تاریخ خرید</th>
-                                        <th style="text-align: center"> تاریخ ارسال</th>
-                                        <th style="text-align: center"> کشور</th>
-                                        <th style="text-align: center">وضعیت </th>
-                                        <th style="text-align: center"> جزئیات </th>
-                                        <th style="text-align: center"> کد کارگو</th>
-                                    </tr>
+                                <th style="text-align: center"> عکس</th>
+                                <th style="text-align: center"> تاریخ</th>
+                                <th style="text-align: center"> کد سفارش</th>
+                                <th style="text-align: center"> کد مشتری</th>
+                                <th style="text-align: center"> وضعیت</th>
+                                <th style="text-align: center"> جزئیات</th>
+                                <th style="text-align: center">کد کارگو </th>
+                                <th style="text-align: center"> قیمت فروش </th>
+                                <th style="text-align: center"> بیعانه</th>
+                                <th style="text-align: center"> مانده</th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     while ($row = mysqli_fetch_row($queryResult)) {
                                         echo "<tr>";
-                                        echo "<td>" . $row[0] .
-                                        "<hr> "
-                                        . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#availableModal' data-toggle='modal' data-target='#availableModal' data-id = '$row[0]' class='open-availableModal'> <i class = 'fa fa-tag fa-fw fa-lg'></i> </a>"
-                                        . "</td>";
                                         $picURL = str_replace(' ', '%20', $row[1]);
-                                        $productLink = $row[2];
-                                        echo "<td> <a href=" . $productLink . "> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+                                        echo "<td> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+                                        echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
                                         echo "<td>" . $row[4] . "</td>";
                                         echo "<td>" . $row[5] . "</td>";
@@ -263,7 +272,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
-                                        echo "<td>" . $row[10] . "</td>";
+                                        $remaining = intval($row[8]) - intval($row[9]);
+                                        echo "<td>" . $remaining . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>
@@ -272,7 +282,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         </div>
                         <?php
                         //Pagination and query to get data
-                        $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN  benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' $searchQuery";
+                        $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
+                                . "INNER JOIN  benneks.users ON orders.users_userID = users.userID "
+                                . "INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
+                                . "WHERE orders.users_userID = '$userID' $searchQuery";
                         $queryResult2 = $user->executeQuery($query2);
                         $records = mysqli_fetch_row($queryResult2);
                         $totalRecords = $records[0];
@@ -301,55 +314,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         ?>
                     </div>
                 </div>
-                <!--Delete order modal -->
-                <div class = "modal fade" id = "delModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-trash"> </span> لغو سفارش </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="delorder.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="rowID"> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
-                                    </div>
-                                    <div class="form-group">
-                                        <center> شما در حال لغو سفارش خود می باشید، در صورتی که سفارش شما هنوز خریداری نشده باشد این عملیات امکان پذیر خواهد بود.</center> 
-                                    </div>
-                                    <button type="submit" class="btn btn-danger btn-block" name="submitButton" id="submitButton"> لغو سفارش </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Available modal -->
-                <div class = "modal fade" id = "availableModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-tag"> </span> اضافه کردن به لیست موجودی</h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="makeAvailable.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="rowID"> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <center> در صورتی که این سفارش موجود می باشد دکمه اضافه و در صورت فروش دکمه حذف را بزنید</center> 
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="addButton" id="addButton"> اضافه به لیست </button>
-                                    <button type="submit" class="btn btn-danger btn-block" name="removeButton" id="removeButton"> حذف از لیست </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <!--print kargo modal -->
                 <div class = "modal fade" id = "printKargoModal" role="dialog">
                     <div class="modal-dialog">
@@ -399,4 +364,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
             </div>
             </body>
             </html>
+
+
+
 

@@ -54,6 +54,9 @@ if (isset($_POST['searchButton'])) {
         case "available": 
             $searchQuery = "orders.sellerSideAvailable = " . "'yes'";
             break;
+        case "customerCode":
+            $searchQuery = "members.customerCode = " . "'" . $searchValue . "'" . "";
+            break;
         default :
             $searchQuery = "";
             break;
@@ -69,6 +72,9 @@ if (isset($_POST['searchButton'])) {
             break;
         case "orderlistPage":
             header("Location: orderlist.php");
+            break;
+        case "customersOrderList":
+            header("Location: customersOrderList.php");
             break;
         case "turkish-admin":
             header("Location: turkish-admin.php");

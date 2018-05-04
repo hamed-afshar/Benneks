@@ -94,7 +94,7 @@ if (isset($_POST['submitOrderButton'])) {
     $productPic = $targetPath1;
     $paymentRefPic = $targetPath2;
     // insert purchase information to purchaseinfo table
-    $purchaseQuery = "INSERT INTO benneks.purchaseinfo(purchaseID, orderSalePrice, advancedPayment, paymentRefPic, paymentExtraDesc) VALUES ('$purchaseID', '$orderSalePrice', '$advancedPayment', '$paymentRefPic', '$paymentExtraDesc')";
+    $purchaseQuery = "INSERT INTO benneks.purchaseInfo(purchaseID, orderSalePrice, advancedPayment, paymentRefPic, paymentExtraDesc) VALUES ('$purchaseID', '$orderSalePrice', '$advancedPayment', '$paymentRefPic', '$paymentExtraDesc')";
     if (!$user->executeQuery($purchaseQuery)) {
         $flag = false;
         echo "error purchase info";
@@ -196,7 +196,7 @@ if (isset($_POST['submitOrderButton'])) {
                             <a href="#printKargoModal" data-toggle='modal' data-target='#printKargoModal' class='open-printKargoModal'> <i class="fa fa-print fa-fw"> </i> پرینت کارگو </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-money fa-fw" > </i> گزارش مالی</a>
+                            <a href="#printCustomerExcelModal" data-toggle='modal' data-target='#printCustomerExcelModal' class='open-printCustomerExcelModal'> <i class="fa fa-file-excel-o fa-fw" > </i> اکسل فروش</a>
                         </li>
                         <li>
                             <a href="#"> <i class="fa fa-gear fa-fw" > </i> تنظیمات پروفایل</a>
@@ -721,6 +721,31 @@ if (isset($_POST['submitOrderButton'])) {
                                         <input type="text" class="form-control" name="kargoID" id="kargoID">
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- customer excel modal -->
+                <div class = "modal fade" id = "printCustomerExcelModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-print"> </span> گزارش اکسل فروش مشتریان</h4>
+                            </div>
+                           <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="customerExcelFile.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="startDate"> تاریخ شروع: </label>
+                                        <input type="date" value="2018-05-04" class="form-control" name="startDate" id="startDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="finishDate"> تاریخ پایان: </label>
+                                        <input type="date" class="form-control" name="finishDate" id="finishDate">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> دریافت فایل اکسل </button>
                                 </form>
                             </div>
                         </div>

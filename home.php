@@ -40,14 +40,14 @@ if (isset($_POST['submitOrderButton'])) {
     $fileName = time() . rand(11, 99) . basename($_FILES['productPic']['name']);
     $targetPath1 = $targetDir . $fileName;
     move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetPath1);
-    
+
     // to save payment pictures, create a foolder for each user and save payment pictures to this folder
     $userPaymentDir = $_SESSION['user'] . "-payment";
     if (file_exists('paymentpics/' . $userPaymentDir)) {
         $targetDir = 'paymentpics/' . $userPaymentDir . "/";
     } else {
         mkdir('paymentpics/' . $userPaymentDir);
-        $targetDir = 'paymentspics/' . $userPaymentDir . "/";
+        $targetDir = 'paymentpics/' . $userPaymentDir . "/";
     }
     $fileName = time() . rand(11, 99) . basename($_FILES['paymentRefPic']['name']);
     $targetPath2 = $targetDir . $fileName;
@@ -85,6 +85,7 @@ if (isset($_POST['submitOrderButton'])) {
 // variable to hold transaction and customer information
     $customerTel = $_POST['customerTel'];
     $customerCode = $userID . doubleval($customerTel);
+    //$customerCode = 19121324660;
     $orderSalePrice = $_POST['orderSalePrice'];
     $advancedPayment = $_POST['advancedPayment'];
     $paymentExtraDesc = $_POST['paymentExtraDesc'];
@@ -92,6 +93,13 @@ if (isset($_POST['submitOrderButton'])) {
     // user directory needs to be added before pic name
     $productPic = $targetPath1;
     $paymentRefPic = $targetPath2;
+    // insert purchase information to purchaseinfo table
+    $purchaseQuery = "INSERT INTO benneks.purchaseinfo(purchaseID, orderSalePrice, advancedPayment, paymentRefPic, paymentExtraDesc) VALUES ('$purchaseID', '$orderSalePrice', '$advancedPayment', '$paymentRefPic', '$paymentExtraDesc')";
+    if (!$user->executeQuery($purchaseQuery)) {
+        $flag = false;
+        echo "error purchase info";
+        echo mysqli_error($user->conn);
+    }
     // If mistakes happened and zero inserted into quantity field, it will change it to one. 
     $orderQuantity = 1;
     $query3 = "INSERT INTO benneks.orders(orderID, users_userID, customers_customerID, orderDate, orderTime, clothesType, productGender, productBrand, productSize, productColor, productLink,  productPrice, productPic, orderQuantity, country, productsWeight, purchaseInfo_purchaseID, members_customerCode) "
@@ -109,13 +117,6 @@ if (isset($_POST['submitOrderButton'])) {
         $flag = true;
     } else {
         $flag = false;
-        echo mysqli_error($user->conn);
-    }
-    // insert purchase information to purchaseinfo table
-    $purchaseQuery = "INSERT INTO benneks.purchaseinfo(purchaseID, orderSalePrice, advancedPayment, paymentRefPic, paymentExtraDesc) VALUES ('$purchaseID', '$orderSalePrice', '$advancedPayment', '$paymentRefPic', '$paymentExtraDesc')";
-    if(!$user->executeQuery($purchaseQuery)) {
-        $flag = false;
-        echo "error purchase info";
         echo mysqli_error($user->conn);
     }
 

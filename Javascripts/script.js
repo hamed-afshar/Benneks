@@ -564,7 +564,6 @@ function addMemberFunc(action) {
                 $("#submitOrderButton").prop('disabled', false);
                 $("#memberSubmitButton").prop('disabled', true);
                 $("#customerName").prop('disabled', true);
-                $("#customerTel").prop('disabled', true);
                 $("#customerSocialLink").prop('disabled', true);
                 $("#customerSocialID").prop('disabled', true);
             }

@@ -65,9 +65,9 @@ $objPHPExcel->setActiveSheetIndex(0)
 
 //query to extract requiered data from db and insert it to excel
 $query1 = "SELECT orders.orderDate,orders.orderID, shipment.cargoName, members.customerCode, members.customerSocialLink, members.customerSocialID, members.customerName, "
-        . "cost.benneksPrice, purchaseinfo.orderSalePrice, purchaseinfo.advancedPayment, purchaseinfo.paymentExtraDesc "
+        . "cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, purchaseInfo.paymentExtraDesc "
         . "FROM benneks.orders INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
-        . "INNER JOIN benneks.purchaseInfo ON purchaseinfo.purchaseID = orders.purchaseInfo_purchaseID "
+        . "INNER JOIN benneks.purchaseInfo ON purchaseInfo.purchaseID = orders.purchaseInfo_purchaseID "
         . "INNER JOIN benneks.shipment ON shipment.orders_orderID = orders.orderID "
         . "INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID "
         . "WHERE orders.orderDate between '$startDate' AND '$finishDate'"; 

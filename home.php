@@ -234,7 +234,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             </div>
                                             <div class = "form-group">
                                                 <label for="customerTel">تلفن مشتری:</label>
-                                                <input type = "text" class = "form-control eng-format" dir="ltr" id = "customerTel" name = "customerTel" maxlength="11" onkeyup="checkTel()" placeholder = " موبایل مشتری به عنوان کد فروشنده">
+                                                <input type = "text" class = "form-control eng-format" dir="ltr" id = "customerTel" name = "customerTel" maxlength="11" onkeyup="checkTel()" placeholder = " موبایل مشتری به عنوان کد">
                                             </div>
                                             <div class="form-group">
                                                 <span style="color:red" id="telAlert">

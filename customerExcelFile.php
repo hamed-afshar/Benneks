@@ -64,13 +64,15 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('N1', 'توضیحات');
 
 //query to extract requiered data from db and insert it to excel
+$userID = $_SESSION['user'];
 $query1 = "SELECT orders.orderDate,orders.orderID, shipment.cargoName, members.customerCode, members.customerSocialLink, members.customerSocialID, members.customerName, "
-        . "cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, purchaseInfo.paymentExtraDesc "
+        . "cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, purchaseInfo.paymentExtraDesc, orders.users_userID "
         . "FROM benneks.orders INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
         . "INNER JOIN benneks.purchaseInfo ON purchaseInfo.purchaseID = orders.purchaseInfo_purchaseID "
         . "INNER JOIN benneks.shipment ON shipment.orders_orderID = orders.orderID "
         . "INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID "
-        . "WHERE orders.orderDate between '$startDate' AND '$finishDate'"; 
+        . "INNER JOIN benneks.users ON users.userID = orders.users_userID "
+        . "WHERE users.userID = '$userID' AND orders.orderDate between '$startDate' AND '$finishDate'"; 
        
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);

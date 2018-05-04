@@ -245,6 +245,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <select dir="rtl" class="form-control" id="customerSocialLink" name ="customerSocialLink">
                                                     <option value="تلگرام" selected> تلگرام </option>
                                                     <option value="اینستاگرام"> اینستاگرام</option>
+                                                    <option value="واتس اپ"> واتس اپ</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -735,7 +736,7 @@ if (isset($_POST['submitOrderButton'])) {
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
                                 <h4><span class = "glyphicon glyphicon-print"> </span> گزارش اکسل فروش مشتریان</h4>
                             </div>
-                           <div class="modal-body" style="padding:40px 50px;">
+                            <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form" action="customerExcelFile.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="startDate"> تاریخ شروع: </label>

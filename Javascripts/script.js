@@ -444,7 +444,6 @@ function validateForm() {
     var productPrice = document.forms["orderForm"]["productPrice"].value;
     var orderSalePrice = document.forms["orderForm"]["orderSalePrice"].value;
     var advancedPayment = document.forms["orderForm"]["advancedPayment"].value;
-    var paymentRefPic = document.forms["orderForm"]["paymentRefPic"].value;
     if (clothesType === "" || productBrand === "" || productPic === "" || productLink === "" || productSize === "" || productColor === "" || productPrice === "" || orderSalePrice === "" || advancedPayment === "" || paymentRefPic === "") {
         alert("خطا! یکی از اطلاعات ورودی مرتبط با اطلاعات سفارش و یا فروش پر نشده است. لطفا تمامی اطلاعات را وارد نمایید");
         return false;
@@ -551,7 +550,7 @@ function addMemberFunc(action) {
     var customerTel = document.getElementById("customerTel").value;
     var customerSocialLink = document.getElementById("customerSocialLink").value;
     var customerSocialID = document.getElementById("customerSocialID").value;
-    if (customerName === "" || customerTel === "" || customerSocialID === "") {
+    if (customerName === "" || customerTel === "") {
         alert("خطا یکی از اطلاعات مرتبط با مشتری وارد نشده است!");
     } else {
         $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerSocialLink=" + customerSocialLink + "&customerSocialID=" + customerSocialID, function (data) {

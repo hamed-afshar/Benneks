@@ -27,9 +27,8 @@ if (isset($_SESSION['searchQuery'])) {
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
-    //$query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc LIMIT " . $startFrom . "," . $limit;
     $query = "SELECT users.userID, orders.productPic, orders.orderDate, orders.orderID, members.customerCode, "
-            . "stat.orderStatus, stat.orderStatusDescription, "
+            . "members.customerName, stat.orderStatus, stat.orderStatusDescription, "
             . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment "
             . "FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID "
             . "INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
@@ -40,9 +39,8 @@ if (isset($_GET["page"])) {
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
-    //$query = "SELECT orders.orderID, orders.productPic, orders.Productlink, orders.productSize, cost.benneksPrice, shipment.benneksShoppingDate, shipment.benneksDeliverDate, orders.country, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID where orders.users_userID = '$userID' $searchQuery ORDER BY orders.orderID desc  LIMIT " . $startFrom . "," . $limit;
     $query = "SELECT users.userID, orders.productPic, orders.orderDate, orders.orderID, members.customerCode, "
-            . "stat.orderStatus, stat.orderStatusDescription, "
+            . "members.customerName, stat.orderStatus, stat.orderStatusDescription, "
             . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment "
             . "FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID "
             . "INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
@@ -250,6 +248,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <th style="text-align: center"> تاریخ</th>
                                 <th style="text-align: center"> کد سفارش</th>
                                 <th style="text-align: center"> کد مشتری</th>
+                                <th style="text-align: center"> نام مشتری</th>
                                 <th style="text-align: center"> وضعیت</th>
                                 <th style="text-align: center"> جزئیات</th>
                                 <th style="text-align: center">کد کارگو </th>
@@ -272,7 +271,8 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
-                                        $remaining = intval($row[8]) - intval($row[9]);
+                                        echo "<td>" . $row[10] . "</td>";
+                                        $remaining = intval($row[9]) - intval($row[10]);
                                         echo "<td>" . $remaining . "</td>";
                                         echo "</tr>";
                                     }
@@ -282,10 +282,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         </div>
                         <?php
                         //Pagination and query to get data
-                        $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
-                                . "INNER JOIN  benneks.users ON orders.users_userID = users.userID "
+                        $query2 = "SELECT count(orders.orderID), users.userID, orders.productPic, orders.orderDate, orders.orderID, members.customerCode, "
+                                . "members.customerName, stat.orderStatus, stat.orderStatusDescription, "
+                                . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment "
+                                . "FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID "
                                 . "INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
-                                . "WHERE orders.users_userID = '$userID' $searchQuery";
+                                . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
+                                . "INNER JOIN benneks.shipment ON shipment.orders_orderID = orders.orderID "
+                                . "INNER JOIN benneks.purchaseInfo ON purchaseInfo.purchaseID = orders.purchaseInfo_purchaseID "
+                                . "WHERE users.userID = '$userID' $searchQuery ORDER BY orders.orderID DESC" ;
                         $queryResult2 = $user->executeQuery($query2);
                         $records = mysqli_fetch_row($queryResult2);
                         $totalRecords = $records[0];
@@ -293,7 +298,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         echo "<div class='container'>";
                         echo "<ul class='pagination'>";
                         for ($i = 1; $i <= $totalPages; $i++) {
-                            echo "<li><a href='orderlist.php?page=" . $i . "'>" . $i . "</a></li>";
+                            echo "<li><a href='customersOrderList.php?page=" . $i . "'>" . $i . "</a></li>";
                         }
                         echo "</ul>";
                         mysqli_close($user->conn);
@@ -305,7 +310,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     itemsOnPage: <?php echo $limit; ?>,
                                     cssStyle: 'light-theme',
                                     currentPage: <?php echo $page; ?>,
-                                    hrefTextPrefix: 'orderlist.php?page='
+                                    hrefTextPrefix: 'customersOrderList.php?page='
                                 });
                             });
                         </script>

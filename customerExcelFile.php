@@ -61,17 +61,19 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('K1', 'بیعانه')
         ->setCellValue('L1', 'الباقی')
         ->setCellValue('M1', 'سود')
-        ->setCellValue('N1', 'توضیحات');
+        ->setCellValue('N1', 'وضعیت')
+        ->setCellValue('O1', 'توضیحات');
 
 //query to extract requiered data from db and insert it to excel
 $userID = $_SESSION['user'];
 $query1 = "SELECT orders.orderDate,orders.orderID, shipment.cargoName, members.customerCode, members.customerSocialLink, members.customerSocialID, members.customerName, "
-        . "cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, purchaseInfo.paymentExtraDesc, orders.users_userID "
+        . "cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, stat.orderStatusDescription, purchaseInfo.paymentExtraDesc, orders.users_userID "
         . "FROM benneks.orders INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
         . "INNER JOIN benneks.purchaseInfo ON purchaseInfo.purchaseID = orders.purchaseInfo_purchaseID "
         . "INNER JOIN benneks.shipment ON shipment.orders_orderID = orders.orderID "
         . "INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID "
         . "INNER JOIN benneks.users ON users.userID = orders.users_userID "
+        . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
         . "WHERE users.userID = '$userID' AND orders.orderDate between '$startDate' AND '$finishDate'"; 
        
 if (!$user->executeQuery($query1)) {
@@ -95,6 +97,7 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('L' . $i, '=J' . $i . '-K' . $i);
     $objPHPExcel->getActiveSheet()->setCellValue('M' . $i, '=J' . $i . '-I' . $i);
     $objPHPExcel->getActiveSheet()->setCellValue('N' . $i, $row[10]);
+    $objPHPExcel->getActiveSheet()->setCellValue('O' . $i, $row[11]);
     $i++;
 }
 
@@ -113,15 +116,16 @@ $objSheet->getColumnDimension('K')->setAutoSize(true);
 $objSheet->getColumnDimension('L')->setAutoSize(true);
 $objSheet->getColumnDimension('M')->setAutoSize(true);
 $objSheet->getColumnDimension('N')->setAutoSize(true);
+$objSheet->getColumnDimension('O')->setAutoSize(true);
 
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:N1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:N1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:N1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:O1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:O1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:O1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="customers-Excel.xls"');

@@ -57,6 +57,12 @@ if (isset($_POST['searchButton'])) {
         case "customerCode":
             $searchQuery = "members.customerCode = " . "'" . $searchValue . "'" . "";
             break;
+        case "customerCode":
+            $searchQuery = "members.customerCode = " . "'" . $searchValue . "'" . "";
+            break;
+        case "ref":
+            $searchQuery = "stat.supplierRefCode = " . "'" . $searchValue . "'" . "";
+            break;
         default :
             $searchQuery = "";
             break;

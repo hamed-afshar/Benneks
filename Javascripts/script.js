@@ -113,9 +113,9 @@ function calculator(userID, country, clothesType, productPrice) {
         case "ترکیه":
             var country = "Turkey";
             var currency = "TL";
-            var currencyRate = 1250;
+            var currencyRate = 1660;
             var weightCost = 50000; //45000 per killo dor kargo + 5000 Peik Iran
-            var shippingCost = 40000;
+            var shippingCost = 45000;
             break;
         case "انگلیس":
             var country = "UK";
@@ -378,6 +378,41 @@ function calculator(userID, country, clothesType, productPrice) {
     }
 
 }
+//Function to check iran deliver
+function iranDeliverFunc(action) {
+    var orderID = document.getElementById("rowID").value;
+    var iranArrivalDate = document.getElementById("iranArrivalDate").value;
+    var cargoName = document.getElementById("cargoName").value;
+    if (cargoName === "") {
+        alert("لطفا شماره کارگور را وارد نمایید.");
+        return false;
+    }
+    switch (action) {
+        case "search" :
+            $.getJSON("./irandeliver.php?orderID=" + orderID + "&iranArrivalDate=" + iranArrivalDate + "&cargoName=" + cargoName, function (data) {
+                var result = data.result;
+                var msg = data.msg;
+                var counterMsg = data.counterMsg;
+                var counterErrorMsg = data.counterErrorMsg;
+                if (result === "success-search") {
+                    document.getElementById("iranDeliverMsg").innerHTML = msg;
+                    $("#searchButton").prop('hidden', true);
+                    $("#changeCargoButton").show("slow");
+                    $("#Not-changeCargoButton").show("slow");
+                }
+                if (result === "wrong-search") {
+                    document.getElementById("iranDeliverMsg").innerHTML = msg;
+                }
+                if (result === "null-search") {
+                    document.getElementById("iranDeliverMsg").innerHTML = msg;
+                }
+                document.getElementById("counterMsg").innerHTML = counterMsg;
+                document.getElementById("counterErrorMsg").innerHTML = counterErrorMsg;
+
+            });
+
+    }
+}
 
 //Function to check numeric prices only in making order section in home.php
 function checkPrice() {
@@ -407,8 +442,10 @@ function validateForm() {
     var productSize = document.forms["orderForm"]["productSize"].value;
     var productColor = document.forms["orderForm"]["productColor"].value;
     var productPrice = document.forms["orderForm"]["productPrice"].value;
-    if (clothesType === "" || productBrand === "" || productPic === "" || productLink === "" || productSize === "" || productColor === "" || productPrice === "") {
-        alert("خطا! یکی از اطلاعات ورودی پر نشده است. لطفا تمامی اطلاعات را وارد نمایید");
+    var orderSalePrice = document.forms["orderForm"]["orderSalePrice"].value;
+    var advancedPayment = document.forms["orderForm"]["advancedPayment"].value;
+    if (clothesType === "" || productBrand === "" || productPic === "" || productLink === "" || productSize === "" || productColor === "" || productPrice === "" || orderSalePrice === "" || advancedPayment === "" || paymentRefPic === "") {
+        alert("خطا! یکی از اطلاعات ورودی مرتبط با اطلاعات سفارش و یا فروش پر نشده است. لطفا تمامی اطلاعات را وارد نمایید");
         return false;
     }
 }
@@ -507,21 +544,54 @@ function addOrderCheck(action) {
             break;
     }
 }
+//Function to add member and customer information in to the database
+function addMemberFunc(action) {
+    var customerName = document.getElementById("customerName").value;
+    var customerTel = document.getElementById("customerTel").value;
+    var customerSocialLink = document.getElementById("customerSocialLink").value;
+    var customerSocialID = document.getElementById("customerSocialID").value;
+    if (customerName === "" || customerTel === "") {
+        alert("خطا یکی از اطلاعات مرتبط با مشتری وارد نشده است!");
+    } else {
+        $.getJSON("./addmember.php?action=" + action + "&customerName=" + customerName + "&customerTel=" + customerTel + "&customerSocialLink=" + customerSocialLink + "&customerSocialID=" + customerSocialID, function (data) {
+            //check the member status
+            var result = data.result;
+            var msg = data.msg;
+            if (result === "exsist") {
+                //if customer has already exist in the db
+                document.getElementById("memberMsg").innerHTML = msg;
+                $("#submitOrderButton").prop('disabled', false);
+                $("#memberSubmitButton").prop('disabled', true);
+                $("#customerName").prop('disabled', true);
+                $("#customerSocialLink").prop('disabled', true);
+                $("#customerSocialID").prop('disabled', true);
+            }
+            //if customer does not exist in the db and this new customer added to the system
+            if (result === "success") {
+                document.getElementById("memberMsg").innerHTML = msg;
+                $("#submitOrderButton").prop('disabled', false);
+                $("#memberSubmitButton").prop('disabled', true);
+            }
+        });
+    }
+
+}
 
 //Function to check numeric numbers only in customer Tel section in home.php
 function checkTel() {
     var tel = document.getElementById("customerTel").value;
     // check if price is all numeric
     var illegalChar = /[^0-9.]/g;
-    if ((illegalChar.test(tel))) {
-        document.getElementById("telAlert").innerHTML = "برای تلفن مشتری تنها از اعداد استفاده نمایید";
+    if ((illegalChar.test(tel)) || tel.length < 11) {
+        document.getElementById("telAlert").innerHTML = "تلفن موبایل به صورت کامل، فقط از اعداد استفاده کنید";
         $("#submitOrderButton").prop('disabled', true);
+        $("#memberSubmitButton").prop('disabled', true);
         priceFlag = false;
         return telFlag;
     } else
     {
         document.getElementById("telAlert").innerHTML = "";
-        $("#submitOrderButton").prop('disabled', false);
+        $("#memberSubmitButton").prop('disabled', false);
         priceFlag = true;
         return telFlag;
     }

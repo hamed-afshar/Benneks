@@ -60,14 +60,42 @@ $queryResult3 = $user->executeQuery($query3);
 $todayValue = mysqli_fetch_row($queryResult3);
 //Get totall value and numbers for month orders
 $query4 = "SELECT FirstSet.turkeySUM, FirstSet.turkeyCount, SecondSet.frSUM, SecondSet.frCount FROM " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW()) AND orders.country = 'ترکیه') as FirstSet " .
+        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS turkeySUM, count(orders.orderID) AS turkeyCount FROM benneks.orders WHERE MONTH(orders.orderDate) = month(current_date()) AND YEAR(orders.orderDate) = YEAR(NOW()) AND orders.country = 'ترکیه') as FirstSet " .
         "INNER JOIN " .
-        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW()) AND orders.country = 'فرانسه') as SecondSet";
+        "(SELECT SUM(CAST(orders.productPrice AS decimal(5,2))) AS frSUM, count(orders.orderID) AS frCount FROM benneks.orders WHERE MONTH(orders.orderDate) = MONTH(current_date()) AND YEAR(orders.orderDate) = YEAR(NOW()) AND orders.country = 'فرانسه') as SecondSet";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
 $queryResult4 = $user->executeQuery($query4);
 $monthValue = mysqli_fetch_row($queryResult4);
+//Get totall value for orders that have not bought yet
+$notBoughtValueQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus is null";
+if (!$user->executeQuery($notBoughtValueQuery)) {
+    echo mysqli_error($user->conn);
+}
+$queryResultNotBoughtValue = $user->executeQuery($notBoughtValueQuery);
+$notBoughtValue = mysqli_fetch_row($queryResultNotBoughtValue);
+//get the totall value for orders that have bought and are on the way to office from 2018-12-1
+$wayToOfficeValueQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID inner join benneks.shipment on orders.orderID = shipment.orders_orderID where stat.orderStatus = 'انجام شده-tamam' and benneksShoppingDate > '2017-12-01'";
+if (!$user->executeQuery($wayToOfficeValueQuery)) {
+    echo mysqli_error($user->conn);
+}
+$queryResultWayToOfficeValue = $user->executeQuery($wayToOfficeValueQuery);
+$wayToOfficeValue = mysqli_fetch_row($queryResultWayToOfficeValue);
+//get the totall value for order which are available in the office
+$officeValueQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID inner join benneks.shipment on orders.orderID = shipment.orders_orderID where stat.orderStatus = 'رسیده به دفتر-officde'";
+if (!$user->executeQuery($officeValueQuery)) {
+    echo mysqli_error($user->conn);
+}
+$queryResultOfficeValueQuery = $user->executeQuery($officeValueQuery);
+$officeValue = mysqli_fetch_row($queryResultOfficeValueQuery);
+//get the total value for orders which are on the way to iran and kargoCode > 112
+$iranWayQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID inner join benneks.shipment on orders.orderID = shipment.orders_orderID where stat.orderStatus = 'در راه ایران-iran yolunda' and shipment.cargoName > '112'";
+if (!$user->executeQuery($iranWayQuery)) {
+    echo mysqli_error($user->conn);
+}
+$queryResultIranWayQuery= $user->executeQuery($iranWayQuery);
+$iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
 ?>
 <html>
     <head>
@@ -102,19 +130,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 
-<!-- script for add modal -->
+<!-- script for change Kargo modal -->
 <script>
     $(document).ready(function () {
-        $(document).on("click", ".open-addModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
-        });
-    });
-</script>
-<!-- script for cancel modal -->
-<script>
-    $(document).ready(function () {
-        $(document).on("click", ".open-cancelModal", function () {
+        $(document).on("click", ".open-changeKargoModal", function () {
             var orderID = $(this).data('id');
             $(".modal-body #rowID").val(orderID);
         });
@@ -182,6 +201,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     <li><a href='#orderListMakerModal' data-toggle='modal' data-target='#orderListMakerModal' class='open-addModal' >سفارش ساز</a></li>
                                     <li><a href="#"> گزارش کارگو</a></li>
                                     <li><a href="#finalReportModal" data-toggle='modal' data-target='#finalReportModal' class='open-finalReportModal' > گزارش جامع</a></li>
+                                    <li><a href="#iranPrintModal" data-toggle='modal' data-target='#iranPrintModal' class='open-iranPrintModal' > لیست رسیده به ایران</a></li>
+                                    <li><a href="#iranPrintMissingModal" data-toggle='modal' data-target='#iranPrintMissingModal' class='open-iranPrintMissingModal' > لیست گم شده های کارگو</a></li>
+                                    
                                 </ul>
 
                             </div>
@@ -212,31 +234,23 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-push-4 col-md-push-4 col-sm-push-4" dir="rtl">
                                 <div class="panel panel-primary" dir="rtl">
                                     <div class="panel-heading">
-                                        <i class="fa fa-exchange fa-fw"></i> حجم مالی:
+                                        <i class="fa fa-exchange fa-fw"></i>  مالی:
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="dayQuantity"> سفارشات امروز لیر:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
+                                                <label for="notBoughtValue"> مبلغ سفارشات خرید نشده:<br></label>
+                                                <label id="notBought" style="color: goldenrod"> <?php echo $notBoughtValue[0]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> سفارشات روز گذشته لیر :</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['0']; ?> </label>  
+                                                <label for="wayToOfficeValue"> مبلغ سفارشات در راه شرکت:</label>
+                                                <label id="wayToOfficeValue" style="color: goldenrod"> <?php echo $wayToOfficeValue[0]; ?> </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه لیر:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
+                                                <label for="officeValue"> مبلغ سفارشات رسیده به دفتر:</label>
+                                                <label id="officeValue" style="color: goldenrod"> <?php echo $officeValue[0]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز یورو:<br></label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[2]; ?>  </label>  
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته یورو :</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['2']; ?> </label>  
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="monthQuantity"> ماه یورو:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[2]; ?> </label> 
+                                                <label for="iranWayValue"> مبلغ سفارشات در راه ایران:</label>
+                                                <label id="iranWayValue" style="color: goldenrod"> <?php echo $iranWayValue[0]; ?> </label> 
                                             </div>
                                         </div>
                                     </div>
@@ -260,17 +274,19 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> 
                                             </div>
                                             <div class="form-group">
-                                                <label for="dayQuantity"> امروز فرانسه:</label>
-                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[3]; ?> </label> 
+                                                <label for="dayQuantity"> سفارشات امروز لیر:</label>
+                                                <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayValue[0]; ?>  </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty"> روز گذشته فرانسه:</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue[3]; ?> </label> 
+                                                <label for="yesterdayQuantuty"> سفارشات روز گذشته لیر :</label>
+                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $yesterdayValue['0']; ?> </label>  
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity"> ماه فرانسه:</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[3]; ?> </label> 
+                                                <label for="monthQuantity"> ماه لیر:</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label> 
                                             </div>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -348,8 +364,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<tr>";
                                         echo "<td> " . $row[0] .
                                         "<hr> "
-                                        . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#changeKargoModal' data-toggle='modal' data-target='#changeKargoModal' data-id='$row[0]' class='open-changeKargoModal' > <i class='fa fa-pencil fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#iranDeliverModal' data-id='$row[0]' class='open-iranDeliverModal'> <i class='fa fa-plane fa-fw fa-lg'></i> </a>"
                                         . "<a href='#returnModal' data-toggle='modal' data-target='#returnModal' data-id='$row[0]' class='open-returnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
                                         . " </td>";
@@ -404,71 +419,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         ?>
                     </div>
                 </div>
-                <!--cancel order modal -->
-                <div class = "modal fade" id = "cancelModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-remove"> </span> لغو سفارش </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="cancelOrder.php" method="post" dir="rtl">
-                                     <div class="form-group">
-                                        <input type="hidden" id="incomingPage" name="incomingPage" value="farsi-Admin">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="rowID"><span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cancelDetails"><span class="glyphicon glyphicon-hand-left"></span>  دلیل لغو سفارش</label>
-                                        <select dir = "rtl" class = "form-control" id = "cancelDetails" name="cancelDetails"> 
-                                            <option value = "نبودن سایز-bednı bıtmış">موجود نبودن سایز </option>
-                                            <option value = "تمام شدن محصول-tukendı">موجود نبودن کالا</option>
-                                            <option value = "موجود نبودن رنگ-renkleri bitmiş">موجود نبودن رنگ</option>
-                                            <option value = "اطلاعات ناقص-bilgileri tamamlanmamiş">ناقص بودن اطلاعات ورودی </option>
-                                            <option value = "به درخواست کاربر-muşteri istedin için">به درخواست کاربر </option>
-                                        </select>
-                                    </div>
-
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> لغو سفارش  </button>
-                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> پاک کردن </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--accept order modal -->
-                <div class = "modal fade" id = "addModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> خرید محصول </h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="addorder.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <input type="hidden" id="incomingPage" name="incomingPage" value="farsi-Admin">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="rowID"> کد سفارش </label>
-                                        <input type="text" class="form-control" name="rowID" id="rowID">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shoppingDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ خرید</label>
-                                        <input type="date" class="form-control" name="shoppingDate" id="shoppingDate"> 
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
-                                    <button type="submit" class="btn btn-danger btn-block" name="resetButton" id="resetButton"> پاک کردن </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <!--Iran Deliver order modal -->
                 <div class = "modal fade" id = "iranDeliverModal" role="dialog">
                     <div class="modal-dialog">
@@ -476,29 +426,59 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-briefcase"> </span> ارسال به ایران </h4>
+                                <h4><span class = "glyphicon glyphicon-plane"> </span> ارسال به ایران </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form"  method="post" action="irandeliver.php" dir="rtl">
                                     <div class="form-group">
+                                        <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
+                                        <input type="text" class="form-control" name="cargoName" id="cargoName" onclick="return false;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="iranDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ رسیدن به ایران:</label>
+                                        <input type="date" class="form-control" value="<?php echo date('Y-m-d'); ?>" name="iranArrivalDate" id="iranArrivalDate"> 
+                                    </div>
+                                    <div class="form-group">
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID" readonly onclick="return false;">
                                     </div>
+
+                                    <button type="button" class="btn btn-success btn-block" name="searchButton" id="searchButton" onclick="iranDeliverFunc('search');"> بررسی و ثبت </button>
                                     <div class="form-group">
-                                        <label for="benneksDeliverDate"><span class="glyphicon glyphicon-calendar"></span>  تاریخ ارسال</label>
-                                        <input type="date" class="form-control" name="benneksDeliverDate" id="benneksDeliverDate"> 
+                                        <center> <p id="iranDeliverMsg">  </p> </center>
+                                    </div>
+                                    <div class="form-group">
+                                        <center> <p id="counterMsg" style="color: black">  </p> </center>
+                                    </div>
+                                    <div class="form-group">
+                                        <center> <p id="counterErrorMsg" style="color: red">  </p> </center>
+                                    </div>
+                                    <button type="button" class="btn btn-danger btn-block" id="Not-changeCargoButton" onclick="$('#iranDeliverModal').modal('hide');"> انصراف </button>   
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--change kargo modal -->
+                <div class = "modal fade" id = "changeKargoModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-pencil"> </span> تغییر کارگو </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form"  method="post" action="changekargo.php" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش </label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly="" onclick="return false;">
                                     </div>
                                     <div class="form-group">
                                         <label for="cargoName"> <span class="glyphicon glyphicon-road"></span> کد کارگو </label> 
                                         <input type="text" class="form-control" name="cargoName" id="cargoName" onclick="return false;">
-                                    </div>
-                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="iranDeliverFunc('submit');"> ثبت </button>
-                                    <button type="button" class="btn btn-danger btn-block" name="resetButton" id="resetButton" onclick="iranDeliverFunc('reset');"> حذف کد کارگو </button>
-                                    <div class="form-group">
-                                        <center> <p id="msg">  </p> </center>
-                                    </div>
-                                    <button type="button" class="btn btn-info btn-block" id="changeCargoButton" style="display: none" onclick="iranDeliverFunc('change');"> تغییر کد کارگو </button>
-                                    <button type="button" class="btn btn-danger btn-block" id="Not-changeCargoButton" style="display: none" onclick="$('#iranDeliverModal').modal('hide');"> انصراف </button>   
+                                    </div>          
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>
                             </div>
                         </div>
@@ -544,10 +524,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-refresh"> </span> عودت محصول </h4>
+                                <h4><span class = "glyphicon glyphicon-refresh"> </span> عودت محصول در ایران </h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="return.php" method="post" dir="rtl">
+                                <form role="form" action="returniran.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="rowID"> کد سفارش </label>
                                         <input type="text" class="form-control" name="rowID" id="rowID">
@@ -555,6 +535,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     <div class="form-group">
                                         <label for="returnReason"><span class="glyphicon glyphicon-hand-left"></span>  دلیل عودت سفارش</label>
                                         <select dir = "rtl" class = "form-control" id = "returnReason" name="returnReason"> 
+                                            <option value = "دیر رسیدن کالا">دیر رسیدن کالا </option>
                                             <option value = "اشتباه بودن محصول">اشتباه بودن محصول</option>
                                             <option value = "خراب بودن محصول">خراب بودن محصول</option>
                                             <option value = "تعویض با جنس دیگر">تعویض با جنس دیگر</option>
@@ -601,6 +582,48 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         </select>
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ساخت گزارش </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--print iran arrival modal -->
+                <div class = "modal fade" id = "iranPrintModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-print"> </span> پرینت کد های رسیده کارگو</h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="printIranArrival.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> کد کارگو</label>
+                                        <input type="text" class="form-control" name="kargoID" id="kargoID">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                   <!--print iran missing modal -->
+                <div class = "modal fade" id = "iranPrintMissingModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-print"> </span> پرینت کد های گم شده در کارگو</h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="printIranMissing.php" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> کد کارگو</label>
+                                        <input type="text" class="form-control" name="kargoID" id="kargoID">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
                                 </form>
                             </div>
                         </div>

@@ -41,33 +41,8 @@ if (!$user->executeQuery($query1)) {
 }
 $queryResult1 = $user->executeQuery($query1);
 
-//Get the totall number of orders from begining
-/*$query2 = "select count(orders.orderID) from benneks.orders WHERE orders.country = 'ترکیه' and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW());";
-if (!$user->executeQuery($query2)) {
-    echo mysqli_error($user->conn);
-}
-$queryResult2 = $user->executeQuery($query2);
-$totallMonthValue = mysqli_fetch_row($queryResult2);*/
-
-//Get the totall number of purchased orders for current month
-/*$query3 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where orders.country = 'ترکیه' and stat.orderStatus = 'انجام شده-tamam' or stat.orderStatus = 'انجام شده'  and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW());";
-if (!$user->executeQuery($query3)) {
-    echo mysqli_error($user->conn);
-}
-$queryResult3 = $user->executeQuery($query3);
-$totallDoneMonthValue = mysqli_fetch_row($queryResult3);*/
-
 //Get the totall number of canceled orders for current month
 $query4 = "select count(orders.orderID) from benneks.orders inner join benneks.stat on orders.orderID = stat.orders_orderID where stat.orderStatus = 'لغو-İptal' or stat.orderStatus = 'لغو' and MONTH(orders.orderDate) = MONTH(NOW()) and YEAR(orders.orderDate) = YEAR(NOW()) and orders.country = 'ترکیه';";
-/*if (!$user->executeQuery($query4)) {
-    echo mysqli_error($user->conn);
-}
-$queryResult4 = $user->executeQuery($query4);
-$totallCanceledMonthValue = mysqli_fetch_row($queryResult4);*/
-
-//Get the tottal number of unknown orders for current month
-// query 5 position
-//Get the current kargo Number
 $query6 = "select max(cargoName) from benneks.shipment where cargoName REGEXP '^[0-9]{3}';";
 if (!$user->executeQuery($query6)) {
     echo mysqli_error($user->conn);
@@ -83,8 +58,6 @@ if (!$user->executeQuery($query7)) {
 $queryResult7 = $user->executeQuery($query7);
 $totallAvailableOffice = mysqli_fetch_row($queryResult7);
 
-//Get the totall number of orders on the way to office
-//query 8 
 //Get the totall number of unknown orders 
 $query9 = "select count(*) from benneks.stat where stat.orderStatus is Null;";
 if (!$user->executeQuery($query9)) {
@@ -173,6 +146,15 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
 <script>
     $(document).ready(function () {
         $(document).on("click", ".open-newKargoModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
+<!-- script for comment modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-commentModal", function () {
             var orderID = $(this).data('id');
             $(".modal-body #rowID").val(orderID);
         });
@@ -347,12 +329,12 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                         echo "<tr>";
                                         echo "<td> " . $row[0] .
                                         "<hr> "
+                                        . "<a href='#commentModal' data-toggle='modal' data-target='#commentModal' data-id='$row[0]' class='open-commentModal' > <i class='fa fa-comment fa-fw fa-lg'></i> </a>"
                                         . "<a href='#addModal' data-toggle='modal' data-target='#addModal' data-id='$row[0]' class='open-addModal' > <i class='fa fa-check fa-fw fa-lg'></i> </a>"
                                         . "<a href='#cancelModal' data-toggle='modal' data-target='#cancelModal' data-id='$row[0]' class='open-cancelModal'> <i class='fa fa-times fa-fw fa-lg'></i> </a>"
                                         . "<a href='#officeDeliveryModal' data-toggle='modal' data-target='#officeDeliveryModal' data-id='$row[0]' class='open-officeDeliveryModal'> <i class='fa fa-home fa-fw fa-lg'></i> </a>"
                                         . "<a href='#turkeyReturnModal' data-toggle='modal' data-target='#turkeyReturnModal' data-id='$row[0]' class='open-turkeyReturnModal'> <i class='fa fa-exchange fa-fw fa-lg'></i> </a>"
                                         . " </td>";
-                                        //echo "<td>" . $row[1] . "</td>";
                                         echo "<td>" . $row[15] . "</td>";
                                         echo "<td>" . $row[2] . "</td>";
 
@@ -635,6 +617,29 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                         <p>iade list raporlari</p>
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> rapor</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--comment modal-->
+                <div class = "modal fade" id = "commentModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-comment"> </span> Comment </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="adminComment.php" method="post">
+                                    <div class="form-group">
+                                        <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Sipariş Kodu</label>
+                                        <input type="text" class="form-control" name="rowID" id="rowID" readonly>
+                                    </div>
+                                    <textarea rows="5" cols="70" id = "comment" name="comment"></textarea>
+                                    <hr>
+                                    <button type="submit" class="btn btn-success btn-block" name="commentButton" id="commentButton"> Gönder </button>
                                 </form>
                             </div>
                         </div>

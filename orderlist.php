@@ -418,24 +418,20 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="modal-body" style="padding:40px 50px;">
                                 <div class="form-group">
                                     <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش</label>
-                                    <input type="text" class="form-control" name="rowID" id="rowID" readonly>
+                                    <input type="text" class="form-control" name="rowID" id="rowID">
                                 </div>
                                 <div class="form-group">
-                                    <textarea rows="5" cols="40" id = "comment" name="comment" placeholder="برای نمایش توضیحات دکمه نمایش را فشار دهید."> 
-                                        <?php
-                                        /*$commentQuery = "select stat.comment from benneks.stat where orders_orderID = '313164'";
-                                        $commentQueryResult = $user->executeQuery($commentQuery);
-                                        $text = mysqli_fetch_row($commentQueryResult);
-                                        echo($text[0]);
-                                        ?>*/
-                                        ?>
-                                    </textarea>
+                                    <textarea rows="5" cols="40" id = "commentMSG" name="commentMSG" placeholder="برای نمایش توضیحات دکمه نمایش را فشار دهید."> </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button  type = button class="btn btn-block btn-success"  id="submitButton" name="submitButton" onclick="showComment();"> نمایش </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </body>
-            </html>
+        </div>
+</body>
+</html>
 

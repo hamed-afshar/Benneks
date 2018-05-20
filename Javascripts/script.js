@@ -598,6 +598,16 @@ function checkTel() {
 
 }
 
+function showComment() {
+    
+    var orderID = document.getElementById("rowID").value;
+    
+    $.getJSON("./showcomment.php?orderID=" + orderID, function (data) {
+        var msg = data.msg;
+        document.getElementById("commentMSG").innerHTML = msg;
+    });
+}
+
 
 //Function to print code on label
 function printCodeFunc(printCode) {

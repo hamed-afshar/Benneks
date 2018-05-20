@@ -102,6 +102,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
         });
     });
 </script>
+<!-- script for show comment modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-showCommentModal", function () {
+            var orderID = $(this).data('id');
+            $(".modal-body #rowID").val(orderID);
+        });
+    });
+</script>
 
 <title>Benneks Order System</title>
 </head>
@@ -250,6 +259,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<tr>";
                                         echo "<td>" . $row[0] .
                                         "<hr> "
+                                        . "<a href='#showCommentModal' data-toggle='modal' data-target='#showCommentModal' data-id='$row[0]' class='open-showCommentModal' > <i class='fa fa-comment fa-fw fa-lg'></i> </a>"
                                         . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> </a>"
                                         . "<a href='#availableModal' data-toggle='modal' data-target='#availableModal' data-id = '$row[0]' class='open-availableModal'> <i class = 'fa fa-tag fa-fw fa-lg'></i> </a>"
                                         . "</td>";
@@ -392,6 +402,35 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> دریافت فایل اکسل </button>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- showcomment modal-->
+                <div class = "modal fade" id = "showCommentModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-comment"> </span> Comment </h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <div class="form-group">
+                                    <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش</label>
+                                    <input type="text" class="form-control" name="rowID" id="rowID" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <textarea rows="5" cols="40" id = "comment" name="comment" placeholder="برای نمایش توضیحات دکمه نمایش را فشار دهید."> 
+                                        <?php
+                                        /*$commentQuery = "select stat.comment from benneks.stat where orders_orderID = '313164'";
+                                        $commentQueryResult = $user->executeQuery($commentQuery);
+                                        $text = mysqli_fetch_row($commentQueryResult);
+                                        echo($text[0]);
+                                        ?>*/
+                                        ?>
+                                    </textarea>
+                                </div>
                             </div>
                         </div>
                     </div>

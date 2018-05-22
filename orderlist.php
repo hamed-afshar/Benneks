@@ -108,8 +108,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
         $(document).on("click", ".open-showCommentModal", function () {
             var orderID = $(this).data('id');
             $(".modal-body #rowID").val(orderID);
+            showComment();
         });
     });
+
 </script>
 
 <title>Benneks Order System</title>
@@ -406,7 +408,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         </div>
                     </div>
                 </div>
-                <!-- showcomment modal-->
+                <!-- show comment modal-->
                 <div class = "modal fade" id = "showCommentModal" role="dialog">
                     <div class="modal-dialog">
                         <!--modal content -->
@@ -418,13 +420,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <div class="modal-body" style="padding:40px 50px;">
                                 <div class="form-group">
                                     <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> کد سفارش</label>
-                                    <input type="text" class="form-control" name="rowID" id="rowID">
+                                    <input type="text" class="form-control" name="rowID" id="rowID" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <textarea rows="5" cols="40" id = "commentMSG" name="commentMSG" placeholder="برای نمایش توضیحات دکمه نمایش را فشار دهید."> </textarea>
-                                </div>
-                                <div class="form-group">
-                                    <button  type = button class="btn btn-block btn-success"  id="submitButton" name="submitButton" onclick="showComment();"> نمایش </button>
+                                    <p> <textarea rows="5" cols="50" id = "commentMSG" name="commentMSG"> </textarea> </p>
                                 </div>
                             </div>
                         </div>

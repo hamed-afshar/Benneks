@@ -157,6 +157,7 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
         $(document).on("click", ".open-commentModal", function () {
             var orderID = $(this).data('id');
             $(".modal-body #rowID").val(orderID);
+            adminComment('show');
         });
     });
 </script>
@@ -637,9 +638,9 @@ $totallReturnOffice = mysqli_fetch_row($queryResult10);
                                         <label for="rowID"> <span class="glyphicon glyphicon-asterisk"></span> Sipariş Kodu</label>
                                         <input type="text" class="form-control" name="rowID" id="rowID" readonly>
                                     </div>
-                                    <textarea rows="5" cols="70" id = "comment" name="comment"></textarea>
+                                    <p> <textarea rows="5" cols="70" id = "comment" name="comment"> </textarea> </p>
                                     <hr>
-                                    <button type="submit" class="btn btn-success btn-block" name="commentButton" id="commentButton"> Gönder </button>
+                                    <button type="button" class="btn btn-success btn-block" name="commentButton" id="commentButton" onclick="adminComment('submit');"> Gönder </button>
                                 </form>
                             </div>
                         </div>

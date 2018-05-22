@@ -597,15 +597,27 @@ function checkTel() {
     }
 
 }
-
+//function to show comment for users in orderlist section
 function showComment() {
-    
+
     var orderID = document.getElementById("rowID").value;
-    
+
     $.getJSON("./showcomment.php?orderID=" + orderID, function (data) {
         var msg = data.msg;
         document.getElementById("commentMSG").innerHTML = msg;
     });
+}
+//function to show or submit comment in turkish admin panel
+function adminComment(action) {
+    var orderID = document.getElementById("rowID").value;
+    var comment = document.getElementById("comment").value;
+    $.getJSON("./admincomment.php?orderID=" + orderID + "&comment=" + comment + "&action=" + action, function (data) {
+        var msg = data.msg;
+        document.getElementById("comment").innerHTML = "";
+        document.getElementById("comment").innerHTML = msg;
+    });
+    
+
 }
 
 

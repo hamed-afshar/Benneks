@@ -613,7 +613,6 @@ function adminComment(action) {
     var comment = document.getElementById("comment").value;
     $.getJSON("./admincomment.php?orderID=" + orderID + "&comment=" + comment + "&action=" + action, function (data) {
         var msg = data.msg;
-        document.getElementById("comment").innerHTML = "";
         document.getElementById("comment").innerHTML = msg;
     });
     

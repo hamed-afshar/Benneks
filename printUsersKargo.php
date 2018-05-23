@@ -48,12 +48,19 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('B1', 'کد')
         ->setCellValue('C1', 'وضعیت')
         ->setCellValue('D1', 'جزئیات')
-        ->setCellValue('E1', 'کد کارگو');
+        ->setCellValue('E1', 'کد کارگو')
+        ->setCellValue('F1', 'نام مشتری')
+        ->setCellValue('G1', 'نحوه ارتباط')
+        ->setCellValue('H1', 'آیدی')
+        ->setCellValue('I1', 'تلفن');
 
 //query to extract requiered data from db and insert it to excel
 $userID = $_SESSION['user'];
-$query = "select orders.orderID, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName from benneks.users inner join benneks.orders on orders.users_userID = users.userID inner join benneks.stat on orders.orderID = stat.orders_orderID ".
-        "inner join benneks.shipment on orders.orderID = shipment.orders_orderID where users.userID = '$userID' and shipment.cargoName = '$cargoName' and stat.orderStatus = 'رسیده به ایران-İrana galmiş';";
+$query = "select orders.orderID, stat.orderStatus, stat.orderStatusDescription, shipment.cargoName, members.customerName,"
+        . "members.customerSocialLink, members.customerSocialID, members.customerTel from benneks.users inner join benneks.orders on orders.users_userID = users.userID "
+        . "inner join benneks.stat on orders.orderID = stat.orders_orderID inner join benneks.members on members.customerCode = orders.members_customerCode "
+        . "inner join benneks.shipment on orders.orderID = shipment.orders_orderID "
+        . "where users.userID = '$userID' and shipment.cargoName = '$cargoName' and stat.orderStatus = 'رسیده به ایران-İrana galmiş';";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
@@ -67,6 +74,10 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
     $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $row[2]);
     $objPHPExcel->getActiveSheet()->setCellValue('E' . $i, $row[3]);
+    $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, $row[4]);
+    $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row[5]);
+    $objPHPExcel->getActiveSheet()->setCellValue('H' . $i, $row[6]);
+    $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $row[7]);
     $i++;
 }
 
@@ -76,15 +87,19 @@ $objSheet->getColumnDimension('B')->setAutoSize(true);
 $objSheet->getColumnDimension('C')->setAutoSize(true);
 $objSheet->getColumnDimension('D')->setAutoSize(true);
 $objSheet->getColumnDimension('E')->setAutoSize(true);
+$objSheet->getColumnDimension('F')->setAutoSize(true);
+$objSheet->getColumnDimension('G')->setAutoSize(true);
+$objSheet->getColumnDimension('H')->setAutoSize(true);
+$objSheet->getColumnDimension('I')->setAutoSize(true);
 
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:Q1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:Q1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:Q1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:I1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:I1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:I1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="Kargo-home-' . $cargoName . '.xls"');

@@ -60,7 +60,7 @@ $query = "select orders.orderID, stat.orderStatus, stat.orderStatusDescription, 
         . "members.customerSocialLink, members.customerSocialID, members.customerTel from benneks.users inner join benneks.orders on orders.users_userID = users.userID "
         . "inner join benneks.stat on orders.orderID = stat.orders_orderID inner join benneks.members on members.customerCode = orders.members_customerCode "
         . "inner join benneks.shipment on orders.orderID = shipment.orders_orderID "
-        . "where users.userID = '$userID' and shipment.cargoName = '$cargoName' and stat.orderStatus = 'رسیده به ایران-İrana galmiş';";
+        . "where users.userID = '$userID' and shipment.cargoName = '$cargoName' and (stat.orderStatus = 'رسیده به ایران-İrana galmiş' or stat.orderStatus = 'رسیده به ایران با مشکل-İrana galmiş');";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }

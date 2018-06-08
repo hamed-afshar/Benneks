@@ -48,12 +48,13 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('E1', 'satin alma tarihi')
         ->setCellValue('F1', 'Link')
         ->setCellValue('G1', 'Ref Code')
-        ->setCellValue('H1', 'Yorum');
+        ->setCellValue('H1', 'Açıklama')
+        ->setCellValue('I1', 'Durum');
 //query to extract orders purchased ten days ago but not arrived to the office yet from the db and insert them into the excel report file
 $query1 = "select orders.orderID, orders.productPrice, orders.orderDate, shipment.benneksShoppingDate, orders.productLink, stat.supplierRefCode, stat.comment, shipment.officeArrivalDate, orders.country, stat.orderStatus "
         . "from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner join benneks.stat on stat.orders_orderID = orders.orderID  where "
-        . "benneksShoppingDate < DATE_SUB(NOW(), INTERVAL 10 DAY) and benneksShoppingDate > '2017-12-01' and  officeArrivalDate is null and orders.country = 'ترکیه' " 
-        . "and stat.orderStatus <> 'عودت ترکیه-İade-Turkey' and stat.orderStatus <> 'رسیده به ایران با مشکل-İrana galmiş' and stat.orderStatus <> 'رسیده به ایران-İrana galmiş' order by benneksShoppingDate desc;";
+        . "orderDate < DATE_SUB(NOW(), INTERVAL 10 DAY) and orderDate > '2017-12-01' and  officeArrivalDate is null and orders.country = 'ترکیه' "
+        . "and stat.orderStatus <> 'عودت ترکیه-İade-Turkey' and stat.orderStatus <> 'رسیده به ایران با مشکل-İrana galmiş' and stat.orderStatus <> 'رسیده به ایران-İrana galmiş' and stat.orderStatus <> 'لغو-İptal' order by benneksShoppingDate desc;";
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
@@ -69,6 +70,7 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, $row[4]);
     $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row[5]);
     $objPHPExcel->getActiveSheet()->setCellValue('H' . $i, $row[6]);
+    $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $row[9]);
     $i++;
 }
 
@@ -81,6 +83,7 @@ $objSheet->getColumnDimension('E')->setAutoSize(true);
 $objSheet->getColumnDimension('F')->setAutoSize(true);
 $objSheet->getColumnDimension('G')->setAutoSize(true);
 $objSheet->getColumnDimension('H')->setAutoSize(true);
+$objSheet->getColumnDimension('I')->setAutoSize(true);
 
 
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -88,9 +91,9 @@ $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:H1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:H1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:H1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:I1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:I1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:I1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="10 gun Rapor.xls"');

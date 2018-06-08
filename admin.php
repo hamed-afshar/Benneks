@@ -94,7 +94,7 @@ $iranWayQuery = "SELECT sum(CAST(orders.productPrice AS decimal(5,2))) from benn
 if (!$user->executeQuery($iranWayQuery)) {
     echo mysqli_error($user->conn);
 }
-$queryResultIranWayQuery= $user->executeQuery($iranWayQuery);
+$queryResultIranWayQuery = $user->executeQuery($iranWayQuery);
 $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
 ?>
 <html>
@@ -198,12 +198,11 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href='#orderListMakerModal' data-toggle='modal' data-target='#orderListMakerModal' class='open-addModal' >سفارش ساز</a></li>
-                                    <li><a href="#"> گزارش کارگو</a></li>
+                                    <li><a href="#financialReportModal" data-toggle='modal' data-target='#financialReportModal' class='open-financialReportModal'> گزارش مالی</a></li>
                                     <li><a href="#finalReportModal" data-toggle='modal' data-target='#finalReportModal' class='open-finalReportModal' > گزارش جامع</a></li>
                                     <li><a href="#iranPrintModal" data-toggle='modal' data-target='#iranPrintModal' class='open-iranPrintModal' > لیست رسیده به ایران</a></li>
                                     <li><a href="#iranPrintMissingModal" data-toggle='modal' data-target='#iranPrintMissingModal' class='open-iranPrintMissingModal' > لیست گم شده های کارگو</a></li>
-                                    
+
                                 </ul>
 
                             </div>
@@ -484,32 +483,36 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                         </div>
                     </div>
                 </div>
-                <!--orderlist Maker Modal -->
-                <div class = "modal fade" id = "orderListMakerModal" role="dialog">
+                <!--financial Modal -->
+                <div class = "modal fade" id = "financialReportModal" role="dialog">
                     <div class="modal-dialog">
                         <!--modal content -->
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> ساخت لیست سفارشات </h4>
+                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> کزارش سود و زیان کارگو</h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="orderlistmaker.php" method="post" dir="rtl">
+                                <form role="form" action="financialReport.php" method="post" dir="rtl">
                                     <div class="form-group">
-                                        <label for="orderID"> شروع از تاریخ: </label>
-                                        <input type="date" class="form-control" name="orderDate" id="orderDate">
+                                        <label for="kargoNo"> شماره کارگو </label>
+                                        <input type="text" class="form-control" name="kargoNo" id="kargoNo">
                                     </div>
                                     <div class="form-group">
-                                        <label for="orderID"> شروع از ساعت: </label>
-                                        <input type="time" class="form-control" name="orderTime" id="orderTime">
+                                        <label for="exchangeAvrage"> متوسط قیمت خرید ارز: </label>
+                                        <input type="text" class="form-control" name="exchangeAvrage" id="exchangeAvrage">
                                     </div>
                                     <div class="form-group">
-                                        <label for="country"><span class="glyphicon glyphicon-flag"></span>  کشور:</label>
-                                        <select dir = "rtl" class = "form-control" id = "country" name="country"> 
-                                            <option value = "انگلیس">انگلیس</option>
-                                            <option value = "ترکیه">ترکیه</option>
-                                            <option value = "فرانسه">فرانسه</option>
-                                        </select>
+                                        <label for="kargoCost"> هزینه کارگو: </label>
+                                        <input type="text" class="form-control" name="kargoCost" id="kargoCost">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wrongItemsCost"> ضرر کدهای اشتباه: </label>
+                                        <input type="text" class="form-control" name="wrongItemsCost" id="wrongItemsCost">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="missingItemsCost"> ضرر کدهای گم شده: </label>
+                                        <input type="text" class="form-control" name="missingItemsCost" id="missingItemsCost">
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ایجاد فایل اکسل </button>
                                 </form>
@@ -608,7 +611,7 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                         </div>
                     </div>
                 </div>
-                   <!--print iran missing modal -->
+                <!--print iran missing modal -->
                 <div class = "modal fade" id = "iranPrintMissingModal" role="dialog">
                     <div class="modal-dialog">
                         <!--modal content -->

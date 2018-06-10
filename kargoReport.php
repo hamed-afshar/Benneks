@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * script to make report for kargo profit and loss
  */
 ob_start();
@@ -41,20 +41,19 @@ $style = array(
 
 // Add header titles
 $objPHPExcel->setActiveSheetIndex(0)
-        ->setCellValue('A1', 'شماره کارگو')
-        ->setCellValue('B1', 'هزینه کارگو')
-        ->setCellValue('C1', 'ضرر کدهای گم شده')
-        ->setCellValue('D1', 'ضرر کدهای اشتباه')
-        ->setCellValue('E1', 'متوسط قیمت ارز')
-        ->setCellValue('F1', 'مجموع ارزی کارگو')
-        ->setCellValue('G1', 'سود یا زیان کارگو')
-        ->setCellValue('H1', 'سود یا زیان خرید لیر')
-        ->setCellValue('I1', 'سود یا زیان کل');
-//query to extract orders purchased ten days ago but not arrived to the office yet from the db and insert them into the excel report file
-$query1 = "select orders.orderID, orders.productPrice, orders.orderDate, shipment.benneksShoppingDate, orders.productLink, stat.supplierRefCode, stat.comment, shipment.officeArrivalDate, orders.country, stat.orderStatus "
-        . "from benneks.orders inner join benneks.shipment on orders.orderID = shipment.orders_orderID inner join benneks.stat on stat.orders_orderID = orders.orderID  where "
-        . "orderDate < DATE_SUB(NOW(), INTERVAL 10 DAY) and orderDate > '2017-12-01' and  officeArrivalDate is null and orders.country = 'ترکیه' "
-        . "and stat.orderStatus <> 'عودت ترکیه-İade-Turkey' and stat.orderStatus <> 'رسیده به ایران با مشکل-İrana galmiş' and stat.orderStatus <> 'رسیده به ایران-İrana galmiş' and stat.orderStatus <> 'لغو-İptal' order by benneksShoppingDate desc;";
+        ->setCellValue('A1', 'ردیف')
+        ->setCellValue('B1', 'شماره کارگو')
+        ->setCellValue('C1', 'هزینه کارگو')
+        ->setCellValue('D1', 'ضرر کدهای گم شده')
+        ->setCellValue('E1', 'ضرر کدهای اشتباه')
+        ->setCellValue('F1', 'متوسط قیمت ارز')
+        ->setCellValue('G1', 'مجموع ارزی کارگو')
+        ->setCellValue('H1', 'سود یا زیان کارگو')
+        ->setCellValue('I1', 'سود یا زیان خرید لیر')
+        ->setCellValue('J1', 'سود یا زیان کل');
+
+//query to extract requiered data from db and insert it to excel
+$query1 = "SELECT * FROM benneks.kargo";
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }
@@ -67,10 +66,13 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
     $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $row[2]);
     $objPHPExcel->getActiveSheet()->setCellValue('E' . $i, $row[3]);
-    $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, $row[4]);
-    $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row[5]);
-    $objPHPExcel->getActiveSheet()->setCellValue('H' . $i, $row[6]);
-    $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $row[9]);
+    $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, $row[9]);
+    $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row[8]);
+    $columnH = intval($row[5]) - intval($row[7]) - intval($row[6]);
+    $objPHPExcel->getActiveSheet()->setCellValue('H' . $i, $columnH);
+    $columnI = (intval($row[9]) - intval($row[4])) * intval($row[8]);
+    $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $columnI);
+    $objPHPExcel->getActiveSheet()->setCellValue('J' . $i, '=H' . $i . '+I' . $i);
     $i++;
 }
 
@@ -84,6 +86,7 @@ $objSheet->getColumnDimension('F')->setAutoSize(true);
 $objSheet->getColumnDimension('G')->setAutoSize(true);
 $objSheet->getColumnDimension('H')->setAutoSize(true);
 $objSheet->getColumnDimension('I')->setAutoSize(true);
+$objSheet->getColumnDimension('J')->setAutoSize(true);
 
 
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -91,12 +94,12 @@ $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:I1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:I1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:I1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:J1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:J1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:J1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="10 gun Rapor.xls"');
+header('Content-Disposition: attachment;filename="kargo-profit-report.xls"');
 
 $objWriter->save('php://output');
 ?>

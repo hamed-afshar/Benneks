@@ -188,7 +188,7 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                             <a href="admindetails.php"> <i class="fa fa-area-chart fa-fw"> </i> گزارش مفصل </a>
                         </li>
                         <li>
-                            <a href="#"> <i class="fa fa-money fa-fw" > </i> انتقال وجه</a>
+                            <a href="#kargoModal" data-toggle='modal' data-target='#kargoModal' class='open-kargoModal'> <i class="fa fa-truck fa-fw" > </i> ورود اطلاعات کارگو</a>
                         </li>
                         <li>
                             <div class="dropdown">
@@ -198,10 +198,10 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="#financialReportModal" data-toggle='modal' data-target='#financialReportModal' class='open-financialReportModal'> گزارش مالی</a></li>
                                     <li><a href="#finalReportModal" data-toggle='modal' data-target='#finalReportModal' class='open-finalReportModal' > گزارش جامع</a></li>
                                     <li><a href="#iranPrintModal" data-toggle='modal' data-target='#iranPrintModal' class='open-iranPrintModal' > لیست رسیده به ایران</a></li>
                                     <li><a href="#iranPrintMissingModal" data-toggle='modal' data-target='#iranPrintMissingModal' class='open-iranPrintMissingModal' > لیست گم شده های کارگو</a></li>
+                                    <li><a href="kargoReport.php" > گزارش کارگو</a></li>
 
                                 </ul>
 
@@ -483,8 +483,8 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                         </div>
                     </div>
                 </div>
-                <!--financial Modal -->
-                <div class = "modal fade" id = "financialReportModal" role="dialog">
+                <!--Kargo Modal -->
+                <div class = "modal fade" id = "kargoModal" role="dialog">
                     <div class="modal-dialog">
                         <!--modal content -->
                         <div class="modal-content">
@@ -493,7 +493,7 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                 <h4><span class = "glyphicon glyphicon-list-alt"> </span> کزارش سود و زیان کارگو</h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="financialReport.php" method="post" dir="rtl">
+                                <form role="form" action="kargoDetails.php" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="kargoNo"> شماره کارگو </label>
                                         <input type="text" class="form-control" name="kargoNo" id="kargoNo">
@@ -507,14 +507,14 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                         <input type="text" class="form-control" name="kargoCost" id="kargoCost">
                                     </div>
                                     <div class="form-group">
-                                        <label for="wrongItemsCost"> ضرر کدهای اشتباه: </label>
-                                        <input type="text" class="form-control" name="wrongItemsCost" id="wrongItemsCost">
+                                        <label for="wrongCost"> ضرر کدهای اشتباه: </label>
+                                        <input type="text" class="form-control" name="wrongCost" id="wrongCost">
                                     </div>
                                     <div class="form-group">
-                                        <label for="missingItemsCost"> ضرر کدهای گم شده: </label>
-                                        <input type="text" class="form-control" name="missingItemsCost" id="missingItemsCost">
+                                        <label for="missingCost"> ضرر کدهای گم شده: </label>
+                                        <input type="text" class="form-control" name="missingCost" id="missingCost">
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ایجاد فایل اکسل </button>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>
                             </div>
                         </div>

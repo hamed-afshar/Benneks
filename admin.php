@@ -201,7 +201,7 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                     <li><a href="#finalReportModal" data-toggle='modal' data-target='#finalReportModal' class='open-finalReportModal' > گزارش جامع</a></li>
                                     <li><a href="#iranPrintModal" data-toggle='modal' data-target='#iranPrintModal' class='open-iranPrintModal' > لیست رسیده به ایران</a></li>
                                     <li><a href="#iranPrintMissingModal" data-toggle='modal' data-target='#iranPrintMissingModal' class='open-iranPrintMissingModal' > لیست گم شده های کارگو</a></li>
-                                    <li><a href="kargoReport.php" > گزارش کارگو</a></li>
+                                    <li><a href="kargoReport.php" > گزارش سود و زیان کارگو</a></li>
 
                                 </ul>
 
@@ -490,10 +490,10 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                         <div class="modal-content">
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> کزارش سود و زیان کارگو</h4>
+                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> ورود اطلاعات کارگو</h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="kargoDetails.php" method="post" dir="rtl">
+                                <form role="form" method="post" dir="rtl">
                                     <div class="form-group">
                                         <label for="kargoNo"> شماره کارگو </label>
                                         <input type="text" class="form-control" name="kargoNo" id="kargoNo">
@@ -514,7 +514,12 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                         <label for="missingCost"> ضرر کدهای گم شده: </label>
                                         <input type="text" class="form-control" name="missingCost" id="missingCost">
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="kargoDetailFunc('submit')"> ثبت </button>
+                                    <button type="button" class="btn btn-danger btn-block" name="editButton" id="editButton" onclick="kargoDetailFunc('edit')">اصلاح  </button>
+                                    <div class="form-group">
+                                        <span style="color:red; text-align: justify; font-size: 12" id="kargoDetailsMSG">
+                                        </span>
+                                    </div>   
                                 </form>
                             </div>
                         </div>

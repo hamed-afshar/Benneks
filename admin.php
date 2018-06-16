@@ -191,6 +191,9 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                             <a href="#kargoModal" data-toggle='modal' data-target='#kargoModal' class='open-kargoModal'> <i class="fa fa-truck fa-fw" > </i> ورود اطلاعات کارگو</a>
                         </li>
                         <li>
+                            <a href="#transferModal" data-toggle='modal' data-target='#transferModal' class='open-transferModal'> <i class="fa fa-money fa-fw" > </i> ورود اطلاعات حواله</a>
+                        </li>
+                        <li>
                             <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <span class="fa fa-file-excel-o fa-fw"></span>
@@ -632,6 +635,40 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                         <input type="text" class="form-control" name="kargoID" id="kargoID">
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Transfer Modal -->
+                <div class = "modal fade" id = "transferModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-list-alt"> </span> ورود اطلاعات حواله</h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="transferDate"> تاریخ حواله: </label>
+                                        <input type="text" class="form-control" name="transferDate" id="transferDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exchangeRate"> قیمت واحد ارز: </label>
+                                        <input type="text" class="form-control" name="exchangeRate" id="exchangeRate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="amount"> مبلغ: </label>
+                                        <input type="text" class="form-control" name="amount" id="amount">
+                                    </div>
+                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="transferFunc('submit')"> ثبت </button>
+                                    <button type="button" class="btn btn-danger btn-block" name="editButton" id="editButton" onclick="transferFunc('edit')">اصلاح  </button>
+                                    <div class="form-group">
+                                        <span style="color:red; text-align: justify; font-size: 12" id="transferMSG">
+                                        </span>
+                                    </div>   
                                 </form>
                             </div>
                         </div>

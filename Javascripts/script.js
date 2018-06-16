@@ -629,6 +629,11 @@ function kargoDetailFunc(action) {
     });
 }
 
+//function to submit or edit money transfer details
+function transferFunc(action) {
+    
+}
+
 //Function to print code on label
 function printCodeFunc(printCode) {
     var printContent = printCode;

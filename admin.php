@@ -205,6 +205,7 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                     <li><a href="#iranPrintModal" data-toggle='modal' data-target='#iranPrintModal' class='open-iranPrintModal' > لیست رسیده به ایران</a></li>
                                     <li><a href="#iranPrintMissingModal" data-toggle='modal' data-target='#iranPrintMissingModal' class='open-iranPrintMissingModal' > لیست گم شده های کارگو</a></li>
                                     <li><a href="kargoReport.php" > گزارش سود و زیان کارگو</a></li>
+                                    <li><a href="transferreport.php" >گزارش حواله ها</a></li>
 
                                 </ul>
 

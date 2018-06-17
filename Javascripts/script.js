@@ -631,7 +631,32 @@ function kargoDetailFunc(action) {
 
 //function to submit or edit money transfer details
 function transferFunc(action) {
-    
+   var transferDate = document.getElementById("transferDate").value; 
+   var exchangeRate = document.getElementById("exchangeRate").value;
+   var amount = document.getElementById("amount").value; 
+   switch(action) {
+       case "submit" :
+           $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&action=" + action, function(data) {
+               var msg = data.msg;
+               document.getElementById("transferMSG").innerHTML = msg;
+           })
+           break;
+       case "edit" :
+           $("#transferSubmitButton").hide("slow");
+           $("#transferCodeArea").show("slow");
+           $("#transferEditButton").hide("slow");
+           $("#editConfirmButton").show("slow");
+           var msg = data.msg;
+           document.getElementById("transferMSG").innerHTML = msg;
+           break;
+       case "confirm" :
+           var transferCode = document.getElementById("transferCode").value; 
+           $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&transferCode=" + transferCode + "&action=" + action, function(data) {
+               var msg = data.msg;
+               document.getElementById("transferMSG").innerHTML = msg;
+           })
+           break;
+   }
 }
 
 //Function to print code on label

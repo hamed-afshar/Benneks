@@ -651,9 +651,13 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
                                 <form role="form" method="post" dir="rtl">
+                                    <div class="form-group" id = "transferCodeArea" name = "transferCodeArea" style="display: none">
+                                        <label for="transferCode"> کد حواله: </label>
+                                        <input type="text" class="form-control" name="transferCode" id="transferCode" placeholder = "کد حواله را وارد نمایید.">
+                                    </div>
                                     <div class="form-group">
                                         <label for="transferDate"> تاریخ حواله: </label>
-                                        <input type="text" class="form-control" name="transferDate" id="transferDate">
+                                        <input type="date" class="form-control" name="transferDate" id="transferDate">
                                     </div>
                                     <div class="form-group">
                                         <label for="exchangeRate"> قیمت واحد ارز: </label>
@@ -663,8 +667,9 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                         <label for="amount"> مبلغ: </label>
                                         <input type="text" class="form-control" name="amount" id="amount">
                                     </div>
-                                    <button type="button" class="btn btn-success btn-block" name="submitButton" id="submitButton" onclick="transferFunc('submit')"> ثبت </button>
-                                    <button type="button" class="btn btn-danger btn-block" name="editButton" id="editButton" onclick="transferFunc('edit')">اصلاح  </button>
+                                    <button type="button" class="btn btn-success btn-block" name="transferSubmitButton" id="transferSubmitButton" onclick = "transferFunc('submit');"> ثبت </button>
+                                    <button type="button" class="btn btn-danger btn-block" name="transferEditButton" id="transferEditButton" onclick = "transferFunc('edit');">اصلاح  </button>
+                                    <button type="button" class="btn btn-success btn-block" name="editConfirmButton" id="editConfirmButton" style="display: none" onclick = "transferFunc('confirm');"> اعمال تغییرات </button>
                                     <div class="form-group">
                                         <span style="color:red; text-align: justify; font-size: 12" id="transferMSG">
                                         </span>

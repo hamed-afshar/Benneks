@@ -23,7 +23,7 @@ $exchangeRate = $_GET['exchangeRate'];
 $amount = $_GET['amount'];
 $action = $_GET['action'];
 $amountToman = intval($amount) * intval($exchangeRate);
-$transferCode = $_GET['transferCode'];
+$transferCode = intval($_GET['transferCode']);
 
 switch ($action) {
     case "submit" :
@@ -41,7 +41,7 @@ switch ($action) {
             $sback['msg'] = "کد حواله وارد شده اشتباه می باشد.";
             break;
         } else {
-            $query2 = "UPDATE benneks.transfer SET transfer.transferDate = '$transferDate', transfer.amount = '$amount', transfer.exchangeRate = '$exchangeRate' , transfer.amountToman = '$amountToman' "
+            $query2 = "UPDATE benneks.transfer SET transfer.transDate = '$transferDate', transfer.amount = '$amount', transfer.exchangeRate = '$exchangeRate' , transfer.amountToman = '$amountToman' "
                 . " WHERE transfer.transRef = '$transferCode'";
             if(!$user->executeQuery($query2)) {
                 $sback['msg'] = "خطایی در ورود اطلاعات رخ داده است.";

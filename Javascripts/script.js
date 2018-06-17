@@ -636,7 +636,8 @@ function transferFunc(action) {
    var amount = document.getElementById("amount").value; 
    switch(action) {
        case "submit" :
-           $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&action=" + action, function(data) {
+           var transferCode = document.getElementById("transferCode").value;
+           $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&transferCode=" + transferCode + "&action=" + action, function(data) {
                var msg = data.msg;
                document.getElementById("transferMSG").innerHTML = msg;
            })
@@ -650,7 +651,7 @@ function transferFunc(action) {
            document.getElementById("transferMSG").innerHTML = msg;
            break;
        case "confirm" :
-           var transferCode = document.getElementById("transferCode").value; 
+           var transferCode = document.getElementById("transferCode").value;
            $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&transferCode=" + transferCode + "&action=" + action, function(data) {
                var msg = data.msg;
                document.getElementById("transferMSG").innerHTML = msg;

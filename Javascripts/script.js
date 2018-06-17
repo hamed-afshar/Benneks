@@ -619,11 +619,10 @@ function adminComment(action) {
 //function to submit or edit kargo details
 function kargoDetailFunc(action) {
     var kargoNo = document.getElementById("kargoNo").value;
-    var exchangeAvrage = document.getElementById("exchangeAvrage").value;
     var kargoCost = document.getElementById("kargoCost").value;;
     var wrongCost = document.getElementById("wrongCost").value;;
     var missingCost = document.getElementById("missingCost").value;;
-    $.getJSON("./kargoDetails.php?kargoNo=" + kargoNo + "&exchangeAvrage=" + exchangeAvrage + "&kargoCost=" + kargoCost + "&wrongCost=" + wrongCost + "&missingCost=" + missingCost + "&action=" + action, function (data) {
+    $.getJSON("./kargoDetails.php?kargoNo=" + kargoNo + "&kargoCost=" + kargoCost + "&wrongCost=" + wrongCost + "&missingCost=" + missingCost + "&action=" + action, function (data) {
         var msg = data.msg;
         document.getElementById("kargoDetailsMSG").innerHTML = msg;
     });

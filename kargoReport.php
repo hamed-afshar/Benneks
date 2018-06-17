@@ -46,11 +46,12 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('C1', 'هزینه کارگو')
         ->setCellValue('D1', 'ضرر کدهای گم شده')
         ->setCellValue('E1', 'ضرر کدهای اشتباه')
-        ->setCellValue('F1', 'متوسط قیمت ارز')
-        ->setCellValue('G1', 'مجموع ارزی کارگو')
-        ->setCellValue('H1', 'سود یا زیان کارگو')
-        ->setCellValue('I1', 'سود یا زیان خرید لیر')
-        ->setCellValue('J1', 'سود یا زیان کل');
+        ->setCellValue('F1', 'متوسط لیر در خرید')
+        ->setCellValue('G1', 'متوسط لیر در حواله')
+        ->setCellValue('H1', 'مجموع ارزی کارگو')
+        ->setCellValue('I1', 'سود یا زیان کارگو')
+        ->setCellValue('J1', 'سود یا زیان خرید لیر')
+        ->setCellValue('K1', 'سود یا زیان کل');
 
 //query to extract requiered data from db and insert it to excel
 $query1 = "SELECT * FROM benneks.kargo";
@@ -66,13 +67,17 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
     $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $row[2]);
     $objPHPExcel->getActiveSheet()->setCellValue('E' . $i, $row[3]);
-    $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, $row[9]);
-    $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row[8]);
-    $columnH = intval($row[5]) - intval($row[7]) - intval($row[6]);
-    $objPHPExcel->getActiveSheet()->setCellValue('H' . $i, $columnH);
-    $columnI = (intval($row[9]) - intval($row[4])) * intval($row[8]);
+    $objPHPExcel->getActiveSheet()->setCellValue('F' . $i, $row[4]);
+    $objPHPExcel->getActiveSheet()->setCellValue('G' . $i, $row[9]);
+    $objPHPExcel->getActiveSheet()->setCellValue('H' . $i, $row[8]);
+    //benneksPriceSum - originalPriceTomanSum - iranDeliverCostSum - missingCost -wrongCost
+    $columnI = intval($row[5]) - intval($row[7]) - intval($row[6]) - intval($row[2]) - intval($row[3]);
     $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $columnI);
-    $objPHPExcel->getActiveSheet()->setCellValue('J' . $i, '=H' . $i . '+I' . $i);
+    // (exchangeAVG - buyingCurrencyAVG) * currencySUM
+    $columnJ = (intval($row[4]) - intval($row[9])) * intval($row[8]);
+    $objPHPExcel->getActiveSheet()->setCellValue('J' . $i, $columnJ);
+    // add two numbers
+    $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, '=I' . $i . '+J' . $i);
     $i++;
 }
 
@@ -87,6 +92,7 @@ $objSheet->getColumnDimension('G')->setAutoSize(true);
 $objSheet->getColumnDimension('H')->setAutoSize(true);
 $objSheet->getColumnDimension('I')->setAutoSize(true);
 $objSheet->getColumnDimension('J')->setAutoSize(true);
+$objSheet->getColumnDimension('K')->setAutoSize(true);
 
 
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -94,9 +100,9 @@ $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:J1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:J1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:J1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:K1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:K1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:K1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="kargo-profit-report.xls"');

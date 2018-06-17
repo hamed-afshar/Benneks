@@ -503,10 +503,6 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                         <input type="text" class="form-control" name="kargoNo" id="kargoNo">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exchangeAvrage"> متوسط قیمت خرید ارز: </label>
-                                        <input type="text" class="form-control" name="exchangeAvrage" id="exchangeAvrage">
-                                    </div>
-                                    <div class="form-group">
                                         <label for="kargoCost"> هزینه کارگو: </label>
                                         <input type="text" class="form-control" name="kargoCost" id="kargoCost">
                                     </div>

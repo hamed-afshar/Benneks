@@ -19,11 +19,30 @@ date_default_timezone_set("Asia/Tehran");
 
 //set kargo details
 $kargoNO = $_GET['kargoNo'];
-$exchangeAvrage = $_GET['exchangeAvrage'];
+//$exchangeAvrage = $_GET['exchangeAvrage'];
 $kargoCost = $_GET['kargoCost'];
 $wrongCost = $_GET['wrongCost'];
 $missingCost = $_GET['missingCost'];
 $action = $_GET['action'];
+// query to get data from database inorder to find avrage exchange rate
+$avgQuery1 = "SELECT MAX(shipment.benneksShoppingDate) as maxDate, MIN(shipment.benneksShoppingDate) as minDate "
+          . "FROM benneks.shipment INNER JOIN benneks.cost ON shipment.orders_orderID = cost.orders_orderID WHERE cargoName = '$kargoNO' "
+          . "order by benneksShoppingDate DESC;";
+if (!$user->executeQuery($avgQuery1)) {
+    echo mysqli_error($user->conn);
+}
+$avgQueryResult1 = $user->executeQuery($avgQuery1);
+$row = mysqli_fetch_row($avgQueryResult1);
+$maxDate = $row[0];
+$minDate = $row[1];
+$avgQuery2 = "SELECT ROUND(AVG(exchangeRate)) FROM benneks.transfer WHERE transfer.transDate BETWEEN '$minDate' AND '$maxDate';";
+if (!$user->executeQuery($avgQuery2)) {
+    echo mysqli_error($user->conn);
+}
+$avgQueryResult2 = $user->executeQuery($avgQuery2);
+$row = mysqli_fetch_row($avgQueryResult2);
+$exchangeAvrage = $row[0];
+
 // query to get information from db and then insert all in to kargo table
 $query1 = "SELECT SUM(cost.benneksPrice) AS benneksPrice, SUM(cost.iranDeliverCost) AS iranDeliverCost, SUM(cost.originalTomanPrice) AS originalTomanPrice, "
         . "SUM(CAST(orders.productPrice AS decimal(5,2))) AS currencySum, ROUND(AVG(cost.rateTL)) AS buyingCurrencyAVG, shipment.cargoName "
@@ -46,8 +65,8 @@ switch ($action) {
         $query2 = "INSERT INTO benneks.kargo(kargoNo, kargoCost, missingCost, wrongCost, exchangeAvg, benneksPriceSum, iranDeliverCostSum, originalTomanPriceSum, currencySum, buyingCurrencyAVG) "
                 . "VALUES('$kargoNO','$kargoCost','$missingCost','$wrongCost','$exchangeAvrage','$benneksPrice','$iranDeliverCost','$originalTomanPrice','$currencySum','$buyingCurrencyAVG')";
         if (!$user->executeQuery($query2)) {
-            //echo 'اشتباه در وارد شدن اطلاعات به پایگاه داده';
-            echo mysqli_error($user->conn);
+            $sback['msg'] = 'اشتباه در وارد شدن اطلاعات به پایگاه داده';
+            break;
         }
         $sback['msg'] = "اطلاعات کارگو ثبت گردید";
         break;

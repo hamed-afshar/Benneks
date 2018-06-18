@@ -74,7 +74,7 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $columnI = intval($row[5]) - intval($row[7]) - intval($row[6]) - intval($row[2]) - intval($row[3]);
     $objPHPExcel->getActiveSheet()->setCellValue('I' . $i, $columnI);
     // (exchangeAVG - buyingCurrencyAVG) * currencySUM
-    $columnJ = (intval($row[4]) - intval($row[9])) * intval($row[8]);
+    $columnJ = (intval($row[9]) - intval($row[4])) * intval($row[8]);
     $objPHPExcel->getActiveSheet()->setCellValue('J' . $i, $columnJ);
     // add two numbers
     $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, '=I' . $i . '+J' . $i);

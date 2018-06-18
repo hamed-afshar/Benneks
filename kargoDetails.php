@@ -68,7 +68,7 @@ switch ($action) {
             $sback['msg'] = 'اشتباه در وارد شدن اطلاعات به پایگاه داده';
             break;
         }
-        $sback['msg'] = "اطلاعات کارگو ثبت گردید";
+        $sback['msg'] = "اطلاعات کارگو" . $kargoNO . "ثبت  گردید.";
         break;
     case "edit" :
         $query2 = "UPDATE benneks.kargo SET kargoCost = '$kargoCost', missingCost = '$missingCost', wrongCost = '$wrongCost', "

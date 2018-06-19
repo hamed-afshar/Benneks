@@ -114,8 +114,8 @@ function calculator(userID, country, clothesType, productPrice) {
             var country = "Turkey";
             var currency = "TL";
             var currencyRate = 1620;
-            var weightCost = 53000; //45000 per killo dor kargo + 5000 Peik Iran
-            var shippingCost = 57000;
+            var weightCost = 57000; //57000 per killo
+            var shippingCost = 40000; //defualt for shoes
             break;
         case "انگلیس":
             var country = "UK";
@@ -176,7 +176,8 @@ function calculator(userID, country, clothesType, productPrice) {
         case "کیف زنانه":
         case "کیف مردانه":
         case "کیف بچه گانه":
-            weight = 1000;
+            weight = 600;
+            shippingCost = (weightCost * 600) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
             //return totalCost
             return {

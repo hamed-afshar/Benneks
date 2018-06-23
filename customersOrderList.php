@@ -71,6 +71,7 @@ if (!$user->executeQuery($query4)) {
 $queryResult4 = $user->executeQuery($query4);
 $monthValue = mysqli_fetch_row($queryResult4);
 ?>
+
 <html>
     <head>
         <meta charset = "utf-8">
@@ -103,6 +104,15 @@ $monthValue = mysqli_fetch_row($queryResult4);
 
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<!-- script for payment modal -->
+<script>
+    $(document).ready(function () {
+        $(document).on("click", ".open-paymentModal", function () {
+            var customerCode = $(this).data('id');
+            $(".modal-body #customerCode").val(customerCode);
+        });
+    });
+</script>
 <!-- script for add modal -->
 <script>
     $(document).ready(function () {
@@ -265,7 +275,10 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
                                         echo "<td>" . $row[2] . "</td>";
                                         echo "<td>" . $row[3] . "</td>";
-                                        echo "<td>" . $row[4] . "</td>";
+                                        echo "<td>" . $row[4] .
+                                        "<hr> "
+                                        . "<a href='#paymentModal' data-toggle='modal' data-target='#paymentModal' data-id='$row[4]' class='open-paymentModal' > <i class='fa fa-money fa-fw fa-lg'></i> </a>"
+                                        . " </td>";
                                         echo "<td>" . $row[5] . "</td>";
                                         echo "<td>" . $row[6] . "</td>";
                                         echo "<td>" . $row[7] . "</td>";
@@ -290,7 +303,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
                                 . "INNER JOIN benneks.shipment ON shipment.orders_orderID = orders.orderID "
                                 . "INNER JOIN benneks.purchaseInfo ON purchaseInfo.purchaseID = orders.purchaseInfo_purchaseID "
-                                . "WHERE users.userID = '$userID' $searchQuery ORDER BY orders.orderID DESC" ;
+                                . "WHERE users.userID = '$userID' $searchQuery ORDER BY orders.orderID DESC";
                         $queryResult2 = $user->executeQuery($query2);
                         $records = mysqli_fetch_row($queryResult2);
                         $totalRecords = $records[0];
@@ -361,6 +374,35 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <input type="date" class="form-control" name="finishDate" id="finishDate">
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> دریافت فایل اکسل </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- payment modal -->
+                <div class = "modal fade" id = "paymentModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-money"> </span> ورود اطلاعات واریز پول</h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" action="" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="customerCode"> کد مشتری </label>
+                                        <input type="text" class="form-control" name="customerCode" id="customerCode" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="startDate"> تاریخ واریز: </label>
+                                        <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" name="paymentDate" id="paymentDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="paymentPic"> عکس فیش واریزی</label>
+                                        <input type="file" class="eng-format" id="productPic" name = "paymentPic" accept="image/*">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
                                 </form>
                             </div>
                         </div>

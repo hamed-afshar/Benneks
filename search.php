@@ -60,6 +60,9 @@ if (isset($_POST['searchButton'])) {
         case "ref":
             $searchQuery = "stat.supplierRefCode = " . "'" . $searchValue . "'" . "";
             break;
+        case "sellerName":
+            $searchQuery = "users.userName = " . "'" . $searchValue . "'" . "";
+            break;
         default :
             $searchQuery = "";
             break;
@@ -81,6 +84,9 @@ if (isset($_POST['searchButton'])) {
             break;
         case "turkish-admin":
             header("Location: turkish-admin.php");
+            break;
+        case "accountant":
+            header("Location: accountant.php");
     }
 }
 
@@ -99,6 +105,9 @@ if (isset($_POST['cancelSearchButton'])) {
             break;
         case "turkish-admin":
             header("Location: turkish-admin.php");
+            break;
+        case "accountant":
+            header("Location: accountant.php");
     }
 }
 ?>

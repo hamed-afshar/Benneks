@@ -87,6 +87,7 @@ if (isset($_POST['searchButton'])) {
             break;
         case "accountant":
             header("Location: accountant.php");
+            break;
     }
 }
 
@@ -108,6 +109,7 @@ if (isset($_POST['cancelSearchButton'])) {
             break;
         case "accountant":
             header("Location: accountant.php");
+            break;
     }
 }
 ?>

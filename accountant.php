@@ -5,8 +5,8 @@
 ob_start();
 session_start();
 require 'src/benneks.php';
-// if turkish admin session is not set this will get access denied msg
-if ($_SESSION['userAccess'] !== '3') {
+// if accountant session is not set this will get access denied msg
+if ($_SESSION['userAccess'] !== '4') {
     echo "اجازه دسترسی ندارید";
     exit();
 }
@@ -30,19 +30,19 @@ if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseinfo.orderSalePrice, purchaseinfo.advancedPayment, members.paymentLink "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
-            . "INNER JOIN benneks.purchaseinfo ON orders.purchaseInfo_purchaseID = purchaseinfo.purchaseID "
+            . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
             . "INNER JOIN benneks.users ON orders.users_userID = users.userID $searchQuery ORDER BY orderDate DESC LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseinfo.orderSalePrice, purchaseinfo.advancedPayment, members.paymentLink "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
-            . "INNER JOIN benneks.purchaseinfo ON orders.purchaseInfo_purchaseID = purchaseinfo.purchaseID "
+            . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
             . "INNER JOIN benneks.users ON orders.users_userID = users.userID $searchQuery ORDER BY orderDate DESC LIMIT " . $startFrom . "," . $limit;
 };
 
@@ -134,11 +134,11 @@ $queryResult1 = $user->executeQuery($query1);
                         <div class="row"> 
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <div class="panel panel-primary">
-                                 
+
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                          
+
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg col-md col-sm">
                                 <div class="panel panel-primary">
@@ -150,7 +150,7 @@ $queryResult1 = $user->executeQuery($query1);
                                             <div class="form-group">
                                                 <select class = "form-control" id = "searchOption" name="searchOption">
                                                     <option value="code"> کد </option>
-                                                    <option value="sellerName"> نام فروشنده </option>
+                                                    <option value="customerCode"> کد فروشنده </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -217,8 +217,12 @@ $queryResult1 = $user->executeQuery($query1);
                             </table>
                         </div>
                         <?php
-                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON "
-                                . "users.userID = orders.users_userID $searchQuery";
+                        $query5 = "SELECT COUNT(orders.orderID) FROM benneks.orders INNER JOIN benneks.members ON "
+                                . "members.customerCode = orders.members_customerCode $searchQuery";
+                        //$queryResult5 = $user->executeQuery($query5);
+                        if (!$user->executeQuery($query5)) {
+                            echo mysqli_error($user->conn);
+                        }
                         $queryResult5 = $user->executeQuery($query5);
                         $records = mysqli_fetch_row($queryResult5);
                         $totalRecords = $records[0];

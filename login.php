@@ -64,8 +64,15 @@ if (isset($_POST['loginButton'])) {
             $user->loginUser($loginDetailsQuery);
             header("Location: turkish-admin.php");
         }
+        //For accountant user
+        if ($count === 1 && $row['userName'] === "accountant" && $row['userPass'] === $pass) {
+            $_SESSION['user'] = $row ['userID'];
+            $_SESSION['userAccess'] = $row ['userAccess'];
+            $user->loginUser($loginDetailsQuery);
+            header("Location: accountant.php");
+        }
         //for Normal users
-        if ($count == 1 && ($row['userName'] !== "turkishadmin" && $row['userName'] !== "benneksadmin")  && $row['userPass'] == $pass && $row['userLock'] == 0) {
+        if ($count == 1 && ($row['userName'] !== "turkishadmin" && $row['userName'] !== "benneksadmin" && $row['userName'] !== "accountant" )  && $row['userPass'] == $pass && $row['userLock'] == 0) {
             $_SESSION['user'] = $row['userID'];
             $_SESSION['userAccess'] = $row ['userAccess'];
             $user->loginUser($loginDetailsQuery);

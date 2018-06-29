@@ -61,7 +61,7 @@ if (isset($_POST['searchButton'])) {
             $searchQuery = "stat.supplierRefCode = " . "'" . $searchValue . "'" . "";
             break;
         case "sellerName":
-            $searchQuery = "users.userName = " . "'" . $searchValue . "'" . "";
+            $searchQuery = "users.userID = " . "'" . $searchValue . "'" . "";
             break;
         default :
             $searchQuery = "";

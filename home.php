@@ -252,7 +252,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <label for="customerSocialID">آیدی:</label>
                                                 <input type="text" dir="rtl" class="form-control eng-format" id="customerSocialID" name="customerSocialID">
                                             </div>
-                                            <button type="button" class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="//addMemberFunc('add');" > ثبت مشتری 
+                                            <button type="button" class="form-control btn btn-group btn-success" id="memberSubmitButton" name="memberSubmitButton" onclick="addMemberFunc('add');" > ثبت مشتری 
                                                 <span>
                                                     <i class="fa fa-plus"> </i>
                                                 </span>
@@ -713,7 +713,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             }
                                         </script>
 
-                                       <!-- <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="true"> ثبت سفارش -->
+                                       <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="true"> ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>
                                             </span>

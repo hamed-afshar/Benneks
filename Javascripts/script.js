@@ -660,6 +660,16 @@ function transferFunc(action) {
    }
 }
 
+//function to upload payment pic into the database
+function paymentFunc() {
+    var customerCode = document.getElementById("customerCode").value;
+    var paymentPic = document.getElementById("paymentPic").value;
+    $.getJSON("./uploadpayment.php?customerCode=" + customerCode +"&paymentPic=" + paymentPic, function (data) {
+        var msg = data.msg;
+        document.getElementById("paymentMSG").innerHTML = msg;
+    });
+}
+
 //Function to print code on label
 function printCodeFunc(printCode) {
     var printContent = printCode;

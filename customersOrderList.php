@@ -53,9 +53,7 @@ if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }
 $queryResult = $user->executeQuery($query);
-// set directory to have order picture link
-$userDir = $userID;
-$targetDir = 'orderpics/' . $userDir . "/";
+
 //Get totall numbers of today orders
 $query3 = "SELECT count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' AND orders.orderDate = current_date()";
 if (!$user->executeQuery($query3)) {
@@ -380,29 +378,49 @@ $monthValue = mysqli_fetch_row($queryResult4);
                     </div>
                 </div>
                 <!-- payment modal -->
+                 
                 <div class = "modal fade" id = "paymentModal" role="dialog">
+
                     <div class="modal-dialog">
                         <!--modal content -->
                         <div class="modal-content">
+                              <?php
+                            //if submit button in payment modal submited
+                            if (isset($_POST['paymentSubmit'])) {
+                                echo "hamed";
+                                $customerCode = $_POST['customerCode'];
+                                // create folder for each customer based on customerCode and upload the product pic into database
+                                $userPaymentDir = $_SESSION['user'] . "-payment";
+                                $customerDir = $userPaymentDir . '/' . $customerCode;
+                                if (file_exists('paymentpics/' . $userPaymentDir . '/' . $customerCode)) {
+                                    $targetDir = 'paymentpics/' . $userPaymentDir . '/' . $customerCode . '/';
+                                } else {
+                                    mkdir('paymentpics/' . $userPaymentDir . '/' . $customerCode);
+                                    $targetDir = 'paymentpics/' . $userPaymentDir . '/' . $customerCode . '/';
+                                }
+
+                                $fileName = time() . rand(11, 99) . basename($_FILES['paymentpic']['name']);
+                                $targetPath1 = $targetDir . $fileName;
+                                echo $targetPath1;
+                                move_uploaded_file($_FILES['paymentpic']["tmp_name"], $targetPath1);
+                            }
+                            ?>
+                         
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
                                 <h4><span class = "glyphicon glyphicon-money"> </span> ورود اطلاعات واریز پول</h4>
                             </div>
                             <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="" method="post" dir="rtl">
+                                <form role="form" method="post" dir="rtl" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="customerCode"> کد مشتری </label>
                                         <input type="text" class="form-control" name="customerCode" id="customerCode" readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label for="startDate"> تاریخ واریز: </label>
-                                        <input type="date" value="<?php echo date('Y-m-d'); ?>" class="form-control" name="paymentDate" id="paymentDate">
+                                        <label for="paymentpic"> عکس فیش واریزی</label>
+                                        <input type="file" class="eng-format" id = "paymentpic" name = "paymentpic" accept="image/*">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="paymentPic"> عکس فیش واریزی</label>
-                                        <input type="file" class="eng-format" id="productPic" name = "paymentPic" accept="image/*">
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> ثبت </button>
+                                    <input type="submit" class="btn btn-success btn-block" name="paymentSubmit" id="paymentSubmit"> ثبت </button>
                                 </form>
                             </div>
                         </div>

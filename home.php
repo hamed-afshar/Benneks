@@ -41,17 +41,6 @@ if (isset($_POST['submitOrderButton'])) {
     $targetPath1 = $targetDir . $fileName;
     move_uploaded_file($_FILES["productPic"]["tmp_name"], $targetPath1);
 
-    // to save payment pictures, create a foolder for each user and save payment pictures to this folder
-    $userPaymentDir = $_SESSION['user'] . "-payment";
-    if (file_exists('paymentpics/' . $userPaymentDir)) {
-        $targetDir = 'paymentpics/' . $userPaymentDir . "/";
-    } else {
-        mkdir('paymentpics/' . $userPaymentDir);
-        $targetDir = 'paymentpics/' . $userPaymentDir . "/";
-    }
-    $fileName = time() . rand(11, 99) . basename($_FILES['paymentRefPic']['name']);
-    $targetPath2 = $targetDir . $fileName;
-    move_uploaded_file($_FILES["paymentRefPic"]["tmp_name"], $targetPath2);
     // Insert customer information into database
     $customerID = $lastID + 1;
     //customerID is actualy a counter
@@ -85,16 +74,34 @@ if (isset($_POST['submitOrderButton'])) {
 // variable to hold transaction and customer information
     $customerTel = $_POST['customerTel'];
     $customerCode = $userID . doubleval($customerTel);
-    //$customerCode = 19121324660;
     $orderSalePrice = $_POST['orderSalePrice'];
     $advancedPayment = $_POST['advancedPayment'];
     $paymentExtraDesc = $_POST['paymentExtraDesc'];
     $purchaseID = time() + rand(1, 100);
+    // to save payment pictures, create a folder for each user and save payment pictures to this folder
+    $userPaymentDir = $_SESSION['user'] . "-payment" . "/" . $customerCode;
+    if (file_exists('paymentpics/' . $userPaymentDir)) {
+        $targetDir = 'paymentpics/' . $userPaymentDir . "/";
+    } else {
+        mkdir('paymentpics/' . $userPaymentDir);
+        $targetDir = 'paymentpics/' . $userPaymentDir . "/";
+    }
+    $fileName = time() . rand(11, 99) . basename($_FILES['paymentRefPic']['name']);
+    $targetPath2 = $targetDir . $fileName;
+    move_uploaded_file($_FILES["paymentRefPic"]["tmp_name"], $targetPath2);
+    // inser customer directory path into member table
+    $customerPath = $targetDir;
+    $customerPaymentPathQuery = "UPDATE benneks.members SET paymentLink = '$customerPath' "
+            . "where members.customerCode = '$customerCode'";
+    if (!$user->executeQuery($customerPaymentPathQuery)) {
+        $flag = false;
+        echo mysqli_error($user->conn);
+    }
     // user directory needs to be added before pic name
     $productPic = $targetPath1;
     $paymentRefPic = $targetPath2;
     // insert purchase information to purchaseinfo table
-    $purchaseQuery = "INSERT INTO benneks.purchaseInfo(purchaseID, orderSalePrice, advancedPayment, paymentRefPic, paymentExtraDesc) VALUES ('$purchaseID', '$orderSalePrice', '$advancedPayment', '$paymentRefPic', '$paymentExtraDesc')";
+    $purchaseQuery = "INSERT INTO benneks.purchaseInfo(purchaseID, orderSalePrice, advancedPayment, paymentExtraDesc) VALUES ('$purchaseID', '$orderSalePrice', '$advancedPayment', '$paymentExtraDesc')";
     if (!$user->executeQuery($purchaseQuery)) {
         $flag = false;
         echo "error purchase info";
@@ -713,7 +720,7 @@ if (isset($_POST['submitOrderButton'])) {
                                             }
                                         </script>
 
-                                       <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="true"> ثبت سفارش 
+                                        <button class="form-control btn btn-group btn-primary" id="submitOrderButton" name="submitOrderButton" disabled="true"> ثبت سفارش 
                                             <span>
                                                 <i class="fa fa-plus"> </i>
                                             </span>

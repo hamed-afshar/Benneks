@@ -30,19 +30,21 @@ if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseinfo.paymentExtraDesc "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
             . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
+            . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
             . "INNER JOIN benneks.users ON orders.users_userID = users.userID $searchQuery ORDER BY orderDate DESC, orderTime DESC LIMIT " . $startFrom . "," . $limit;
 } else {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseinfo.paymentExtraDesc "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
             . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
+            . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
             . "INNER JOIN benneks.users ON orders.users_userID = users.userID $searchQuery ORDER BY orderDate DESC, orderTime DESC LIMIT " . $startFrom . "," . $limit;
 };
 
@@ -194,7 +196,8 @@ $queryResult1 = $user->executeQuery($query1);
                                         <th style="text-align: center">قیمت فروش </th>
                                         <th style="text-align: center">بیعانه </th>
                                         <th style="text-align: center">لینک پرداخت </th>
-
+                                        <th style="text-align: center">وضعیت </th>
+                                        <th style="text-align: center"> توضیحات </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -213,6 +216,8 @@ $queryResult1 = $user->executeQuery($query1);
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
                                         echo "<td> <a href= " . $row[10] . ">Link" . "</a> </td>";
+                                        echo "<td>" . $row[12] . "</td>";
+                                        echo "<td>" . $row[13] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>
@@ -223,7 +228,7 @@ $queryResult1 = $user->executeQuery($query1);
                         $query5 = "SELECT COUNT(orders.orderID), COUNT(users.userID) FROM benneks.orders INNER JOIN benneks.members ON "
                                 . "members.customerCode = orders.members_customerCode INNER JOIN benneks.users "
                                 . "ON orders.users_userID = users.userID $searchQuery";
-                        
+
                         if (!$user->executeQuery($query5)) {
                             echo mysqli_error($user->conn);
                         }

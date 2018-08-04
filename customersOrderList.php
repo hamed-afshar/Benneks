@@ -378,17 +378,36 @@ $monthValue = mysqli_fetch_row($queryResult4);
                     </div>
                 </div>
                 <!-- payment modal -->
-                 
+
                 <div class = "modal fade" id = "paymentModal" role="dialog">
 
                     <div class="modal-dialog">
                         <!--modal content -->
                         <div class="modal-content">
-                              <?php
+                            <?php
                             //if submit button in payment modal submited
                             if (isset($_POST['paymentSubmit'])) {
-                                echo "hamed";
                                 $customerCode = $_POST['customerCode'];
+                                $paymentUploadDesc = $_POST['paymentUploadDesc'];
+                                //find purchaseinfo description andd add payment description to it
+                                $query1  = "SELECT purchaseInfo_purchaseID from benneks.orders where customers_customerID = '$customerCode'";
+                                if(!$user->executeQuery($query1)) {
+                                    echo mysqli_error($user->conn);
+                                }
+                                $queryResult1 = $user->executeQuery($query1);
+                                $row = mysqli_fetch_array($queryResult1);
+                                $purchaseID = $row[0];
+                                $query2 = "SELECT paymentExtraDesc FROM benneks.purchaseinfo WHERE purchaseID = '$purchaseID'";
+                                if(!$user->executeQuery($query2)) {
+                                    echo mysqli_error($user->conn);
+                                }
+                                $queryResult2 = $user->executeQuery($query2);
+                                $row = mysqli_fetch_array($queryResult2);
+                                $paymentExtraDesc = $row[0];
+                                $query3 = "UPDATE benneks.purchaseinfo SET purchaseExtraDesc = '$paymentExtraDesc + '/' + $paymentUploadDesc' WHERE purchaseID = $purchaseID ";
+                                if(!$user->executeQuery($query3)) {
+                                    echo mysqli_error($user->conn);
+                                }
                                 // create folder for each customer based on customerCode and upload the product pic into database
                                 $userPaymentDir = $_SESSION['user'] . "-payment";
                                 $customerDir = $userPaymentDir . '/' . $customerCode;
@@ -405,7 +424,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 move_uploaded_file($_FILES['paymentpic']["tmp_name"], $targetPath1);
                             }
                             ?>
-                         
+
                             <div class="modal-header" style="padding: 35px 50px;">
                                 <button type="button" class="close" data-dismiss = "modal">&times; </button>
                                 <h4><span class = "glyphicon glyphicon-money"> </span> ورود اطلاعات واریز پول</h4>
@@ -420,7 +439,11 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         <label for="paymentpic"> عکس فیش واریزی</label>
                                         <input type="file" class="eng-format" id = "paymentpic" name = "paymentpic" accept="image/*">
                                     </div>
-                                    <input type="submit" class="btn btn-success btn-block" name="paymentSubmit" id="paymentSubmit"> ثبت </button>
+                                    <div class="form-group">
+                                        <label for="paymentUploadDesc">توضیحات:</label>
+                                        <textarea rows="4" cols="50" dir="rtl" class="form-control eng-format" id="paymentUploadDesc" name="paymentUploadDesc"> </textarea>
+                                    </div>
+                                    <input type="submit" class="btn btn-success btn-block" name="paymentSubmit" id="paymentSubmit"> 
                                 </form>
                             </div>
                         </div>

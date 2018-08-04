@@ -390,7 +390,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 $customerCode = $_POST['customerCode'];
                                 $paymentUploadDesc = $_POST['paymentUploadDesc'];
                                 //find purchaseinfo description andd add payment description to it
-                                $query1  = "SELECT purchaseInfo_purchaseID from benneks.orders where customers_customerID = '$customerCode'";
+                                $query1  = "SELECT purchaseInfo_purchaseID from benneks.orders where members_customerCode = '$customerCode'";
                                 if(!$user->executeQuery($query1)) {
                                     echo mysqli_error($user->conn);
                                 }

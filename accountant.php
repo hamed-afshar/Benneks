@@ -30,7 +30,7 @@ if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseinfo.paymentExtraDesc "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
             . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
@@ -40,7 +40,7 @@ if (isset($_GET["page"])) {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseinfo.paymentExtraDesc "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
             . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "

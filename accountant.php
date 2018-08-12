@@ -115,7 +115,7 @@ $queryResult1 = $user->executeQuery($query1);
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href='#tenDaysReportModal' data-toggle='modal' data-target='#tenDaysReportModal' class='open-tenDaysReportModal' ></a></li>   
+                                    <li><a href="#accountantModal" data-toggle='modal' data-target='#accountantModal' class='open-accountantModal' > گزارش حسابداری</a></li>  
                                 </ul>
                             </div>
                         </li>
@@ -223,6 +223,27 @@ $queryResult1 = $user->executeQuery($query1);
                                     ?>
                                 </tbody>
                             </table>
+                        </div>
+                        <!--accountant information modal -->
+                        <div class = "modal fade" id = "accountantModal" role="dialog">
+                            <div class="modal-dialog">
+                                <!--modal content -->
+                                <div class="modal-content">
+                                    <div class="modal-header" style="padding: 35px 50px;">
+                                        <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                        <h4><span class = "glyphicon glyphicon-print"> </span> اطلاعات حسابداری کارگو رسیده به ایران</h4>
+                                    </div>
+                                    <div class="modal-body" style="padding:40px 50px;">
+                                        <form role="form" action="accountantExcel.php" method="post" dir="rtl">
+                                            <div class="form-group">
+                                                <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> کد کارگو</label>
+                                                <input type="text" class="form-control" name="kargoID" id="kargoID">
+                                            </div>
+                                            <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <?php
                         $query5 = "SELECT COUNT(orders.orderID), COUNT(users.userID) FROM benneks.orders INNER JOIN benneks.members ON "

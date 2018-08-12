@@ -29,7 +29,7 @@ if (isset($_GET["page"])) {
     $startFrom = ($page - 1) * $limit;
     $query = "SELECT users.userID, orders.productPic, orders.orderDate, orders.orderID, members.customerCode, "
             . "members.customerName, stat.orderStatus, stat.orderStatusDescription, "
-            . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment "
+            . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, purchaseInfo.paymentExtraDesc "
             . "FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID "
             . "INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
             . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
@@ -41,7 +41,7 @@ if (isset($_GET["page"])) {
     $startFrom = ($page - 1) * $limit;
     $query = "SELECT users.userID, orders.productPic, orders.orderDate, orders.orderID, members.customerCode, "
             . "members.customerName, stat.orderStatus, stat.orderStatusDescription, "
-            . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment "
+            . "shipment.cargoName, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, purchaseInfo.paymentExtraDesc "
             . "FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID "
             . "INNER JOIN benneks.members ON members.customerCode = orders.members_customerCode "
             . "INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID "
@@ -111,24 +111,17 @@ $monthValue = mysqli_fetch_row($queryResult4);
         });
     });
 </script>
-<!-- script for add modal -->
+
+<!-- script for comment modal -->
 <script>
     $(document).ready(function () {
-        $(document).on("click", ".open-delModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
+        $(document).on("click", ".open-commentModal", function () {
+            var customerCode = $(this).data('id');
+            $(".modal-body #customerCode").val(customerCode);
         });
     });
 </script>
-<!-- script for avaılable modal -->
-<script>
-    $(document).ready(function () {
-        $(document).on("click", ".open-availableModal", function () {
-            var orderID = $(this).data('id');
-            $(".modal-body #rowID").val(orderID);
-        });
-    });
-</script>
+
 
 <title>Benneks Order System</title>
 </head>
@@ -220,6 +213,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label for="searchOption"> نوع فیلتر:</label>
                                                 <select dir = "rtl" class = "form-control" id = "searchOption" name="searchOption">
                                                     <option value="customerCode" selected> کد مشتری </option>
+                                                    <option value="code"> کد سفارش </option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -263,6 +257,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 <th style="text-align: center"> قیمت فروش </th>
                                 <th style="text-align: center"> بیعانه</th>
                                 <th style="text-align: center"> مانده</th>
+                                <th style="text-align: center"> توضیحات</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -276,6 +271,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[4] .
                                         "<hr> "
                                         . "<a href='#paymentModal' data-toggle='modal' data-target='#paymentModal' data-id='$row[4]' class='open-paymentModal' > <i class='fa fa-money fa-fw fa-lg'></i> </a>"
+                                        . "<a href='#commentModal' data-toggle='modal' data-target='#commentModal' data-id='$row[4]' class='open-commentModal' > <i class='fa fa-comment fa-fw fa-lg'></i> </a>"
                                         . " </td>";
                                         echo "<td>" . $row[5] . "</td>";
                                         echo "<td>" . $row[6] . "</td>";
@@ -285,6 +281,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                         echo "<td>" . $row[10] . "</td>";
                                         $remaining = intval($row[9]) - intval($row[10]);
                                         echo "<td>" . $remaining . "</td>";
+                                        echo "<td>" . $row[11] . "</td>";
                                         echo "</tr>";
                                     }
                                     ?>
@@ -377,6 +374,58 @@ $monthValue = mysqli_fetch_row($queryResult4);
                         </div>
                     </div>
                 </div>
+                <!-- comment Modal -->
+                <div class = "modal fade" id = "commentModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!--modal content -->
+                        <div class="modal-content">
+                            <?php
+                            if (isset($_POST['commentButton'])) {
+                                $user = new user();
+                                $customerCode = $_POST['customerCode'];
+                                $orderComment = $_POST['orderComment'];
+                                //find purchaseinfo description andd add payment description to it
+                                $query1 = "SELECT purchaseInfo_purchaseID from benneks.orders where members_customerCode = '$customerCode'";
+                                if (!$user->executeQuery($query1)) {
+                                    echo mysqli_error($user->conn);
+                                }
+                                $queryResult1 = $user->executeQuery($query1);
+                                $row = mysqli_fetch_array($queryResult1);
+                                $purchaseID = $row[0];
+                                $query2 = "SELECT paymentExtraDesc FROM benneks.purchaseinfo WHERE purchaseID = '$purchaseID'";
+                                if (!$user->executeQuery($query2)) {
+                                    echo mysqli_error($user->conn);
+                                }
+                                $queryResult2 = $user->executeQuery($query2);
+                                $row = mysqli_fetch_array($queryResult2);
+                                $paymentExtraDesc = $row[0];
+                                $finalComment = $paymentExtraDesc . '+' . $orderComment;
+                                $query3 = "UPDATE benneks.purchaseinfo SET paymentExtraDesc = '$finalComment' WHERE purchaseID = '$purchaseID'";
+                                if (!$user->executeQuery($query3)) {
+                                    echo mysqli_error($user->conn);
+                                }
+                            }
+                            ?>
+                            <div class="modal-header" style="padding: 35px 50px;">
+                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                <h4><span class = "glyphicon glyphicon-print"> </span> اضافه کردن توضیحات</h4>
+                            </div>
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <form role="form" method="post" dir="rtl">
+                                    <div class="form-group">
+                                        <label for="customerCode"> کد مشتری </label>
+                                        <input type="text" class="form-control" name="customerCode" id="customerCode" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orderComment">توضیحات:</label>
+                                        <textarea rows="4" cols="50" dir="rtl" class="form-control eng-format" id="orderComment" name="orderComment"> </textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block" name="commentButton" id="commentButton"> ثبت </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- payment modal -->
 
                 <div class = "modal fade" id = "paymentModal" role="dialog">
@@ -387,27 +436,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             <?php
                             //if submit button in payment modal submited
                             if (isset($_POST['paymentSubmit'])) {
-                                $customerCode = $_POST['customerCode'];
-                                $paymentUploadDesc = $_POST['paymentUploadDesc'];
-                                //find purchaseinfo description andd add payment description to it
-                                $query1  = "SELECT purchaseInfo_purchaseID from benneks.orders where members_customerCode = '$customerCode'";
-                                if(!$user->executeQuery($query1)) {
-                                    echo mysqli_error($user->conn);
-                                }
-                                $queryResult1 = $user->executeQuery($query1);
-                                $row = mysqli_fetch_array($queryResult1);
-                                $purchaseID = $row[0];
-                                $query2 = "SELECT paymentExtraDesc FROM benneks.purchaseinfo WHERE purchaseID = '$purchaseID'";
-                                if(!$user->executeQuery($query2)) {
-                                    echo mysqli_error($user->conn);
-                                }
-                                $queryResult2 = $user->executeQuery($query2);
-                                $row = mysqli_fetch_array($queryResult2);
-                                $paymentExtraDesc = $row[0];
-                                $query3 = "UPDATE benneks.purchaseinfo SET purchaseExtraDesc = '$paymentExtraDesc + '/' + $paymentUploadDesc' WHERE purchaseID = $purchaseID ";
-                                if(!$user->executeQuery($query3)) {
-                                    echo mysqli_error($user->conn);
-                                }
                                 // create folder for each customer based on customerCode and upload the product pic into database
                                 $userPaymentDir = $_SESSION['user'] . "-payment";
                                 $customerDir = $userPaymentDir . '/' . $customerCode;
@@ -438,10 +466,6 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     <div class="form-group">
                                         <label for="paymentpic"> عکس فیش واریزی</label>
                                         <input type="file" class="eng-format" id = "paymentpic" name = "paymentpic" accept="image/*">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="paymentUploadDesc">توضیحات:</label>
-                                        <textarea rows="4" cols="50" dir="rtl" class="form-control eng-format" id="paymentUploadDesc" name="paymentUploadDesc"> </textarea>
                                     </div>
                                     <input type="submit" class="btn btn-success btn-block" name="paymentSubmit" id="paymentSubmit"> 
                                 </form>

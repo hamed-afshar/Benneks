@@ -437,6 +437,7 @@ $monthValue = mysqli_fetch_row($queryResult4);
                             //if submit button in payment modal submited
                             if (isset($_POST['paymentSubmit'])) {
                                 // create folder for each customer based on customerCode and upload the product pic into database
+                                $customerCode = $_POST['customerCode'];
                                 $userPaymentDir = $_SESSION['user'] . "-payment";
                                 $customerDir = $userPaymentDir . '/' . $customerCode;
                                 if (file_exists('paymentpics/' . $userPaymentDir . '/' . $customerCode)) {

@@ -37,6 +37,7 @@ $queryResult = $user->executeQuery($query);
 // set directory to have order picture link
 $userDir = $userID;
 $targetDir = 'orderpics/' . $userDir . "/";
+
 //Get totall numbers of today orders
 $query3 = "SELECT count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' AND orders.orderDate = current_date()";
 if (!$user->executeQuery($query3)) {
@@ -44,13 +45,31 @@ if (!$user->executeQuery($query3)) {
 }
 $queryResult3 = $user->executeQuery($query3);
 $todayQuantity = mysqli_fetch_row($queryResult3);
-//Get totall value(TL) of month orders
-$query4 = "SELECT SUM(CAST(cost.benneksPrice AS decimal(8))), count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users ON orders.users_userID = users.userID INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID WHERE orders.users_userID = '$userID' AND MONTH(orders.orderDate) = month(current_date())";
+
+//get totall numbers of month order
+$query4 = "SELECT count(orders.orderID) FROM benneks.orders INNER JOIN benneks.users "
+        . "ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' "
+        . "AND MONTH(orders.orderDate) = MONTH(current_date()) AND YEAR(orders.orderDate) = YEAR(current_date());";
 if (!$user->executeQuery($query4)) {
     echo mysqli_error($user->conn);
 }
 $queryResult4 = $user->executeQuery($query4);
-$monthValue = mysqli_fetch_row($queryResult4);
+$monthQuantity = mysqli_fetch_row($queryResult4);
+
+//Get totall value of the order that have placed but not arrive to Iran or bought
+$query6 = "SELECT SUM(CAST(purchaseInfo.orderSalePrice AS decimal(8))), SUM(CAST(cost.benneksPrice AS decimal(8))), stat.orderStatus, orders.orderDate FROM benneks.purchaseInfo INNER JOIN benneks.orders "
+        . "ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID INNER JOIN benneks.users ON users.userID = orders.users_userID "
+        . "INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID "
+        . "WHERE orders.users_userID = '$userID' AND (stat.orderStatus = 'انجام شده-tamam' OR stat.orderStatus = 'NULL' OR stat.orderStatus = 'رسیده به دفتر-officde' ) AND orders.orderDate >= '2018-07-01'";
+
+if (!$user->executeQuery($query6)) {
+    echo mysqli_error($user->conn);
+}
+$queryResult6 = $user->executeQuery($query6);
+$query6row = mysqli_fetch_row($queryResult6);
+$totallSalePrice = $query6row[0];
+$totallBenneksPrice = $query6row[1];
+
 ?>
 <html>
     <head>
@@ -181,12 +200,16 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                                 <label id="dayQuantity" style="color: goldenrod"> <?php echo $todayQuantity[0]; ?>  </label> &nbsp &nbsp
                                             </div>
                                             <div class="form-group">
-                                                <label for="yesterdayQuantuty">  تعداد سفارشات شما در این ماه(میلادی):</label>
-                                                <label id="yesterdayQuantuty" style="color: goldenrod"> <?php echo $monthValue[1]; ?> </label> &nbsp &nbsp
+                                                <label for="monthQuantity">  تعداد سفارشات شما در این ماه(میلادی):</label>
+                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthQuantity[0]; ?> </label> &nbsp &nbsp
                                             </div>
                                             <div class="form-group">
-                                                <label for="monthQuantity">  سفارشات شما در ماه میلادی(تومان):</label>
-                                                <label id="monthQuantity" style="color: goldenrod"> <?php echo $monthValue[0]; ?> </label>  &nbsp &nbsp
+                                                <label for="totallSalePrice">  مجموع قیمت فروش نرسیده ها به ایران(تومان):</label>
+                                                <label id="totallSalePrice" style="color: goldenrod"> <?php echo $totallSalePrice; ?> </label>  &nbsp &nbsp
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="totallBenneksPrice"> مجموع بدهکاری به بنکس بابت نرسیده ها به ایران(تومان):</label>
+                                                <label id="totallBenneksPrice" style="color: goldenrod"> <?php echo $totallBenneksPrice; ?> </label>  &nbsp &nbsp
                                             </div>
                                         </div>
                                     </div>
@@ -256,47 +279,47 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    while ($row = mysqli_fetch_row($queryResult)) {
-                                        echo "<tr>";
-                                        echo "<td>" . $row[0] .
-                                        "<hr> "
-                                        . "<a href='#showCommentModal' data-toggle='modal' data-target='#showCommentModal' data-id='$row[0]' class='open-showCommentModal' > <i class='fa fa-comment fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> </a>"
-                                        . "<a href='#availableModal' data-toggle='modal' data-target='#availableModal' data-id = '$row[0]' class='open-availableModal'> <i class = 'fa fa-tag fa-fw fa-lg'></i> </a>"
-                                        . "</td>";
-                                        $picURL = str_replace(' ', '%20', $row[1]);
-                                        $productLink = $row[2];
-                                        echo "<td> <a href=" . $productLink . "> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
-                                        echo "<td>" . $row[3] . "</td>";
-                                        echo "<td>" . $row[4] . "</td>";
-                                        echo "<td>" . $row[5] . "</td>";
-                                        echo "<td>" . $row[6] . "</td>";
-                                        echo "<td>" . $row[7] . "</td>";
-                                        echo "<td>" . $row[8] . "</td>";
-                                        echo "<td>" . $row[9] . "</td>";
-                                        echo "<td>" . $row[10] . "</td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
+<?php
+while ($row = mysqli_fetch_row($queryResult)) {
+    echo "<tr>";
+    echo "<td>" . $row[0] .
+    "<hr> "
+    . "<a href='#showCommentModal' data-toggle='modal' data-target='#showCommentModal' data-id='$row[0]' class='open-showCommentModal' > <i class='fa fa-comment fa-fw fa-lg'></i> </a>"
+    . "<a href='#delModal' data-toggle='modal' data-target='#delModal' data-id = '$row[0]' class='open-delModal'> <i class = 'fa fa-times fa-fw fa-lg'></i> </a>"
+    . "<a href='#availableModal' data-toggle='modal' data-target='#availableModal' data-id = '$row[0]' class='open-availableModal'> <i class = 'fa fa-tag fa-fw fa-lg'></i> </a>"
+    . "</td>";
+    $picURL = str_replace(' ', '%20', $row[1]);
+    $productLink = $row[2];
+    echo "<td> <a href=" . $productLink . "> <img src = " . $picURL . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> </td>";
+    echo "<td>" . $row[3] . "</td>";
+    echo "<td>" . $row[4] . "</td>";
+    echo "<td>" . $row[5] . "</td>";
+    echo "<td>" . $row[6] . "</td>";
+    echo "<td>" . $row[7] . "</td>";
+    echo "<td>" . $row[8] . "</td>";
+    echo "<td>" . $row[9] . "</td>";
+    echo "<td>" . $row[10] . "</td>";
+    echo "</tr>";
+}
+?>
                                 </tbody>
                             </table>
                         </div>
-                        <?php
-                        //Pagination and query to get data
-                        $query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN  benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' $searchQuery";
-                        $queryResult2 = $user->executeQuery($query2);
-                        $records = mysqli_fetch_row($queryResult2);
-                        $totalRecords = $records[0];
-                        $totalPages = ceil($totalRecords / $limit);
-                        echo "<div class='container'>";
-                        echo "<ul class='pagination'>";
-                        for ($i = 1; $i <= $totalPages; $i++) {
-                            echo "<li><a href='orderlist.php?page=" . $i . "'>" . $i . "</a></li>";
-                        }
-                        echo "</ul>";
-                        mysqli_close($user->conn);
-                        ?>
+<?php
+//Pagination and query to get data
+$query2 = "SELECT COUNT(orders.orderID)FROM benneks.orders INNER JOIN benneks.stat ON stat.orders_orderID = orders.orderID INNER JOIN  benneks.users ON orders.users_userID = users.userID WHERE orders.users_userID = '$userID' $searchQuery";
+$queryResult2 = $user->executeQuery($query2);
+$records = mysqli_fetch_row($queryResult2);
+$totalRecords = $records[0];
+$totalPages = ceil($totalRecords / $limit);
+echo "<div class='container'>";
+echo "<ul class='pagination'>";
+for ($i = 1; $i <= $totalPages; $i++) {
+    echo "<li><a href='orderlist.php?page=" . $i . "'>" . $i . "</a></li>";
+}
+echo "</ul>";
+mysqli_close($user->conn);
+?>
                         <script type="text/javascript">
                             $(document).ready(function () {
                                 $('.pagination').pagination({
@@ -308,9 +331,9 @@ $monthValue = mysqli_fetch_row($queryResult4);
                                 });
                             });
                         </script>
-                        <?php
-                        echo "</div>";
-                        ?>
+<?php
+echo "</div>";
+?>
                     </div>
                 </div>
                 <!--Delete order modal -->

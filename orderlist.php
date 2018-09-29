@@ -60,7 +60,7 @@ $monthQuantity = mysqli_fetch_row($queryResult4);
 $query6 = "SELECT SUM(CAST(purchaseInfo.orderSalePrice AS decimal(8))), SUM(CAST(cost.benneksPrice AS decimal(8))), stat.orderStatus, orders.orderDate FROM benneks.purchaseInfo INNER JOIN benneks.orders "
         . "ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID INNER JOIN benneks.users ON users.userID = orders.users_userID "
         . "INNER JOIN benneks.stat ON orders.orderID = stat.orders_orderID INNER JOIN benneks.cost ON cost.orders_orderID = orders.orderID "
-        . "WHERE orders.users_userID = '$userID' AND (stat.orderStatus = 'انجام شده-tamam' OR stat.orderStatus = 'NULL' OR stat.orderStatus = 'رسیده به دفتر-officde' ) AND orders.orderDate >= '2018-07-01'";
+        . "WHERE orders.users_userID = '$userID' AND (stat.orderStatus = 'انجام شده-tamam' OR stat.orderStatus = NULL OR stat.orderStatus = 'رسیده به دفتر-officde' ) AND orders.orderDate >= '2018-07-01'";
 
 if (!$user->executeQuery($query6)) {
     echo mysqli_error($user->conn);

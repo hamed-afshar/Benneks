@@ -31,7 +31,7 @@ switch ($action) {
         if (!$user->executeQuery($query1)) {
             echo mysqli_error($user->conn);
         }
-        $sback['msg'] = "اطلاعات حواله با موفقیت ثبت گردید.";
+        $sback['msg'] = "اطلاعات حواله مبلغ " . $amount ."با نرخ " . $exchangeRate . " در سیستم وارد گردید.";
         break;
     case "confirm" :
         $checkQuery = "SELECT transDate FROM benneks.transfer WHERE transRef = '$transferCode'";

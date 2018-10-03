@@ -30,7 +30,7 @@ if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc, orders.productPic "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
             . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
@@ -40,7 +40,7 @@ if (isset($_GET["page"])) {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc, orders.productPic "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
             . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
@@ -198,6 +198,7 @@ $queryResult1 = $user->executeQuery($query1);
                                         <th style="text-align: center">لینک پرداخت </th>
                                         <th style="text-align: center">وضعیت </th>
                                         <th style="text-align: center"> توضیحات </th>
+                                        <th style="text-align: center"> عکس </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -218,6 +219,7 @@ $queryResult1 = $user->executeQuery($query1);
                                         echo "<td> <a href= " . $row[10] . ">Link" . "</a> </td>";
                                         echo "<td>" . $row[12] . "</td>";
                                         echo "<td>" . $row[13] . "</td>";
+                                        echo "<td> <img src = " . $row[14] . " class='img-rounded'" . "alt='بدون تصویر' width='100' height='100'> </a> . </td>";
                                         echo "</tr>";
                                     }
                                     ?>

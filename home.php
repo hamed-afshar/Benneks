@@ -512,9 +512,9 @@ if (isset($_POST['submitOrderButton'])) {
                                                     <option value="Shoes-37"> Shoes(EU=37) </option>
                                                     <option value="Shoes-37.5"> Shoes(EU=37.5) </option>
                                                     <option value="Shoes-38"> Shoes(EU=38) </option>
-                                                    <option value="Shoes-37"> Shoes(EU=38.5) </option>
+                                                    <option value="Shoes-38.5"> Shoes(EU=38.5) </option>
                                                     <option value="Shoes-39"> Shoes(EU=39) </option>
-                                                    <option value="Shoes-39"> Shoes(EU=39.5) </option>
+                                                    <option value="Shoes-39.5"> Shoes(EU=39.5) </option>
                                                     <option value="Shoes-40"> Shoes(EU=40) </option>
                                                     <option value="Shoes-40.5"> Shoes(EU=40.5) </option>
                                                     <option value="Shoes-41"> Shoes(EU=41)</option>

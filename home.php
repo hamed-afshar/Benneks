@@ -505,6 +505,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                     <option value="UK-22.5"> UK-22.5</option>
                                                     <option value="Women-Free-Size"> فری سایز زنانه </option>
                                                     <option value="" disabled style="color: red">  سایزهای کفش زنانه</option>
+                                                    <option value="Shoes-34"> Shoes(EU=34) </option>
                                                     <option value="Shoes-35"> Shoes(EU=35) </option>
                                                     <option value="Shoes-35.5"> Shoes(EU=35.5) </option>
                                                     <option value="Shoes-36"> Shoes(EU=36) </option>
@@ -618,6 +619,9 @@ if (isset($_POST['submitOrderButton'])) {
                                                     <option value="10-12 years"> 10-12 years </option>
                                                     <option value="12-14 years"> 12-14 years </option>
                                                     <option value="14-16 years"> 14-16 years </option>
+                                                    <option value="10-11 years"> 10-11 years </option>
+                                                    <option value="11-12 years"> 11-12 years </option>
+                                                    <option value="12-13 years"> 12-13 years </option>
                                                     <option value="Kids-xxs"> Kids-xxs </option>
                                                     <option value="Kids-xs"> Kids-xs </option>
                                                     <option value="Kids-s"> Kids-s </option>

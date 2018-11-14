@@ -67,7 +67,7 @@ if (isset($_POST['submitOrderButton'])) {
     $country = $_POST['country'];
     $currency = $_POST['currency'];
     $rateTL = intval($_POST['currencyRate']);
-    $originalTomanPrice = intval($productPrice) * $rateTL;
+    $originalTomanPrice = $productPrice * $rateTL;
     $productWeight = $_POST['productWeight'];
     $benneksMargin = $_POST['benneksMargin'];
     $iranDeliverCost = $_POST['iranDeliverCost'];

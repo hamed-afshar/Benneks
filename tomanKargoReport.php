@@ -51,7 +51,7 @@ $objPHPExcel->setActiveSheetIndex(0)
 
 //query to extract requiered data from db and insert it to excel
 $query = "select shipment.orders_orderID, cost.originalTomanPrice, cost.rateTL, orders.productPrice from benneks.shipment inner join benneks.cost on shipment.orders_orderID = cost.orders_orderID "
-        . "inner join benneks.orders on orders.orderID = shipment.orders_orderID where shipment.cargoName = '$cargoName' and shipment.iranArrivalDate is not null;";
+        . "inner join benneks.orders on orders.orderID = shipment.orders_orderID where shipment.cargoName = '$cargoName' order by orders.orderDate;";
 if (!$user->executeQuery($query)) {
     echo mysqli_error($user->conn);
 }

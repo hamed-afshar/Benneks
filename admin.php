@@ -206,8 +206,7 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                     <li><a href="#iranPrintMissingModal" data-toggle='modal' data-target='#iranPrintMissingModal' class='open-iranPrintMissingModal' > لیست گم شده های کارگو</a></li>
                                     <li><a href="kargoReport.php" > گزارش سود و زیان کارگو</a></li>
                                     <li><a href="transferreport.php" >گزارش حواله ها</a></li>
-                                    <li><a href="#tomanReportModal" data-toggle='modal' data-target='#tomanReportModal' class='open-tomanReportModal' > گزارش تومانی کارگوها</a></li>
-                                   
+
                                 </ul>
 
                             </div>
@@ -672,27 +671,6 @@ $iranWayValue = mysqli_fetch_row($queryResultIranWayQuery);
                                         <span style="color:red; text-align: justify; font-size: 12" id="transferMSG">
                                         </span>
                                     </div>   
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                  <!--print toman kargo modal -->
-                <div class = "modal fade" id = "tomanReportModal" role="dialog">
-                    <div class="modal-dialog">
-                        <!--modal content -->
-                        <div class="modal-content">
-                            <div class="modal-header" style="padding: 35px 50px;">
-                                <button type="button" class="close" data-dismiss = "modal">&times; </button>
-                                <h4><span class = "glyphicon glyphicon-print"> </span> پرینت کد های رسیده کارگو</h4>
-                            </div>
-                            <div class="modal-body" style="padding:40px 50px;">
-                                <form role="form" action="tomanKargoReport.php" method="post" dir="rtl">
-                                    <div class="form-group">
-                                        <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> کد کارگو</label>
-                                        <input type="text" class="form-control" name="kargoID" id="kargoID">
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
                                 </form>
                             </div>
                         </div>

@@ -30,7 +30,7 @@ if (isset($_GET["page"])) {
     $page = $_GET["page"];
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc, orders.productPic "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc, orders.productPic, orders.productPrice "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
             . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
@@ -40,7 +40,7 @@ if (isset($_GET["page"])) {
     $page = 1;
     $startFrom = ($page - 1) * $limit;
     $query1 = "SELECT users.userName, users.userID, orders.orderDate, members.customerName, members.customerCode, members.customerSocialID, "
-            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc, orders.productPic "
+            . "orders.orderID, cost.benneksPrice, purchaseInfo.orderSalePrice, purchaseInfo.advancedPayment, members.paymentLink, orders.orderTime, stat.orderStatus, purchaseInfo.paymentExtraDesc, orders.productPic, orders.productPrice "
             . "FROM benneks.orders INNER JOIN benneks.members ON orders.members_customerCode = members.customerCode "
             . "INNER JOIN benneks.cost ON orders.orderID = cost.orders_orderID "
             . "INNER JOIN benneks.purchaseInfo ON orders.purchaseInfo_purchaseID = purchaseInfo.purchaseID "
@@ -116,6 +116,7 @@ $queryResult1 = $user->executeQuery($query1);
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                     <li><a href="#accountantModal" data-toggle='modal' data-target='#accountantModal' class='open-accountantModal' > گزارش حسابداری</a></li>  
+                                    <li><a href="#tomanReportModal" data-toggle='modal' data-target='#tomanReportModal' class='open-tomanReportModal' > گزارش تومانی کارگوها</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -191,7 +192,8 @@ $queryResult1 = $user->executeQuery($query1);
                                         <th style="text-align: center"> نام مشتری</th>
                                         <th style="text-align: center"> کد مشتری</th>
                                         <th style="text-align: center"> آیدی مشتری</th>
-                                        <th style="text-align: center"> کد کالا</th>    
+                                        <th style="text-align: center"> کد کالا</th> 
+                                        <th style="text-align: center"> قیمت لیر</th>
                                         <th style="text-align: center">قیمت خرید </th>
                                         <th style="text-align: center">قیمت فروش </th>
                                         <th style="text-align: center">بیعانه </th>
@@ -213,6 +215,7 @@ $queryResult1 = $user->executeQuery($query1);
                                         echo "<td>" . $row[4] . "</td>";
                                         echo "<td>" . $row[5] . "</td>";
                                         echo "<td>" . $row[6] . "</td>";
+                                        echo "<td>" . $row[15] . "</td>";
                                         echo "<td>" . $row[7] . "</td>";
                                         echo "<td>" . $row[8] . "</td>";
                                         echo "<td>" . $row[9] . "</td>";
@@ -225,6 +228,27 @@ $queryResult1 = $user->executeQuery($query1);
                                     ?>
                                 </tbody>
                             </table>
+                        </div>
+                        <!--print toman kargo modal -->
+                        <div class = "modal fade" id = "tomanReportModal" role="dialog">
+                            <div class="modal-dialog">
+                                <!--modal content -->
+                                <div class="modal-content">
+                                    <div class="modal-header" style="padding: 35px 50px;">
+                                        <button type="button" class="close" data-dismiss = "modal">&times; </button>
+                                        <h4><span class = "glyphicon glyphicon-print"> </span> پرینت کد های رسیده کارگو</h4>
+                                    </div>
+                                    <div class="modal-body" style="padding:40px 50px;">
+                                        <form role="form" action="tomanKargoReport.php" method="post" dir="rtl">
+                                            <div class="form-group">
+                                                <label for="kargoID"> <span class="glyphicon glyphicon-asterisk"></span> کد کارگو</label>
+                                                <input type="text" class="form-control" name="kargoID" id="kargoID">
+                                            </div>
+                                            <button type="submit" class="btn btn-success btn-block" name="submitButton" id="submitButton"> پرینت </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!--accountant information modal -->
                         <div class = "modal fade" id = "accountantModal" role="dialog">

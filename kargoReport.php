@@ -54,7 +54,7 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('K1', 'سود یا زیان کل');
 
 //query to extract requiered data from db and insert it to excel
-$query1 = "SELECT * FROM benneks.kargo";
+$query1 = "SELECT * FROM benneks.kargo order by kargo.kargoNO";
 if (!$user->executeQuery($query1)) {
     echo mysqli_error($user->conn);
 }

@@ -52,7 +52,9 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('I1', 'سود یا زیان کارگو')
         ->setCellValue('J1', 'سود یا زیان خرید لیر')
         ->setCellValue('K1', 'سود یا زیان کل')
-        ->setCellValue('L1', 'سود و ضرر کارگو سیستمی و واقعی');
+        ->setCellValue('L1', 'سود و ضرر کارگو سیستمی و واقعی')
+        ->setCellValue('M1', 'مجموع ارزش تومانی فروش بنکس ')
+        ->setCellValue('N1', 'مجموع ارزش تومانی اصلی');
 //query to extract requiered data from db and insert it to excel
 $query1 = "SELECT * FROM benneks.kargo order by kargo.kargoNO";
 if (!$user->executeQuery($query1)) {
@@ -80,6 +82,8 @@ while ($row = mysqli_fetch_row($queryResult1)) {
     $objPHPExcel->getActiveSheet()->setCellValue('K' . $i, '=I' . $i . '+J' . $i);
     $columnL = intval($row[6]) - intval($row[1]);
     $objPHPExcel->getActiveSheet()->setCellValue('L' . $i, $columnL);
+    $objPHPExcel->getActiveSheet()->setCellValue('M' . $i, $row[5]);
+    $objPHPExcel->getActiveSheet()->setCellValue('N' . $i, $row[7]);
     $i++;
 }
 
@@ -96,15 +100,16 @@ $objSheet->getColumnDimension('I')->setAutoSize(true);
 $objSheet->getColumnDimension('J')->setAutoSize(true);
 $objSheet->getColumnDimension('K')->setAutoSize(true);
 $objSheet->getColumnDimension('L')->setAutoSize(true);
-
+$objSheet->getColumnDimension('M')->setAutoSize(true);
+$objSheet->getColumnDimension('N')->setAutoSize(true);
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
 
 // define sytle for table
 $objSheet->getDefaultStyle()->applyFromArray($style);
-$objSheet->getStyle("A1:L1")->getFont()->setBold(TRUE);
-$objSheet->getStyle("A1:L1")->getFont()->setSize(14);
-$objSheet->getStyle('A1:L1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle("A1:N1")->getFont()->setBold(TRUE);
+$objSheet->getStyle("A1:N1")->getFont()->setSize(14);
+$objSheet->getStyle('A1:N1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="kargo-profit-report.xls"');

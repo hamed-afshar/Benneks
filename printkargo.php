@@ -58,6 +58,12 @@ if (isset($_POST['printButton'])) {
 }
 
 $kargoPrintQueryResylt = $user->executeQuery($kargoPrintQuery);
+// Quantity of shoes for each kargo
+$shoesQtyQuery = "SELECT count(*) FROM benneks.orders INNER JOIN benneks.shipment ON orders.orderID = shipment.orders_orderID "
+        . "WHERE cargoName = '$kargoCode' AND clothesType LIKE '%کفش%'";
+$user->executeQuery($shoesQtyQuery);
+$shoesQtyResult = $user->executeQuery($shoesQtyQuery);
+$shoesQtyRow = mysqli_fetch_row($shoesQtyResult);
 
 //create excel sheet
 $i = 2;
@@ -67,9 +73,13 @@ while ($row = mysqli_fetch_row($kargoPrintQueryResylt)) {
     $objPHPExcel->getActiveSheet()->setCellValue('B' . $i, $row[0]);
     $objPHPExcel->getActiveSheet()->setCellValue('C' . $i, $row[1]);
     $objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $row[2]);
-    $i++;
+    $i++;   
 }
-
+//insert shoes quantity in to the excel
+$objSheet->getStyle('C'.$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objSheet->getStyle('D'.$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF00');
+$objPHPExcel->getActiveSheet()->setCellValue('C' . $i, "ayakkabi saysi");
+$objPHPExcel->getActiveSheet()->setCellValue('D' . $i, $shoesQtyRow[0]);
 // autosize the columns
 $objSheet->getColumnDimension('A')->setAutoSize(true);
 $objSheet->getColumnDimension('B')->setAutoSize(true);

@@ -352,6 +352,124 @@ function calculator(userID, country, clothesType, productPrice) {
                 iranDeliverCost: shippingCost
             }
             break;
+            // others
+        case "کالای نیم کیلو" :
+            weight = 500;
+            shippingCost = (weightCost * 500) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+            
+        case "کالای یک کیلو" :
+            weight = 1000;
+            shippingCost = (weightCost * 1000) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount; 
+             //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
+        case "کالای یک و نیم کیلو" :
+            weight = 1500;
+            shippingCost = (weightCost * 1500) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+             //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
+        case "کالای دو کیلو" :
+            weight = 2000;
+            shippingCost = (weightCost * 2000) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+             //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
+        case "کالای دو و نیم کیلو" :
+            weight = 2500;
+            shippingCost = (weightCost * 2500) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount; 
+             //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
+        case "کالای سه کیلو" :
+            weight = 3000;
+            shippingCost = (weightCost * 3000) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+             //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
+        case "کالای سه و نیم کیلو" :
+            weight = 3500;
+            shippingCost = (weightCost * 3500) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+             //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
+        case "کالای چهار کیلو" :
+            weight = 4000;
+            shippingCost = (weightCost * 4000) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+             //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
+        case "کالای پنج کیلو" :
+            weight = 5000;
+            shippingCost = (weightCost * 5000) / 1000;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+             //return totalCost;
+            return {
+                totalCost: totalCost,
+                productWeight: weight,
+                benneksMargin: benneksMargin,
+                currencyRate: currencyRate,
+                currency: currency,
+                iranDeliverCost: shippingCost
+            }
+            break;
         case "کیف پول":
         case "کمربند":
         case "عینک":

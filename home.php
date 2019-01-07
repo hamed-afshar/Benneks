@@ -391,6 +391,17 @@ if (isset($_POST['submitOrderButton'])) {
                                                     <option value = "گرمکن بچه گانه"> گرمکن بچه گانه</option>
                                                     \\Baby clothes all 120 gram
                                                     <option value = "تمامی لباس های نوزادی"> تمامی لباس های نوزادی</option>
+                                                    \\ others
+                                                    <option value="" disabled style="color: red">سایر کالاها</option>
+                                                    <option value = "کالای نیم کیلو"> نیم کیلو</option>
+                                                    <option value = "کالای یک کیلو"> یک کیلو</option>
+                                                    <option value = "کالای یک و نیم کیلو"> یک و نیم کیلو</option>
+                                                    <option value = "کالای دو کیلو"> دو کیلو</option>
+                                                    <option value = "کالای دو و نیم کیلو"> دو و نیم کیلو</option>
+                                                    <option value = "کالای سه کیلو"> سه کیلو</option>
+                                                    <option value = "کالای سه و نیم کیلو"> سه و نیم کیلو</option>
+                                                    <option value = "کالای چهار کیلو"> چهار کیلو</option>
+                                                    <option value = "کالای پنج کیلو"> پنج کیلو</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -451,6 +462,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                 <label for="productSize"> سایز:</label>
                                                 <select dir = "ltr"  class="eng-format form-control" id = "productSize" name = "productSize">
                                                     <option value="" disabled selected style="color: red">  سایزهای لباس زنانه انتخاب کنید </option>
+                                                    <option value="WithoutSize"> other </option>
                                                     <option value="Women-XXSmall"> XX-Small </option>
                                                     <option value="Women-XSmall"> X-Small </option>
                                                     <option value="Women-Small"> Small </option>
@@ -654,6 +666,7 @@ if (isset($_POST['submitOrderButton'])) {
                                                     <option value="یشمی(Viridian)">  یشمی</option>
                                                     <option value="لیمویی(limon)">  لیمویی</option>
                                                     <option value="چند رنگ(renkli">  چند رنگ</option>
+                                                    <option value="بدون رنگ(renk siz)"> بدون رنگ</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">

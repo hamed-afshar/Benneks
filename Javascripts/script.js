@@ -230,6 +230,24 @@ function calculator(userID, country, clothesType, productPrice) {
         case "پلیور بچه گانه":
         case "پیراهن بچه گانه":
         case "دامن بچه گانه":
+        case "2-3 سال":
+        case "3-4 سال":
+        case "4-5 سال":
+        case "5-6 سال":
+        case "6-7 سال":
+        case "7-8 سال":
+        case "8-9 سال":
+        case "9-10 سال":
+        case "10-11 سال":
+        case "11-12 سال":
+        case "12-13 سال":
+        case "13-14 سال":
+        case "0-1 ماه":
+        case "2-4 ماه":
+        case "4-6 ماه":
+        case "6-12 ماه":
+        case "12-18 ماه":
+        case "18-24 ماه":
             weight = 200;
             shippingCost = (weightCost * 200) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
@@ -357,12 +375,12 @@ function calculator(userID, country, clothesType, productPrice) {
             weight = 500;
             shippingCost = (weightCost * 500) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
-            
+
         case "کالای یک کیلو" :
             weight = 1000;
             shippingCost = (weightCost * 1000) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount; 
-             //return totalCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+            //return totalCost;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -376,7 +394,7 @@ function calculator(userID, country, clothesType, productPrice) {
             weight = 1500;
             shippingCost = (weightCost * 1500) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
-             //return totalCost;
+            //return totalCost;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -390,7 +408,7 @@ function calculator(userID, country, clothesType, productPrice) {
             weight = 2000;
             shippingCost = (weightCost * 2000) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
-             //return totalCost;
+            //return totalCost;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -403,8 +421,8 @@ function calculator(userID, country, clothesType, productPrice) {
         case "کالای دو و نیم کیلو" :
             weight = 2500;
             shippingCost = (weightCost * 2500) / 1000;
-            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount; 
-             //return totalCost;
+            totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
+            //return totalCost;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -418,7 +436,7 @@ function calculator(userID, country, clothesType, productPrice) {
             weight = 3000;
             shippingCost = (weightCost * 3000) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
-             //return totalCost;
+            //return totalCost;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -432,7 +450,7 @@ function calculator(userID, country, clothesType, productPrice) {
             weight = 3500;
             shippingCost = (weightCost * 3500) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
-             //return totalCost;
+            //return totalCost;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -446,7 +464,7 @@ function calculator(userID, country, clothesType, productPrice) {
             weight = 4000;
             shippingCost = (weightCost * 4000) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
-             //return totalCost;
+            //return totalCost;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -460,7 +478,7 @@ function calculator(userID, country, clothesType, productPrice) {
             weight = 5000;
             shippingCost = (weightCost * 5000) / 1000;
             totalCost = (productPrice * currencyRate) + ((productPrice * currencyRate) * benneksMargin) + shippingCost + ((productPrice * currencyRate) * userMargin) - discount;
-             //return totalCost;
+            //return totalCost;
             return {
                 totalCost: totalCost,
                 productWeight: weight,
@@ -738,9 +756,12 @@ function adminComment(action) {
 //function to submit or edit kargo details
 function kargoDetailFunc(action) {
     var kargoNo = document.getElementById("kargoNo").value;
-    var kargoCost = document.getElementById("kargoCost").value;;
-    var wrongCost = document.getElementById("wrongCost").value;;
-    var missingCost = document.getElementById("missingCost").value;;
+    var kargoCost = document.getElementById("kargoCost").value;
+    ;
+    var wrongCost = document.getElementById("wrongCost").value;
+    ;
+    var missingCost = document.getElementById("missingCost").value;
+    ;
     $.getJSON("./kargoDetails.php?kargoNo=" + kargoNo + "&kargoCost=" + kargoCost + "&wrongCost=" + wrongCost + "&missingCost=" + missingCost + "&action=" + action, function (data) {
         var msg = data.msg;
         document.getElementById("kargoDetailsMSG").innerHTML = msg;
@@ -749,40 +770,40 @@ function kargoDetailFunc(action) {
 
 //function to submit or edit money transfer details
 function transferFunc(action) {
-   var transferDate = document.getElementById("transferDate").value; 
-   var exchangeRate = document.getElementById("exchangeRate").value;
-   var amount = document.getElementById("amount").value; 
-   switch(action) {
-       case "submit" :
-           var transferCode = document.getElementById("transferCode").value;
-           $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&transferCode=" + transferCode + "&action=" + action, function(data) {
-               var msg = data.msg;
-               document.getElementById("transferMSG").innerHTML = msg;
-           })
-           break;
-       case "edit" :
-           $("#transferSubmitButton").hide("slow");
-           $("#transferCodeArea").show("slow");
-           $("#transferEditButton").hide("slow");
-           $("#editConfirmButton").show("slow");
-           var msg = data.msg;
-           document.getElementById("transferMSG").innerHTML = msg;
-           break;
-       case "confirm" :
-           var transferCode = document.getElementById("transferCode").value;
-           $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&transferCode=" + transferCode + "&action=" + action, function(data) {
-               var msg = data.msg;
-               document.getElementById("transferMSG").innerHTML = msg;
-           })
-           break;
-   }
+    var transferDate = document.getElementById("transferDate").value;
+    var exchangeRate = document.getElementById("exchangeRate").value;
+    var amount = document.getElementById("amount").value;
+    switch (action) {
+        case "submit" :
+            var transferCode = document.getElementById("transferCode").value;
+            $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&transferCode=" + transferCode + "&action=" + action, function (data) {
+                var msg = data.msg;
+                document.getElementById("transferMSG").innerHTML = msg;
+            })
+            break;
+        case "edit" :
+            $("#transferSubmitButton").hide("slow");
+            $("#transferCodeArea").show("slow");
+            $("#transferEditButton").hide("slow");
+            $("#editConfirmButton").show("slow");
+            var msg = data.msg;
+            document.getElementById("transferMSG").innerHTML = msg;
+            break;
+        case "confirm" :
+            var transferCode = document.getElementById("transferCode").value;
+            $.getJSON("./transferdetails.php?transferDate=" + transferDate + "&exchangeRate=" + exchangeRate + "&amount=" + amount + "&transferCode=" + transferCode + "&action=" + action, function (data) {
+                var msg = data.msg;
+                document.getElementById("transferMSG").innerHTML = msg;
+            })
+            break;
+    }
 }
 
 //function to upload payment pic into the database
 function paymentFunc() {
     var customerCode = document.getElementById("customerCode").value;
     var paymentPic = document.getElementById("paymentPic").value;
-    $.getJSON("./uploadpayment.php?customerCode=" + customerCode +"&paymentPic=" + paymentPic, function (data) {
+    $.getJSON("./uploadpayment.php?customerCode=" + customerCode + "&paymentPic=" + paymentPic, function (data) {
         var msg = data.msg;
         document.getElementById("paymentMSG").innerHTML = msg;
     });

@@ -386,6 +386,25 @@ if (isset($_POST['submitOrderButton'])) {
                                                     <option value = "پلیور بچه گانه"> پلیور بچه گانه</option>
                                                     <option value = "پیراهن بچه گانه"> پیراهن بچه گانه</option>
                                                     <option value = "دامن بچه گانه"> دامن بچه گانه</option>
+                                                    <option value = "2-3 سال"> دوتا سه سال</option>
+                                                    <option value = "3-4 سال"> سه تا چهار سال</option>
+                                                    <option value = "4-5 سال"> چهار تا پنج سال</option>
+                                                    <option value = "5-6 سال"> پنج تا شش سال</option>
+                                                    <option value = "6-7 سال"> شش تا هفت سال</option>
+                                                    <option value = "7-8 سال"> هفت تا هشت سال</option>
+                                                    <option value = "8-9 سال"> هشت تا نه سال</option>
+                                                    <option value = "9-10 سال"> نه تا ده سال</option>
+                                                    <option value = "10-11 سال"> ده تا یازده سال</option>
+                                                    <option value = "11-12 سال"> یازده تا دوازده سال</option>
+                                                    <option value = "12-13 سال"> دوازده تا سیزده سال</option>
+                                                    <option value = "13-14 سال"> سیزده تا چهارده سال</option>
+                                                    <option value = "0-1 ماه"> صفر تا یک ماه</option>
+                                                    <option value = "2-4 ماه"> دوتا چهار ماه</option>
+                                                    <option value = "4-6 ماه"> چهار تا شش ماه</option>
+                                                    <option value = "6-12 ماه"> شش تا دوازده ماه</option>
+                                                    <option value = "12-18 ماه"> دوازده تا هیجده ماه</option>
+                                                    <option value = "18-24 ماه"> هیجده تا بیست و چهار ماه</option>
+
                                                     \\KIDS products equal to 450 gram  
                                                     <option value = "کاپشن بچه گانه"> کاپشن بچه گانه</option>
                                                     <option value = "گرمکن بچه گانه"> گرمکن بچه گانه</option>

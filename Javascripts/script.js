@@ -113,9 +113,9 @@ function calculator(userID, country, clothesType, productPrice) {
         case "ترکیه":
             var country = "Turkey";
             var currency = "TL";
-            var currencyRate = 2530;
-            var weightCost = 85000; // per killo
-            var shippingCost = 80000; //defualt for shoes
+            var currencyRate = 2450;
+            var weightCost = 180000; // per killo
+            var shippingCost = 160000; //defualt for shoes
             break;
         case "انگلیس":
             var country = "UK";

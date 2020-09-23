@@ -143,6 +143,7 @@ function calculator(userID, country, clothesType, productPrice) {
         case "9":
         case "22":
         case "25":
+		case "41":
         case "32":
             var discount = 8000;
             var userMargin = 0;
